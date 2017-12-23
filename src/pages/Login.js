@@ -67,10 +67,10 @@ class Login extends Component {
             <div id = 'login'>
                 <Form className="login-form">
                     <FormItem
-                        label="Username"
+                        label="Email"
                     >
                         {getFieldDecorator('username', {
-                            rules: [{ required: true, message: 'Please input your username!' }],
+                            rules: [{ required: true, message: 'Please input your email' }],
                         })(
                             <Input id = 'username' prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}/>
                         )}
