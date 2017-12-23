@@ -12,6 +12,7 @@ function registerUser (req, connection, cb) {
     delete data.phone;
     connection.query('insert into user SET ? ', data, (err, response, fields) => {
         if (err) {
+            console.log(err);
             cb({
                 code:400,
                 message:"Error in sql query"
