@@ -17,7 +17,7 @@ export default function registerUser(data) {
                     if(res.body.code == 200)
                         dispatch({type:"REGISTER_USER_SUCCESS"})
                     else
-                        dispatch({type:"REGISTER_USER_ERROR", message:res.body.message})
+                        dispatch({type:"DISPLAY_ERROR", message:res.body.message})
                 }
             })
     }

@@ -17,7 +17,7 @@ export default function createProject(data) {
                     if(res.body.code == 200)
                         dispatch({type:"PROJECT_CREATE_SUCCESS"})
                     else
-                        dispatch({type:"PROJECT_CREATE_ERROR", message:res.body.message})
+                        dispatch({type:"DISPLAY_ERROR", message:res.body.message})
                 }
             })
     }

@@ -4,6 +4,7 @@ import login from '../actions/Login.js';
 import {connect} from 'react-redux';
 import {withRouter} from 'react-router-dom'
 import { history } from '../store';
+import Error from '../components/Error.js'
 import '../../node_modules/antd/lib/input/style/index.css';
 import '../../node_modules/antd/lib/button/style/index.css';
 import '../../node_modules/antd/lib/form/style/index.css';
@@ -95,6 +96,7 @@ class Login extends Component {
                     </FormItem>
                 </Form>
                 <Modal title = 'Register' visible = {this.state.visible} footer = {null} onCancel = {this.handleCancel}><RegisterUser/></Modal>
+                <Error/>
             </div>
         );
     }

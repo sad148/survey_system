@@ -15,7 +15,6 @@ ReactDOM.render(
     <Provider store={store}>
         <BrowserRouter>
             <Switch>
-                {/*<Route path="/survey_system/home" component = {App} />*/}
                 <Route path="/survey_system/login" component = {Login}/>
                 <Route path="/survey_system/home" component = {Homepage}/>
             </Switch>

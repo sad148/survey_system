@@ -16,7 +16,7 @@ export default function login(data) {
                     if(res.body.code == 200)
                         dispatch({type:"LOGIN_SUCCESS", data:res.body.data})
                     else
-                        dispatch({type:"LOGIN_ERROR", message:res.body.message})
+                        dispatch({type:"DISPLAY_ERROR", message:res.body.message})
                 }
             })
     }

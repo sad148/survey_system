@@ -5,6 +5,7 @@ import thunk from "redux-thunk";
 import registerUser from './reducers/RegisterUser.js';
 import login from './reducers/Login.js';
 import projects from './reducers/Projects.js';
+import errors from './reducers/Errors.js'
 import { syncHistoryWithStore, routerReducer } from 'react-router-redux';
 import { createBrowserHistory } from 'history';
 const logger = createLogger({})
@@ -14,6 +15,7 @@ const store = createStore(
         registerUser,
         login,
         projects,
+        errors,
         routing: routerReducer
     }),{},applyMiddleware(logger,thunk,promise())
 )
