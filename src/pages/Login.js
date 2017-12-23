@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import RegisterUser from '../components/RegisterUser.js';
 import login from '../actions/Login.js';
 import {connect} from 'react-redux';
+import {withRouter} from 'react-router-dom'
+import { history } from '../store';
 import '../../node_modules/antd/lib/input/style/index.css';
 import '../../node_modules/antd/lib/button/style/index.css';
 import '../../node_modules/antd/lib/form/style/index.css';
@@ -10,6 +12,9 @@ import { Form, Icon, Input, Button, Modal} from 'antd';
 const FormItem = Form.Item;
 
 class Login extends Component {
+    componentWillUnmount = () => {
+        console.log("inside unmount");
+    }
     componentWillMount = () => {
         this.setState({
             showRegister:false,
@@ -19,19 +24,23 @@ class Login extends Component {
 
     componentWillReceiveProps = (nextProps) => {
         if(nextProps.loginSuccess == true) {
-            //this.props.dispatch({type:""});
-            alert('Success')
             this.props.dispatch({type:"RESET_LOGIN"})
+            this.props.history.replace('/survey_system/home');
+            this.props.dispatch({type:"PROJECT_DATA", payload:nextProps.data});
         }
+    }
+
+    shouldComponentUpdate = (nextProps) => {
+        if(nextProps.loginSuccess == false && this.props.loginSuccess == true)
+            return false;
+        return true;
     }
 
     handleSubmit = (e) => {
         e.preventDefault();
-        console.log(e);
         this.props.form.validateFields((err, values) => {
             if (!err) {
                 this.props.dispatch(login(values));
-                console.log('Received values of form: ', values);
             }
         });
     }
@@ -58,7 +67,7 @@ class Login extends Component {
             <div id = 'login'>
                 <Form onSubmit={this.handleSubmit} className="login-form">
                     <FormItem>
-                        {getFieldDecorator('userName', {
+                        {getFieldDecorator('username', {
                             rules: [{ required: true, message: 'Please input your username!' }],
                         })(
                             <Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="Username" />
@@ -93,6 +102,6 @@ const mapStateToProps = (store) => {
         message:store.login.message
     }
 }
-const WrappedNormalLoginForm = Form.create()(Login);
 
+const WrappedNormalLoginForm = Form.create()(Login);
 export default connect (mapStateToProps)(WrappedNormalLoginForm);

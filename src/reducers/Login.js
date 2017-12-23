@@ -4,7 +4,7 @@ const login = (state = { data:"" , message: "", loginSuccess:""}, action) => {
             state = {
                 ...state,
                 loginSuccess: true,
-                data:action.payload
+                data:action.data
             }
             break;
         case 'LOGIN_ERROR':
@@ -21,6 +21,7 @@ const login = (state = { data:"" , message: "", loginSuccess:""}, action) => {
                 data:"",
                 message:""
             }
+            break;
     }
     return state;
 }

@@ -1,11 +1,12 @@
 var request = require('superagent');
 
-export default function login(data) {
+export default function createProject(data) {
     return function (dispatch) {
         //let apiUrl = sessionStorage.getItem('apiurl');
         let apiUrl = 'http://localhost:3009/'
+        console.log("inside registeruser api")
         request
-            .post(apiUrl + 'login')
+            .post(apiUrl + 'createProject')
             .set('Content-Type', 'application/json')
             .send({data:data})
             .end((err,res) => {
@@ -14,9 +15,9 @@ export default function login(data) {
                 }
                 else {
                     if(res.body.code == 200)
-                        dispatch({type:"LOGIN_SUCCESS", data:res.body.data})
+                        dispatch({type:"PROJECT_CREATE_SUCCESS"})
                     else
-                        dispatch({type:"LOGIN_ERROR", message:res.body.message})
+                        dispatch({type:"PROJECT_CREATE_ERROR", message:res.body.message})
                 }
             })
     }
