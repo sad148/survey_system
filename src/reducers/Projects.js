@@ -16,7 +16,6 @@ const projects = (state = { projectData:"" , projectDataReceived:""}, action) =>
             }
             break;
     }
-    console.log(state);
     return state;
 }
 
