@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import RegisterUser from '../components/RegisterUser.js';
 import login from '../actions/Login.js';
 import {connect} from 'react-redux';
+import { browserHistory } from 'react-router';
 import {withRouter} from 'react-router-dom'
 import { history } from '../store';
 import Error from '../components/Error.js'
@@ -13,9 +14,6 @@ import { Form, Icon, Input, Button, Modal} from 'antd';
 const FormItem = Form.Item;
 
 class Login extends Component {
-    componentWillUnmount = () => {
-        console.log("inside unmount");
-    }
     componentWillMount = () => {
         this.setState({
             showRegister:false,
@@ -26,7 +24,7 @@ class Login extends Component {
     componentWillReceiveProps = (nextProps) => {
         if(nextProps.loginSuccess == true) {
             this.props.dispatch({type:"RESET_LOGIN"})
-            this.props.history.replace('/survey_system/home');
+            browserHistory.replace('/survey_system/home');
             this.props.dispatch({type:"PROJECT_DATA", payload:nextProps.data});
         }
     }

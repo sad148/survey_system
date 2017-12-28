@@ -1,13 +1,18 @@
 import React, { Component } from 'react';
 import { Layout, Menu, Breadcrumb, Icon } from 'antd';
-import Dashboard from "../components/Dashboard";
-import {connect} from "react-redux";
+import '../../node_modules/antd/lib/layout/style/index.css'
+import '../../node_modules/antd/lib/menu/style/index.css'
+import { browserHistory } from 'react-router';
 const { SubMenu } = Menu;
 const { Header, Content, Sider } = Layout;
 
 class Homepage extends Component{
     componentWillMount = () => {
-        this.setState({projectData:this.props.projectData})
+
+    }
+
+    componentDidMount = () => {
+
     }
 
     componentWillReceiveProps = (nextProps) => {
@@ -16,10 +21,18 @@ class Homepage extends Component{
         }
     }
 
+    listProjects = (data) => {
+        browserHistory.push('/survey_system/list_projects')
+    }
+
+    createProject = () => {
+        browserHistory.push('/survey_system/create_project')
+    }
+
     render = () => {
-        console.log("inside homepage render", this.props.projectData, this.props.projectDataReceived);
         return (
-            <Layout style={{height:"100%"}}>
+        <div style={{"height":"100%"}}>
+            <Layout>
                 <Header className="header">
                     <div className="logo" />
                     <Menu
@@ -34,17 +47,28 @@ class Homepage extends Component{
                         <Menu.Item key="4">Reports</Menu.Item>
                     </Menu>
                 </Header>
-                {this.props.projectDataReceived == true ? (<Dashboard data = {this.state.projectData}/>) : ""}
             </Layout>
+            <Layout style={{"height":"100%"}}>
+                <Sider width={200} style={{ background: '#fff' }}>
+                    <Menu
+                        theme="dark"
+                        mode="vertical"
+                        defaultSelectedKeys={['1']}
+                        style={{ height: '100%', borderRight: 0 }}
+                    >
+                        <Menu.Item key="1"><span className="nav-text" onClick={this.listProjects}>List Projects</span></Menu.Item>
+                        <Menu.Item key="2"><span className="nav-text" onClick={this.createProject}>Create Project</span></Menu.Item>
+                        <Menu.Item key="3"><span className="nav-text">nav 3</span></Menu.Item>
+                    </Menu>
+                </Sider>
+                <Layout style={{ padding: '24px 24px 24px 24px' }}>
+                    {this.props.children}
+                </Layout>
+            </Layout>
+        </div>
         )
     }
 }
 
-const mapStateToProps = (store) => {
-    return {
-        projectData:store.projects.projectData,
-        projectDataReceived:store.projects.projectDataReceived
-    }
-}
 
-export default connect(mapStateToProps)(Homepage);
+export default Homepage;

@@ -1,13 +1,13 @@
 import React, {Component} from 'react';
 import { Form, Input, Select, Button } from 'antd';
-import {connect} from 'react-redux';
-import registerUser from '../actions/RegisterUser.js'
+
 const FormItem = Form.Item;
 const Option = Select.Option;
 //import Popup from './popup.js';
 
 class CreateProject extends Component {
     componentWillMount = () => {
+        console.log("inside componentwillmount");
         this.setState({
             confirmDirty: false,
             autoCompleteResult: [],
@@ -83,18 +83,6 @@ class CreateProject extends Component {
                 >
                     {getFieldDecorator('description')(
                         <Input type="text" onBlur={this.handleConfirmBlur} autosize={{ minRows: 2, maxRows: 6 }}/>
-                    )}
-                </FormItem>
-                <FormItem
-                    {...formItemLayout}
-                    label="Languages"
-                >
-                    {getFieldDecorator('languages', {
-                        rules: [{
-                            required: true, message: 'Please enter all languages',
-                        }],
-                    })(
-                        <Input/>
                     )}
                 </FormItem>
                 <FormItem {...tailFormItemLayout}>
