@@ -8,7 +8,7 @@ import Login from './pages/Login.js'
 import Homepage from './pages/Homepage.js'
 import { Router, Route, IndexRoute } from "react-router";
 
-import CreateProject from './components/CreateProject'
+import CreateProject from './pages/CreateProject'
 import ListProjects from './pages/ListProjects'
 
 //import { BrowserRouter, Route, Switch, Link } from 'react-router-dom';

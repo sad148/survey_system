@@ -5,6 +5,7 @@ import thunk from "redux-thunk";
 import registerUser from './reducers/RegisterUser.js';
 import login from './reducers/Login.js';
 import projects from './reducers/Projects.js';
+import createProjectSteps from './reducers/CreateProjectSteps'
 import errors from './reducers/Errors.js'
 import { syncHistoryWithStore, routerReducer } from 'react-router-redux';
 //import { createBrowserHistory } from 'history';
@@ -16,6 +17,7 @@ const store = createStore(
     combineReducers({
         registerUser,
         login,
+        createProjectSteps,
         projects,
         errors,
         routing: routerReducer

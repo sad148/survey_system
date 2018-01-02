@@ -8,7 +8,6 @@ const { Content } = Layout;
 
 class ListProjects extends Component{
     componentWillMount = () => {
-        console.log(this.props.projectDataReceived);
         if(this.props.projectDataReceived == true)
             this.setState({render:true})
         else

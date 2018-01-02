@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Layout, Menu, Icon } from 'antd';
 import ContentData from './ContentData.js'
-import CreateProject from './CreateProject.js'
+import CreateProject from '../pages/CreateProject.js'
 import '../../node_modules/antd/lib/layout/style/index.css'
 import '../../node_modules/antd/lib/menu/style/index.css'
 import '../../node_modules/antd/lib/icon/style/'
