@@ -24,6 +24,7 @@ class CreateProjectStep3 extends Component {
     }
 
     previous = () => {
+        this.props.props.dispatch({type:"RESET_CREATE_PROJECT_STEPS"})
         this.props.props.dispatch({type:"PREVIOUS" , payload:this.props.props.data})
     }
 

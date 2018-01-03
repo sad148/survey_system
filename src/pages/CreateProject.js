@@ -24,7 +24,6 @@ class CreateProject extends Component {
     }
 
     componentWillReceiveProps = (nextProps) => {
-        console.log("inside componentWillReceiveProps", nextProps);
         if(nextProps.userRegistered == true) {
             alert('Registered successfully');
             this.props.dispatch({type:"RESET_REGISTER_USER"})
@@ -32,7 +31,7 @@ class CreateProject extends Component {
 
         if(nextProps.next == true)
             this.next()
-        else
+        else if(nextProps.next == false)
             this.prev()
     }
 
@@ -44,6 +43,7 @@ class CreateProject extends Component {
 
     prev = () => {
         const current = this.state.current - 1;
+        console.log("current -",current);
         this.setState({ current });
     }
 

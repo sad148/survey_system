@@ -2,8 +2,8 @@ import React, {Component} from 'react';
 import { Form, Input, Select, Button } from 'antd';
 import { Table } from 'antd';
 import '../../node_modules/antd/lib/checkbox/style/index.css'
-var getTUQ = require('../actions/GetTUQ')
-var getMUQ = require('../actions/GetMUQ')
+var getTUQ = require('../actions/GetTUQ');
+var getMUQ = require('../actions/GetMUQ');
 
 const columns = [{
     title: 'Questions',
@@ -28,7 +28,7 @@ class CreateProjectStep2 extends Component {
             getTUQ.gettuq((tuqData) => {
                 for(let i = 0;i < tuqData.length; i++) {
                     tuqData[i].key = tuqData[i].id
-                    let type = []
+                    let type = [];
                     for (let j = 0;j < tuqData[i].limit; j++) {
                         type[j] = (<div><label style = {{marginLeft:"7px"}}>{j+1}</label><br /><input disabled style = {{cursor:"not-allowed"}}type='radio' /></div>)
                     }
@@ -72,13 +72,15 @@ class CreateProjectStep2 extends Component {
     next = () => {
         let step = {
             step2: {
-                tuqData:"tuqData"
+                tuqData:new Date()
             }
         }
+        this.props.props.dispatch({type:"RESET_CREATE_PROJECT_STEPS"})
         this.props.props.dispatch({type:"NEXT", payload:step})
     }
 
     previous = () => {
+        this.props.props.dispatch({type:"RESET_CREATE_PROJECT_STEPS"})
         this.props.props.dispatch({type:"PREVIOUS"})
     }
 

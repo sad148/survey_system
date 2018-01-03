@@ -57,6 +57,7 @@ class CreateProjectStep1 extends Component {
                         description: this.props.form.getFieldValue("description")
                     }
                 }
+                this.props.props.dispatch({type:"RESET_CREATE_PROJECT_STEPS"})
                 this.props.props.dispatch({type:"NEXT", payload:step})
                 } else {
                 console.log(err);

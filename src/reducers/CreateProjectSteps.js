@@ -26,8 +26,7 @@ const createProjectSteps = (state = { next:"", createProjectStepsData:[]}, actio
         case 'RESET_CREATE_PROJECT_STEPS':
             state = {
                 ...state,
-                next:"",
-                createProjectStepsData:""
+                next:""
             }
             break;
     }
