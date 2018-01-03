@@ -61,7 +61,7 @@ class CreateProject extends Component {
 
         return (
             <Content style={{ background: '#fff', padding: 24, margin: 0, minHeight: 280, height:"100%"}}>
-                <Steps current={this.state.current}>
+                <Steps progressDot size = "small" current={this.state.current}>
                     {steps.map(item => <Step key={item.title} title={item.title} />)}
                 </Steps>
                 <div className="steps-content">{steps[this.state.current].content}</div>
