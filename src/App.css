@@ -6,7 +6,7 @@ body, #root {
   width:100%;
   height: 100%;
   position: absolute;
-  overflow-y: hidden;
+  /*overflow-y: hidden;*/
 }
 
 #login {
@@ -32,6 +32,10 @@ button#signin {
 }
 button#register {
   left: 38%;
+}
+
+.ant-checkbox-wrapper {
+  width:100%;
 }
 
 #components-form-demo-normal-login .login-form {

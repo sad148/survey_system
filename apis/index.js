@@ -5,7 +5,9 @@ var mysql = require('mysql');
 var cors = require('cors');
 var login = require('./login.js');
 var swig = require('swig');
+var fs = require('fs');
 var registerUser = require('./registerUser.js');
+var data = require('./models/demographic.js')
 app.use(bodyParser.json());
 app.use(cors())
 app.listen(3009,() => {
@@ -70,4 +72,11 @@ app.get('/muq', (req, res) => {
     } else {
         res.send({code:204, data: []})
     }
+})
+
+app.get('/demographic', (req, res) => {
+    res.send({
+        code:200,
+        data:data.demoQuestions
+    })
 })

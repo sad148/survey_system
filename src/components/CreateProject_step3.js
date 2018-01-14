@@ -1,43 +1,44 @@
 import React, {Component} from 'react';
-import { Form, Input, Select, Button } from 'antd';
-import { Table } from 'antd';
+import {connect} from 'react-redux'
+import { Button } from 'antd';
 import '../../node_modules/antd/lib/checkbox/style/index.css'
-
-const columns = [{
-    title: 'Sr. No',
-    dataIndex: 'id',
-}, {
-    title: 'Questions',
-    dataIndex: 'question'
-},{
-    title:'Type',
-    dataIndex:'type'
-}];
+import AddQuestionPopup from './AddQuestionPopup.js'
+import DemographicQuestions from "./DemographicQuestions";
 
 class CreateProjectStep3 extends Component {
     componentWillMount = () => {
-        console.log("hehe");
+        this.setState({addNewQuestion:false, newQuestion:"", renderDefaultQuestions:true})
     }
 
-    componentDidMount = () => {
-        console.log("huhu");
+    componentWillReceiveProps = (nextProps) => {
+         if(nextProps.renderDemographicQuestion == true) {
+            this.setState({newQuestion: nextProps.data})
+        }
     }
 
-    previous = () => {
-        this.props.props.dispatch({type:"RESET_CREATE_PROJECT_STEPS"})
-        this.props.props.dispatch({type:"PREVIOUS" , payload:this.props.props.data})
+    addQuestionPopup = () => {
+        this.props.props.dispatch({type: "RESET_DEMOGRAPHIC_QUESTION"})
+        this.setState({addNewQuestion:true})
     }
 
     render = () => {
         return (
             <div style={{marginTop:"10px"}}>
-                <h1>Step 3</h1>
-                <Button id = 'next' type="primary" htmlType="submit" onClick = {this.previous} style = {{"marginLeft":"5px"}}>
-                    Previous
-                </Button>
+                <Button id = 'next' type="primary" onClick = {this.addQuestionPopup} style = {{"marginLeft":"5px"}}>
+                    Add new question
+                </Button> <br /><br />
+                {(this.props.renderDemographicQuestion == true) ? <DemographicQuestions data = {this.state.newQuestion} render = {true} props = {this.props} /> : <DemographicQuestions render = {false} props = {this.props}/>}
+                {(this.state.addNewQuestion == true) ? <AddQuestionPopup props = {this.props} />:""}
             </div>
         );
     }
 }
 
-export default CreateProjectStep3;
+const mapStateToProps = (store) => {
+    return {
+        data:store.demographicQuestion.data,
+        renderDemographicQuestion:store.demographicQuestion.renderFlag
+    }
+}
+
+export default connect(mapStateToProps)(CreateProjectStep3);

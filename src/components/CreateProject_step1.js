@@ -6,6 +6,7 @@ const RadioGroup = Radio.Group;
 const RadioButton = Radio.Button;
 const FormItem = Form.Item;
 const Option = Select.Option;
+const TextArea = Input.TextArea
 const formItemLayout = {
     labelCol: {
         xs: {span: 24},
@@ -97,7 +98,7 @@ class CreateProjectStep1 extends Component {
                     label="Description"
                 >
                     {getFieldDecorator('description')(
-                        <Input type="text" onBlur={this.handleConfirmBlur} autosize={{ minRows: 2, maxRows: 6 }}/>
+                        <TextArea type="text" onBlur={this.handleConfirmBlur} autosize={{ minRows: 2, maxRows: 6 }}/>
                     )}
                 </FormItem>
                 <FormItem

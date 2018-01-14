@@ -7,6 +7,7 @@ import login from './reducers/Login.js';
 import projects from './reducers/Projects.js';
 import createProjectSteps from './reducers/CreateProjectSteps'
 import errors from './reducers/Errors.js'
+import demographicQuestion from './reducers/DemographicQuestion'
 import { syncHistoryWithStore, routerReducer } from 'react-router-redux';
 //import { createBrowserHistory } from 'history';
 import { browserHistory } from 'react-router';
@@ -20,6 +21,7 @@ const store = createStore(
         createProjectSteps,
         projects,
         errors,
+        demographicQuestion,
         routing: routerReducer
     }),{},applyMiddleware(logger,thunk,promise())
 )

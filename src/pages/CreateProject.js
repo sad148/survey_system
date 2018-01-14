@@ -59,13 +59,23 @@ class CreateProject extends Component {
             content: <CreateProjectStep3 props = {this.props}/>
         }];
 
+        // let steps = [{
+        //     title: 'Demographic Questions',
+        //     content: <CreateProjectStep3 props = {this.props}/>
+        // },{
+        //     title: 'Default Questionnaire',
+        //     content: <CreateProjectStep2 props = {this.props}/>
+        // } ];
+
         return (
+            <div style = {{height:"100%"}}>
             <Content style={{ background: '#fff', padding: 24, margin: 0, minHeight: 280, height:"100%"}}>
                 <Steps progressDot size = "small" current={this.state.current}>
                     {steps.map(item => <Step key={item.title} title={item.title} />)}
                 </Steps>
                 <div className="steps-content">{steps[this.state.current].content}</div>
             </Content>
+                </div>
         );
     }
 }
