@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
-import { Form, Input, Select, Button } from 'antd';
+import { Checkbox, Button } from 'antd';
 import { Table } from 'antd';
 import '../../node_modules/antd/lib/checkbox/style/index.css'
+var _ = require('lodash/remove')
 var getTUQ = require('../actions/GetTUQ');
 var getMUQ = require('../actions/GetMUQ');
 
@@ -11,6 +12,9 @@ const columns = [{
 },{
     title:'Type',
     dataIndex:'type'
+},{
+    title:'Select',
+    dataIndex:'select'
 }];
 
 class CreateProjectStep2 extends Component {
@@ -19,7 +23,7 @@ class CreateProjectStep2 extends Component {
             tableData:[],
             selectedRowKeys: [], // Check here to configure the default column
             loading: false,
-            selectedRowData:[]
+            checked:true
         })
     }
 
@@ -27,12 +31,14 @@ class CreateProjectStep2 extends Component {
         if(this.props.props.data[0].template == 1) {    //TUQ
             getTUQ.gettuq((tuqData) => {
                 for(let i = 0;i < tuqData.length; i++) {
+                    this.state.selectedRowKeys.push(tuqData[i]);
                     tuqData[i].key = tuqData[i].id
                     let type = [];
                     for (let j = 0;j < tuqData[i].limit; j++) {
                         type[j] = (<div><label style = {{marginLeft:"7px"}}>{j+1}</label><br /><input disabled style = {{cursor:"not-allowed"}}type='radio' /></div>)
                     }
                     tuqData[i].type = (<div style={{display:"inline-flex"}}>{type}</div>)
+                    tuqData[i].select = (<input type = "checkbox" onChange = {()=>this.toggleCheckbox(tuqData[i])} id = {tuqData[i].id + "checkbox"} defaultChecked = {true}/>)
                 }
                 this.setState({
                     tableData:tuqData
@@ -41,12 +47,14 @@ class CreateProjectStep2 extends Component {
         } else { //MUQ
             getMUQ.gettuq((muqData) => {
                 for(let i = 0;i < muqData.length; i++) {
+                    this.state.selectedRowKeys.push(muqData[i]);
                     muqData[i].key = muqData[i].id
                     let type = []
                     for (let j = 0;j < muqData[i].limit; j++) {
                         type[j] = (<div><label style = {{marginLeft:"7px"}}>{j+1}</label><br /><input disabled style = {{cursor:"not-allowed"}}type='radio' /></div>)
                     }
                     muqData[i].type = (<div style={{display:"inline-flex"}}>{type}</div>)
+                    muqData[i].select = (<input type = "checkbox" onChange = {()=>this.toggleCheckbox(muqData[i])} id = {muqData[i].id + "checkbox"} defaultChecked = {true}/>)
                 }
                 this.setState({
                     tableData:muqData
@@ -55,7 +63,25 @@ class CreateProjectStep2 extends Component {
         }
     }
 
+    toggleCheckbox = (data) => {
+        let doc = document.getElementById(data.id + "checkbox");
+        if(doc.checked) {
+            this.state.selectedRowKeys.push(data)
+        } else {
+            this.state.selectedRowKeys = _(this.state.selectedRowKeys,(item) => {
+                return item.id != data.id;
+            })
+        }
+        this.setState({selectedRowKeys:this.state.selectedRowKeys})
+    }
+
     start = () => {
+        for(let i = 0;i < this.state.selectedRowKeys.length;i++) {
+            if(document.getElementById(this.state.selectedRowKeys[i].id + "checkbox").checked)
+                document.getElementById(this.state.selectedRowKeys[i].id + "checkbox").checked = false
+            else
+                document.getElementById(this.state.selectedRowKeys[i].id + "checkbox").checked = true
+        }
         this.setState({ loading: true });
         setTimeout(() => {
             this.setState({
@@ -65,14 +91,10 @@ class CreateProjectStep2 extends Component {
         }, 1000);
     }
 
-    onSelectChange = (selectedRowKeys) => {
-        this.setState({ selectedRowKeys });
-    }
-
     next = () => {
         let step = {
             step2: {
-                tuqData:new Date()
+                tuqData:this.state.selectedRowKeys
             }
         }
         this.props.props.dispatch({type:"RESET_CREATE_PROJECT_STEPS"})
@@ -86,27 +108,15 @@ class CreateProjectStep2 extends Component {
 
     render = () => {
         const { loading, selectedRowKeys } = this.state;
-        const rowSelection = {
-            selectedRowKeys,
-            onChange: this.onSelectChange,
-        };
         const hasSelected = selectedRowKeys.length > 0;
         return (
             <div style={{marginTop:"10px"}}>
                 <div style={{ marginBottom: 16 }}>
-                    <Button
-                        type="primary"
-                        onClick={this.start}
-                        disabled={!hasSelected}
-                        loading={loading}
-                    >
-                        Reset
-                    </Button>
-                    <span style={{ marginLeft: 8 }}>
+                    <span>
                         {hasSelected ? `Selected ${selectedRowKeys.length} items` : ''}
                     </span>
                 </div>
-                <Table size="small" bordered = {true} columns = {columns} dataSource = {this.state.tableData} rowSelection = {rowSelection} pagination = {{ pageSize: 9 }}/>
+                <Table size="small" bordered = {true} columns = {columns} dataSource = {this.state.tableData} pagination = {{ pageSize: 9 }}/>
                 <Button id = 'next' type="primary" htmlType="submit" onClick = {this.next}>
                     Next
                 </Button>
