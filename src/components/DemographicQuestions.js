@@ -36,6 +36,7 @@ class DemographicQuestions extends Component {
             for (let i = 0; i < data.length; i++) {
                 if(!this.state.questions[data[i].questionId])
                     this.state.questions[data[i].questionId] = {}
+                this.state.questions[data[i].questionId]["question"] = data[i].question
                 this.state.questions[data[i].questionId]["questionId"] = data[i].questionId
                 this.state.questions[data[i].questionId]["type"] = data[i].type;
                 this.state.questions[data[i].questionId]["options"] = data[i].options;
@@ -69,6 +70,7 @@ class DemographicQuestions extends Component {
             return;
         if(!this.state.questions[nextProps.data.questionId])
             this.state.questions[nextProps.data.questionId] = {}
+        this.state.questions[nextProps.data.questionId]["question"] = nextProps.data.question
         this.state.questions[nextProps.data.questionId]["questionId"] = nextProps.data.questionId
         this.state.questions[nextProps.data.questionId]["type"] = nextProps.data.type;
         this.state.questions[nextProps.data.questionId]["options"] = nextProps.data.options;
@@ -107,7 +109,7 @@ class DemographicQuestions extends Component {
         this.state.finalData = unique(this.state.finalData, "questionId")
         let step = {
             step3: {
-                question:this.state.finalData
+                questions:this.state.finalData
             }
         }
         this.props.props.dispatch({type:"RESET_CREATE_PROJECT_STEPS"})

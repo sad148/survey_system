@@ -62,11 +62,6 @@ class CreateProject extends Component {
             title: 'Open Ended Questions',
             content: <CreateProjectStep4 props = {this.props}/>
         }];
-        //
-        // let steps = [{
-        //     title: 'Open Ended Questions',
-        //     content: <CreateProjectStep4 props = {this.props}/>
-        // }];
 
         return (
             <div style = {{height:"100%"}}>

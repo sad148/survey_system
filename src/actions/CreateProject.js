@@ -3,8 +3,7 @@ var request = require('superagent');
 export default function createProject(data) {
     return function (dispatch) {
         //let apiUrl = sessionStorage.getItem('apiurl');
-        let apiUrl = 'http://localhost:3009/'
-        console.log("inside registeruser api")
+        let apiUrl = 'http://localhost:3009/createproject'
         request
             .post(apiUrl + 'createProject')
             .set('Content-Type', 'application/json')

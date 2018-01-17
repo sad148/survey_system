@@ -2,6 +2,9 @@ import React, {Component} from 'react'
 import {SortableContainer, SortableElement, arrayMove} from 'react-sortable-hoc';
 import { Card, Checkbox, Input, Button } from 'antd';
 import '../../node_modules/antd/lib/card/style/index.css'
+import createproject from '../actions/CreateProject'
+import { Spin } from 'antd';
+
 var _ = require('lodash/includes');
 var unique = require('lodash/uniq');
 var uuid = require('uuid/v1')
@@ -27,7 +30,8 @@ class OpenEndedQuestions extends Component {
         items: [],
         checkedQues:[],
         questions:[],
-        finalData:[]
+        finalData:[],
+        showLoader:false
     };
 
     componentDidMount = () => {
@@ -71,10 +75,19 @@ class OpenEndedQuestions extends Component {
             if(document.getElementById(data.id+'checkbox').checked)
                 finalSet.push(data)
         })
+
+        let finalData = this.props.props.data
+        finalData.push({questions:finalSet});
+        this.setState({showLoader:true})
+        this.props.dispatch(createproject(finalData))
     }
 
     render = () => {
         return (<div>
+            {
+                (this.state.showLoader == true) ? <Spin size = "large"></Spin> : ""
+
+            }
             <Button id = 'previous' type="primary" htmlType="submit" onClick = {this.previous} style = {{"marginLeft":"5px","marginBottom":"10px"}}>
                 Previous
             </Button><br />

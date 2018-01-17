@@ -94,7 +94,7 @@ class CreateProjectStep2 extends Component {
     next = () => {
         let step = {
             step2: {
-                tuqData:this.state.selectedRowKeys
+                questions:this.state.selectedRowKeys
             }
         }
         this.props.props.dispatch({type:"RESET_CREATE_PROJECT_STEPS"})
