@@ -9,7 +9,7 @@ const createProjectSteps = (state = { next:"", createProjectStepsData:[]}, actio
                 state.createProjectStepsData[0] = value
             else if(key == "step2")
                 state.createProjectStepsData[1] = value
-            else
+            else if(key == "step3")
                 state.createProjectStepsData[2] = value
 
             state = {

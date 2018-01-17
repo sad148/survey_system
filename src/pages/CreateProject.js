@@ -8,6 +8,7 @@ import '../../node_modules/antd/lib/steps/style/index.css'
 import CreateProjectStep1 from '../components/CreateProject_step1'
 import CreateProjectStep2 from '../components/CreateProject_step2'
 import CreateProjectStep3 from '../components/CreateProject_step3'
+import CreateProjectStep4 from '../components/CreateProject_step4'
 const Step = Steps.Step;
 const { Content } = Layout;
 const RadioGroup = Radio.Group;
@@ -57,15 +58,15 @@ class CreateProject extends Component {
         }, {
             title: 'Demographic Questions',
             content: <CreateProjectStep3 props = {this.props}/>
+        }, {
+            title: 'Open Ended Questions',
+            content: <CreateProjectStep4 props = {this.props}/>
         }];
-
+        //
         // let steps = [{
-        //     title: 'Demographic Questions',
-        //     content: <CreateProjectStep3 props = {this.props}/>
-        // },{
-        //     title: 'Default Questionnaire',
-        //     content: <CreateProjectStep2 props = {this.props}/>
-        // } ];
+        //     title: 'Open Ended Questions',
+        //     content: <CreateProjectStep4 props = {this.props}/>
+        // }];
 
         return (
             <div style = {{height:"100%"}}>
