@@ -1,4 +1,4 @@
-const createProjectSteps = (state = { next:"", createProjectStepsData:[]}, action) => {
+const createProjectSteps = (state = { next:"", createProjectStepsData:{}}, action) => {
     switch (action.type) {
         case "NEXT":
             let key = Object.keys(action.payload);
@@ -6,11 +6,11 @@ const createProjectSteps = (state = { next:"", createProjectStepsData:[]}, actio
             let value = action.payload[key];
             let stepData;
             if(key == "step1")
-                state.createProjectStepsData[0] = value
+                state.createProjectStepsData["step1"] = value
             else if(key == "step2")
-                state.createProjectStepsData[1] = value
+                state.createProjectStepsData["step2"] = value
             else if(key == "step3")
-                state.createProjectStepsData[2] = value
+                state.createProjectStepsData["step3"] = value
 
             state = {
                 ...state,

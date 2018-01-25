@@ -1,7 +1,6 @@
 import React, {Component} from 'react'
 import {SortableContainer, SortableElement, arrayMove} from 'react-sortable-hoc';
-import { Card, Checkbox, Input, Button } from 'antd';
-import '../../node_modules/antd/lib/card/style/index.css'
+import { Card, Icon, Input, Button } from 'antd';
 var getDemographic = require('../actions/GetDemographic');
 var _ = require('lodash/includes');
 var unique = require('lodash/uniq');
@@ -45,14 +44,14 @@ class DemographicQuestions extends Component {
                     for(let j = 0;j < data[i].options.length;j++) {
                         options.push(<p><input type = {data[i].type} disabled></input><label>{data[i].options[j]}</label></p>)
                     }
-                    cards.push(<div id = {data[i].questionId} style={{display:"inline-flex", width:"100%"}}>
+                    cards.push(<div id = {data[i].questionId}>
                                     <input type="checkbox" id = {data[i].questionId + "checkbox"} />
                                     <Card title={data[i].question} style={{ width: "100%", marginBottom:"10px" }}>
                                         {options}
                                     </Card>
                                 </div>)
                 } else if(data[i].type == "text") {
-                    cards.push(<div id = {data[i].questionId} style={{display:"inline-flex", width:"100%"}}>
+                    cards.push(<div id = {data[i].questionId}>
                                     <input type="checkbox" id = {data[i].questionId + "checkbox"} />
                                     <Card title={data[i].question} style={{ width: "100%", marginBottom:"10px" }}>
                                         <Input type = "text" disabled style = {{width:"10px"}}/>
@@ -78,7 +77,7 @@ class DemographicQuestions extends Component {
         for (let i = 1; i < nextProps.data.options.length; i++) {
             options.push(<p><input type = {nextProps.data.type} disabled></input><label>{nextProps.data.options[i]}</label></p>)
         }
-        let card = (<div id = {nextProps.data.questionId} style={{display:"inline-flex", width:"100%"}}>
+        let card = (<div id = {nextProps.data.questionId}>
                         <input type="checkbox" id = {nextProps.data.questionId + "checkbox"} defaultChecked/>
                         <Card title={nextProps.data.question} extra={<a href="#">More</a>} style={{ width: "100%", marginBottom:"10px" }}>
                             {options}
@@ -132,10 +131,10 @@ class DemographicQuestions extends Component {
                     </Button>
                     <SortableList items={this.state.items} onSortEnd={this.onSortEnd} />
                     <Button id = 'previous' type="primary" htmlType="submit" onClick = {this.previous} style = {{"marginLeft":"5px"}}>
-                        Previous
+                        <Icon type="left" />Previous
                     </Button>
                     <Button id = 'next' type="primary" htmlType="submit" onClick = {this.next} style = {{"marginLeft":"5px"}}>
-                        Next
+                        Next<Icon type="right" />
                     </Button>
                 </div>);
 

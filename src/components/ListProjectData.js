@@ -4,14 +4,11 @@ import '../../node_modules/antd/lib/table/style/index.css'
 import '../../node_modules/antd/lib/pagination/style/index.css'
 
 const columns = [{
-    title: 'Project Id',
-    dataIndex: 'project_id',
+    title: 'Project Name',
+    dataIndex: 'projectName'
 }, {
-    title: 'Questions',
-    dataIndex: 'questions'
-}, {
-    title: 'Languages',
-    dataIndex: 'languages',
+    title: 'Created on',
+    dataIndex: 'createdAt',
 },{
     title:'Action',
     dataIndex:'action'
