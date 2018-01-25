@@ -1,12 +1,10 @@
 import React, {Component} from 'react'
 import {SortableContainer, SortableElement, arrayMove} from 'react-sortable-hoc';
-import { Card, Checkbox, Input, Button } from 'antd';
-import '../../node_modules/antd/lib/card/style/index.css'
+import { Card, Input, Button } from 'antd';
 import createproject from '../actions/CreateProject'
 import { Spin } from 'antd';
+import {browserHistory} from "react-router";
 
-var _ = require('lodash/includes');
-var unique = require('lodash/uniq');
 var uuid = require('uuid/v1')
 const SortableItem = SortableElement(({value}) =>
     <div>{value}</div>
@@ -34,14 +32,6 @@ class OpenEndedQuestions extends Component {
         showLoader:false
     };
 
-    componentDidMount = () => {
-
-    }
-
-    componentWillReceiveProps = (nextProps) => {
-
-    }
-
     previous = () => {
         this.props.props.dispatch({type:"RESET_CREATE_PROJECT_STEPS"})
         this.props.props.dispatch({type:"PREVIOUS" , payload:this.props.props.data})
@@ -60,26 +50,35 @@ class OpenEndedQuestions extends Component {
             question:question,
             id:id
         })
-        let display = (<div style={{"border":"1px solid", "borderColor":"lightGray", "borderRadius":"5px", "padding":"4px","marginBottom":"10px"}}>
-                            <input type = 'checkbox' id = {id + 'checkbox'}/>
-                            Question:<Input id = {id} value={question}/><br /><br />
+        let display = (<div>
+                        <input type = 'checkbox' id = {id + 'checkbox'}/>
+                        <Card title={question} style={{ width: "100%", marginBottom:"10px" }}>
                             Answer:<Input disabled/><br /><br />
-                        </div>)
+                        </Card>
+                      </div>)
         let items = [...this.state.items, display];
         this.setState({items:items})
     }
 
     handleSubmit = () => {
-        let finalSet = [];
+        let step4 = [];
         this.state.questions.forEach((data) => {
             if(document.getElementById(data.id+'checkbox').checked)
-                finalSet.push(data)
+                step4.push(data)
         })
 
         let finalData = this.props.props.data
-        finalData.push({questions:finalSet});
+        finalData["step4"] = {questions:step4};
+        finalData["userid"] = sessionStorage.getItem("userid");
         this.setState({showLoader:true})
-        this.props.dispatch(createproject(finalData))
+        createproject.createProject(finalData, (resp) => {
+            if(resp.code == 200) {
+                alert('Project created successfully')
+                browserHistory.replace('/survey_system/home');
+            } else {
+                alert('Error in creating project')
+            }
+        })
     }
 
     render = () => {

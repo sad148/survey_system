@@ -1,7 +1,5 @@
 import React, {Component} from 'react';
-import { Checkbox, Button } from 'antd';
-import { Table } from 'antd';
-import '../../node_modules/antd/lib/checkbox/style/index.css'
+import { Button, Icon, Table } from 'antd';
 var _ = require('lodash/remove')
 var getTUQ = require('../actions/GetTUQ');
 var getMUQ = require('../actions/GetMUQ');
@@ -28,14 +26,14 @@ class CreateProjectStep2 extends Component {
     }
 
     componentDidMount = () => {
-        if(this.props.props.data[0].template == 1) {    //TUQ
+        if(this.props.props.data["step1"].template == 1) {    //TUQ
             getTUQ.gettuq((tuqData) => {
                 for(let i = 0;i < tuqData.length; i++) {
                     this.state.selectedRowKeys.push(tuqData[i]);
                     tuqData[i].key = tuqData[i].id
                     let type = [];
                     for (let j = 0;j < tuqData[i].limit; j++) {
-                        type[j] = (<div><label style = {{marginLeft:"7px"}}>{j+1}</label><br /><input disabled style = {{cursor:"not-allowed"}}type='radio' /></div>)
+                        type[j] = (<div style={{marginRight:"10px"}}><label>{j+1}</label><br /><input disabled style = {{cursor:"not-allowed"}}type='radio' /></div>)
                     }
                     tuqData[i].type = (<div style={{display:"inline-flex"}}>{type}</div>)
                     tuqData[i].select = (<input type = "checkbox" onChange = {()=>this.toggleCheckbox(tuqData[i])} id = {tuqData[i].id + "checkbox"} defaultChecked = {true}/>)
@@ -46,12 +44,15 @@ class CreateProjectStep2 extends Component {
             })
         } else { //MUQ
             getMUQ.gettuq((muqData) => {
+                console.log(muqData);
                 for(let i = 0;i < muqData.length; i++) {
-                    this.state.selectedRowKeys.push(muqData[i]);
+                    
+                    let questionInfo = muqData[i]
+                    this.state.selectedRowKeys.push(questionInfo);
                     muqData[i].key = muqData[i].id
                     let type = []
                     for (let j = 0;j < muqData[i].limit; j++) {
-                        type[j] = (<div><label style = {{marginLeft:"7px"}}>{j+1}</label><br /><input disabled style = {{cursor:"not-allowed"}}type='radio' /></div>)
+                        type[j] = (<div><label>{j+1}</label><br /><input disabled style = {{cursor:"not-allowed"}}type='radio' /></div>)
                     }
                     muqData[i].type = (<div style={{display:"inline-flex"}}>{type}</div>)
                     muqData[i].select = (<input type = "checkbox" onChange = {()=>this.toggleCheckbox(muqData[i])} id = {muqData[i].id + "checkbox"} defaultChecked = {true}/>)
@@ -117,11 +118,11 @@ class CreateProjectStep2 extends Component {
                     </span>
                 </div>
                 <Table size="small" bordered = {true} columns = {columns} dataSource = {this.state.tableData} pagination = {{ pageSize: 9 }}/>
-                <Button id = 'next' type="primary" htmlType="submit" onClick = {this.next}>
-                    Next
+                <Button id = 'next' type="primary" htmlType="submit" onClick = {this.previous}>
+                    <Icon type="left" />Previous
                 </Button>
-                <Button id = 'next' type="primary" htmlType="submit" onClick = {this.previous} style = {{"marginLeft":"5px"}}>
-                    Previous
+                <Button id = 'next' type="primary" htmlType="submit" onClick = {this.next} style = {{"marginLeft":"5px"}}>
+                    Next<Icon type="right" />
                 </Button>
             </div>
         );

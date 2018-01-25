@@ -1,34 +1,12 @@
 import React, {Component} from 'react';
-import { Form, Input, Select, Button } from 'antd';
-import { Radio } from 'antd';
+import { Form, Input, Select, Button, Icon, Radio } from 'antd';
 var project_name, description, template;
 const RadioGroup = Radio.Group;
 const RadioButton = Radio.Button;
 const FormItem = Form.Item;
 const Option = Select.Option;
 const TextArea = Input.TextArea
-const formItemLayout = {
-    labelCol: {
-        xs: {span: 24},
-        sm: {span: 8},
-    },
-    wrapperCol: {
-        xs: {span: 24},
-        sm: {span: 16},
-    },
-};
-const tailFormItemLayout = {
-    wrapperCol: {
-        xs: {
-            span: 24,
-            offset: 0,
-        },
-        sm: {
-            span: 16,
-            offset: 8,
-        },
-    },
-};
+
 class CreateProjectStep1 extends Component {
     componentWillMount = () => {
         console.log("inside componentwillmount", this.props.form.getFieldsValue());
@@ -82,7 +60,6 @@ class CreateProjectStep1 extends Component {
         return (
             <Form>
                 <FormItem
-                    {...formItemLayout}
                     label="Project Name"
                 >
                     {getFieldDecorator('project_name', {
@@ -94,7 +71,6 @@ class CreateProjectStep1 extends Component {
                     )}
                 </FormItem>
                 <FormItem
-                    {...formItemLayout}
                     label="Description"
                 >
                     {getFieldDecorator('description')(
@@ -102,7 +78,6 @@ class CreateProjectStep1 extends Component {
                     )}
                 </FormItem>
                 <FormItem
-                    {...formItemLayout}
                     label="Select default questionnaire"
                 >
                     {getFieldDecorator('defaultQues', {
@@ -118,7 +93,7 @@ class CreateProjectStep1 extends Component {
                 </FormItem>
                 <FormItem>
                     <Button id = 'next' type="primary" htmlType="submit" onClick = {this.next}>
-                        Next
+                        Next<Icon type="right" />
                     </Button>
                 </FormItem>
             </Form>
