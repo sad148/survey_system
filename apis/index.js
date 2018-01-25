@@ -8,6 +8,14 @@ var swig = require('swig');
 var fs = require('fs');
 var registerUser = require('./registerUser.js');
 var data = require('./models/demographic.js')
+var createproject = require('./createproject')
+const MongoClient = require('mongodb').MongoClient;
+const assert = require('assert');
+const url = 'mongodb://localhost:27017';
+const dbName = 'survey_system';
+//const connection = "";
+var client;
+var db;
 app.use(bodyParser.json());
 app.use(cors())
 app.listen(3009,() => {
@@ -19,17 +27,25 @@ app.listen(3009,() => {
         database : 'survey_system'
     });
     connection.connect();
-    module.exports.connection = connection;
+    MongoClient.connect(url, function(err, response) {
+        client = response
+        assert.equal(null, err);
+        console.log("Connected successfully to server");
+        db = client.db(dbName);
+    });
+    module.exports = {connection:connection};
 })
 
+
+
 app.post('/login', (req, res) => {
-    login.login(req, connection, (response) => {
+    login.login(req, db, (response) => {
         res.send(response)
     })
 })
 
 app.post('/registerUser', (req, res) => {
-    registerUser.registerUser(req, connection, (response) => {
+    registerUser.registerUser(req, db, (response) => {
         res.send(response);
     })
 })
@@ -78,5 +94,12 @@ app.get('/demographic', (req, res) => {
     res.send({
         code:200,
         data:data.demoQuestions
+    })
+})
+
+
+app.post('/createproject', (req, res) => {
+    createproject.createproject(req, db, (response) => {
+        res.send(response)
     })
 })
