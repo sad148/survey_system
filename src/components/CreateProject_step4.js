@@ -4,6 +4,7 @@ import { Card, Input, Button } from 'antd';
 import createproject from '../actions/CreateProject'
 import { Spin } from 'antd';
 import {browserHistory} from "react-router";
+import getprojectslist from '../actions/GetProjectsList'
 
 var uuid = require('uuid/v1')
 const SortableItem = SortableElement(({value}) =>
@@ -75,6 +76,7 @@ class OpenEndedQuestions extends Component {
             if(resp.code == 200) {
                 alert('Project created successfully')
                 browserHistory.replace('/survey_system/home');
+                this.props.props.dispatch(getprojectslist(finalData["userid"]));
             } else {
                 alert('Error in creating project')
             }

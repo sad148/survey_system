@@ -9,6 +9,7 @@ var fs = require('fs');
 var registerUser = require('./registerUser.js');
 var data = require('./models/demographic.js')
 var createproject = require('./createproject')
+var getprojectslist = require('./getprojectslist');
 const MongoClient = require('mongodb').MongoClient;
 const assert = require('assert');
 const url = 'mongodb://localhost:27017';
@@ -101,5 +102,11 @@ app.get('/demographic', (req, res) => {
 app.post('/createproject', (req, res) => {
     createproject.createproject(req, db, (response) => {
         res.send(response)
+    })
+})
+
+app.post('/getprojectslist', (req, res) => {
+    getprojectslist.getprojectslist(req, db, (response) => {
+        res.send(response);
     })
 })
