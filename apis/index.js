@@ -20,20 +20,20 @@ app.use(bodyParser.json());
 app.use(cors())
 app.listen(3009,() => {
     console.log("Listening on 3009");
-    connection = mysql.createConnection({
-        host     : 'localhost',
-        user     : 'survey_system',
-        password : 'root',
-        database : 'survey_system'
-    });
-    connection.connect();
+    // connection = mysql.createConnection({
+    //     host     : 'localhost',
+    //     user     : 'survey_system',
+    //     password : 'root',
+    //     database : 'survey_system'
+    // });
+    // connection.connect();
     MongoClient.connect(url, function(err, response) {
         client = response
         assert.equal(null, err);
         console.log("Connected successfully to server");
         db = client.db(dbName);
     });
-    module.exports = {connection:connection};
+    // module.exports = {connection:connection};
 })
 
 
