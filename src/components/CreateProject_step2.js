@@ -27,8 +27,10 @@ class CreateProjectStep2 extends Component {
 
     componentDidMount = () => {
         if(this.props.props.data["step1"].template == 1) {    //TUQ
+            //api call to get tuq questions
             getTUQ.gettuq((tuqData) => {
                 for(let i = 0;i < tuqData.length; i++) {
+                    tuqData[i].questionId = tuqData[i].id
                     this.state.selectedRowKeys.push(tuqData[i]);
                     tuqData[i].key = tuqData[i].id
                     let type = [];
@@ -43,12 +45,12 @@ class CreateProjectStep2 extends Component {
                 })
             })
         } else { //MUQ
+            //api call to get muq questions
             getMUQ.gettuq((muqData) => {
                 console.log(muqData);
                 for(let i = 0;i < muqData.length; i++) {
-                    
-                    let questionInfo = muqData[i]
-                    this.state.selectedRowKeys.push(questionInfo);
+                    muqData[i].questionId = muqData[i].id
+                    this.state.selectedRowKeys.push(muqData[i]);
                     muqData[i].key = muqData[i].id
                     let type = []
                     for (let j = 0;j < muqData[i].limit; j++) {
@@ -64,32 +66,19 @@ class CreateProjectStep2 extends Component {
         }
     }
 
+    //check/uncheck a question from tuq/muq question set
     toggleCheckbox = (data) => {
         let doc = document.getElementById(data.id + "checkbox");
         if(doc.checked) {
+            //push if question is checked
             this.state.selectedRowKeys.push(data)
         } else {
+            //remove if previously checked and then unchecked
             this.state.selectedRowKeys = _(this.state.selectedRowKeys,(item) => {
                 return item.id != data.id;
             })
         }
         this.setState({selectedRowKeys:this.state.selectedRowKeys})
-    }
-
-    start = () => {
-        for(let i = 0;i < this.state.selectedRowKeys.length;i++) {
-            if(document.getElementById(this.state.selectedRowKeys[i].id + "checkbox").checked)
-                document.getElementById(this.state.selectedRowKeys[i].id + "checkbox").checked = false
-            else
-                document.getElementById(this.state.selectedRowKeys[i].id + "checkbox").checked = true
-        }
-        this.setState({ loading: true });
-        setTimeout(() => {
-            this.setState({
-                selectedRowKeys: [],
-                loading: false,
-            });
-        }, 1000);
     }
 
     next = () => {
@@ -108,7 +97,7 @@ class CreateProjectStep2 extends Component {
     }
 
     render = () => {
-        const { loading, selectedRowKeys } = this.state;
+        const { selectedRowKeys } = this.state;
         const hasSelected = selectedRowKeys.length > 0;
         return (
             <div style={{marginTop:"10px"}}>
