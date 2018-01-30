@@ -16,7 +16,7 @@ function login (req, db, cb) {
                 delete res.password;
                 res.projects = []
                 const projectsData = db.collection('projects');
-                projectsData.find({userid:res.user_id}).toArray(function(err,projectsResp){
+                projectsData.find({userid:res.user_id},{sort:{'createdAt':-1}}).toArray(function(err,projectsResp){
                     if(err) {
                         cb({
                             code:400,
