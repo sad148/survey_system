@@ -1,99 +1,145 @@
+@font-face {
+    font-family: 'MyWebFont';
+    src: local('./media/Century_gothic_bold.ttf'); /* Safari, Android, iOS */
+}
+
 .App {
-  text-align: center;
+    text-align: center;
 }
 
 html {
-  background: #f0f2f5;
+    background: #f0f2f5;
 }
 
 body, #root {
-  width:100%;
-  height: 100%;
-  position: absolute;
-  /*overflow-y: hidden;*/
+    width: 100%;
+    height: 100%;
+    font-family: 'MyWebFont', sans-serif;
 }
 
-#login {
-  width: 20%;
-  margin-top: 10%;
-  margin-left: 38%;
-  border: 1px solid;
-  border-radius: 4px lightgray;
-  border-radius: 10px;
-  padding: 20px;
-  border-color: lightgray;
+div#title1 {
+    font-size: 43px;
+    line-height: 52px;
 }
 
-.ant-layout{
-  height:100%;
+div#title2 {
+    font-size: 19px;
+    line-height: 23px;
+}
+
+div#titleContainer {
+    grid-area: title;
+    color: white;
+    justify-self: center;
+}
+
+div#loginFormContainer {
+    grid-area: loginForm;
+    display: grid;
+    padding-top: 20px;
+    padding-right: 60px;
+    padding-bottom: 40px;
+    padding-left: 60px;
+    background-color: #356fb7;
+    border-radius: 10px;
+    justify-self: center;
+    justify-items: center;
+}
+
+div#loginContainer {
+    display: grid;
+    height: 100%;
+    grid-template-areas: 'title' 'loginForm';
+    grid-row-gap: 20%;
+    padding: 10px;
+    grid-auto-rows: min-content;
+    background-image: url("./media/background-login.png");
+    text-align: left;
+    padding: 20px 0;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+div#loginTextContainer {
+    text-align: center;
+}
+
+div#loginPageButtons {
+    display: flex;
+    justify-content: space-between;
+}
+
+div#registerLinkDiv {
+    display: flex;
+    justify-content: center;
+}
+
+.ant-layout {
+    height: 100%;
 }
 
 #components-layout-demo-top-side-2 .logo {
-  width: 120px;
-  background: rgba(255,255,255,.2);
-  margin: 16px 28px 16px 0;
-  float: left;
+    width: 120px;
+    background: rgba(255, 255, 255, .2);
+    margin: 16px 28px 16px 0;
+    float: left;
+}
+
+.ant-input {
+    border: 1px solid;
+    border-radius: 0px;
+    width: 50%;
 }
 
 ul.ant-menu.ant-menu-dark.ant-menu-inline-collapsed.ant-menu-root.ant-menu-vertical {
-  margin-top: 70%;
+    margin-top: 70%;
 }
 
 ul.ant-menu.ant-menu-dark.ant-menu-root.ant-menu-vertical {
-  margin-top: 30%;
+    margin-top: 30%;
 }
 
 .header.ant-layout-header {
-  line-height: 50px;
+    line-height: 50px;
 }
-
-/*ul.ant-menu.ant-menu-dark.ant-menu-inline-collapsed.ant-menu-root.ant-menu-vertical {*/
-  /*margin-top: 74%;*/
-/*}*/
 
 .ant-layout-sider-children {
-  height: 100%;
-  padding-top: 0.1px;
-  margin-top: -0.1px;
-  background-color: #001529;
+    height: 100%;
+    padding-top: 0.1px;
+    margin-top: -0.1px;
+    background-color: #001529;
 }
 
-button#signin {
-  left: 40%;
+input#signin {
+    width: 47%;
 }
 
-button#register{ /*{ where button is css attribute hence no . or #*/
-  left: 38%;
+input[type="button"] {
+    color: #fff;
+    background-color: #1c509e;
+    border-color: #1890ff;
+    border-radius: 0px;
+    border: 0px solid;
+    cursor: pointer;
+}
+
+label {
+    color: white;
+}
+
+button#register { /*{ where button is css attribute hence no . or #*/
+    left: 38%;
 }
 
 .ant-checkbox-wrapper { /*this is a classname hence . is used*/
-  width:100%;
+    width: 100%;
 }
 
-#components-form-demo-normal-login .login-form { /*this is an id hence # is used*/
-  max-width: 300px;
-}
-#components-form-demo-normal-login .login-form-forgot {
-  float: right;
-}
-#components-form-demo-normal-login .login-form-button {
-  width: 100%;
+.login-form { /*this is an id hence # is used*/
+    /*max-width: 500px;*/
 }
 
-#components-layout-demo-custom-trigger .trigger {
-  font-size: 18px;
-  line-height: 64px;
-  padding: 0 24px;
-  cursor: pointer;
-  transition: color .3s;
-}
-
-#components-layout-demo-custom-trigger .trigger:hover {
-  color: #1890ff;
-}
-
-#components-layout-demo-custom-trigger .logo {
-  height: 32px;
-  background: rgba(255,255,255,.2);
-  margin: 16px;
+input.ant-input {
+    border: 0px solid;
+    border-radius: 0px;
 }
