@@ -20,6 +20,15 @@ class Login extends Component {
     }
 
     componentWillReceiveProps = (nextProps) => {
+        if (this.props.toggleRegisterModal == true && nextProps.toggleRegisterModal == false) {
+            this.setState({
+                visible: false
+            });
+        } else if (this.props.toggleRegisterModal == false && nextProps.toggleRegisterModal == true) {
+            this.setState({
+                visible: true
+            });
+        }
         if (nextProps.loginSuccess == true) {
             this.props.dispatch({type: "RESET_LOGIN"})
             browserHistory.replace('/survey_system/home');
@@ -42,16 +51,6 @@ class Login extends Component {
         });
     }
 
-    showModal = () => {
-        this.setState({
-            visible: true,
-        });
-    }
-    handleOk = (e) => {
-        this.setState({
-            visible: false,
-        });
-    }
     handleCancel = (e) => {
         this.setState({
             visible: false,
@@ -73,7 +72,7 @@ class Login extends Component {
                 <div id="loginFormContainer">
                     <Form className="login-form">
                         <div id="loginTextContainer">
-                        <label style={{fontSize: "50px"}} id="loginText">Login</label>
+                            <label style={{fontSize: "50px"}} id="loginText">Login</label>
                         </div>
                         <FormItem>
                             {getFieldDecorator('username', {
@@ -100,16 +99,25 @@ class Login extends Component {
                         </FormItem>
                         <FormItem>
                             <div id={"loginPageButtons"}>
-                                <input type="button" id='forgotPwd' onClick={this.handleSubmit} value="Forgot Password" />
-                                <input type="button" id='signin' onClick={this.handleSubmit} value="Continue" />
+                                <input type="button" id='forgotPwd' onClick={this.handleSubmit}
+                                       value="Forgot Password"/>
+                                <input type="button" id='signin' onClick={this.handleSubmit} value="Continue"/>
                                 <br/>
                             </div>
                         </FormItem>
                         <div id="registerLinkDiv">
-                            <label id="registerLink">Not registered,<a style={{color:"#e3f4fd"}} onClick={this.showModal}>CLICK
-                                HERE</a></label>
+                            <label id="registerLink">Not registered,<a style={{color: "#e3f4fd"}}
+                                                                       onClick={() => this.props.dispatch({
+                                                                           type: "TOGGLE_REGISTER_MODAL",
+                                                                           payload: true
+                                                                       })}>CLICK HERE</a></label>
                         </div>
                     </Form>
+                    <Modal visible={this.state.visible} footer={null}
+                           style={{top: 20}}
+                           bodyStyle={{backgroundColor: "#356fb7"}}
+                           onCancel={this.handleCancel}><RegisterUser/></Modal>
+                    <Error/>
                 </div>
             </div>
 
@@ -119,6 +127,7 @@ class Login extends Component {
 
 const mapStateToProps = (store) => {
     return {
+        toggleRegisterModal: store.toggleModal.toggleRegisterModal,
         loginSuccess: store.login.loginSuccess,
         data: store.login.data,
         message: store.login.message

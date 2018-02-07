@@ -5,6 +5,7 @@
 
 .App {
     text-align: center;
+
 }
 
 html {
@@ -78,11 +79,9 @@ div#registerLinkDiv {
     height: 100%;
 }
 
-#components-layout-demo-top-side-2 .logo {
-    width: 120px;
-    background: rgba(255, 255, 255, .2);
-    margin: 16px 28px 16px 0;
-    float: left;
+.ant-modal-content {
+    background-color: #1c509e;
+    border-radius: 30px;
 }
 
 .ant-input {
@@ -110,10 +109,6 @@ ul.ant-menu.ant-menu-dark.ant-menu-root.ant-menu-vertical {
     background-color: #001529;
 }
 
-input#signin {
-    width: 47%;
-}
-
 input[type="button"] {
     color: #fff;
     background-color: #1c509e;
@@ -121,25 +116,22 @@ input[type="button"] {
     border-radius: 0px;
     border: 0px solid;
     cursor: pointer;
+    width: 47%;
 }
 
 label {
     color: white;
 }
 
-button#register { /*{ where button is css attribute hence no . or #*/
-    left: 38%;
-}
-
-.ant-checkbox-wrapper { /*this is a classname hence . is used*/
+.ant-checkbox-wrapper {
     width: 100%;
-}
-
-.login-form { /*this is an id hence # is used*/
-    /*max-width: 500px;*/
 }
 
 input.ant-input {
     border: 0px solid;
+    border-radius: 0px;
+}
+
+.ant-select-selection{
     border-radius: 0px;
 }
