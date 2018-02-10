@@ -10,6 +10,7 @@ import { Router, Route, IndexRoute } from "react-router";
 
 import CreateProject from './pages/CreateProject'
 import ListProjects from './pages/ListProjects'
+import Fillanswers from './pages/Fillanswers'
 
 store.subscribe(() => {})
 
@@ -22,6 +23,7 @@ ReactDOM.render(
             <Route path="/survey_system/list_projects" component = {ListProjects}/>
             <Route path="/survey_system/create_project" component = {CreateProject}/>
             </Route>
+            <Route path="/survey_system/answers/:projectId" component = {Fillanswers}/>
         </Router>
     </Provider>,
     document.getElementById('root')
