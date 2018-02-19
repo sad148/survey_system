@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Layout, Menu, Breadcrumb, Icon } from 'antd';
 import { browserHistory } from 'react-router';
-import logo from '../upittlogo.png'
 const { SubMenu } = Menu;
 const { Header, Content, Sider } = Layout;
 
@@ -46,7 +45,7 @@ class Homepage extends Component{
                        onCollapse={this.onCollapse}
                 >
                     <div className="logo">
-                        <image src={logo}></image>
+                        <imag></imag>
                     </div>
                     <Menu
                         theme="dark"

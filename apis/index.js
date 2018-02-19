@@ -11,7 +11,7 @@ var data = require('./models/demographic.js')
 var createproject = require('./createproject')
 var getprojectslist = require('./getprojectslist');
 var getprojectquestions = require('./getprojectquestions');
-
+var exportcsv = require('./exportcsv');
 const MongoClient = require('mongodb').MongoClient;
 const assert = require('assert');
 const url = 'mongodb://localhost:27017';
@@ -21,7 +21,7 @@ var client;
 var db;
 app.use(bodyParser.json());
 app.use(cors())
-app.listen(3009,() => {
+app.listen(3009, () => {
     console.log("Listening on 3009");
     // connection = mysql.createConnection({
     //     host     : 'localhost',
@@ -30,7 +30,7 @@ app.listen(3009,() => {
     //     database : 'survey_system'
     // });
     // connection.connect();
-    MongoClient.connect(url, function(err, response) {
+    MongoClient.connect(url, function (err, response) {
         client = response
         assert.equal(null, err);
         console.log("Connected successfully to server");
@@ -38,7 +38,6 @@ app.listen(3009,() => {
     });
     // module.exports = {connection:connection};
 })
-
 
 
 app.post('/login', (req, res) => {
@@ -61,15 +60,15 @@ app.get('/tuq', (req, res) => {
     });
 
     tuqData = tuqData.split('\n');
-    for(let  i = 0; i < tuqData.length; i++) {
+    for (let i = 0; i < tuqData.length; i++) {
         tuqData[i] = tuqData[i].toString();
         tuqData[i] = JSON.parse(tuqData[i]);
     }
 
-    if(tuqData.length > 0) {
-        res.send({code:200, data:tuqData})
+    if (tuqData.length > 0) {
+        res.send({code: 200, data: tuqData})
     } else {
-        res.send({code:204, data: []})
+        res.send({code: 204, data: []})
     }
 })
 
@@ -81,22 +80,22 @@ app.get('/muq', (req, res) => {
     });
 
     muqData = muqData.split('\n');
-    for(let  i = 0; i < muqData.length; i++) {
+    for (let i = 0; i < muqData.length; i++) {
         muqData[i] = muqData[i].toString();
         muqData[i] = JSON.parse(muqData[i]);
     }
 
-    if(muqData.length > 0) {
-        res.send({code:200, data:muqData})
+    if (muqData.length > 0) {
+        res.send({code: 200, data: muqData})
     } else {
-        res.send({code:204, data: []})
+        res.send({code: 204, data: []})
     }
 })
 
 app.get('/demographic', (req, res) => {
     res.send({
-        code:200,
-        data:data.demoQuestions
+        code: 200,
+        data: data.demoQuestions
     })
 })
 
@@ -116,5 +115,11 @@ app.post('/getprojectslist', (req, res) => {
 app.post('/getprojectquestions', (req, res) => {
     getprojectquestions.getprojectquestions(req, db, (response) => {
         res.send(response)
+    })
+})
+
+app.post('/exportcsv', (req, res) => {
+    exportcsv.exportcsv(req, db, (response) => {
+        console.log(response);
     })
 })
