@@ -45,7 +45,6 @@ class Homepage extends Component{
                        onCollapse={this.onCollapse}
                 >
                     <div className="logo">
-                        <imag></imag>
                     </div>
                     <Menu
                         theme="dark"

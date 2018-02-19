@@ -12,6 +12,8 @@ var createproject = require('./createproject')
 var getprojectslist = require('./getprojectslist');
 var getprojectquestions = require('./getprojectquestions');
 var exportcsv = require('./exportcsv');
+var submitAnswers = require('./submitAnswers')
+
 const MongoClient = require('mongodb').MongoClient;
 const assert = require('assert');
 const url = 'mongodb://localhost:27017';
@@ -121,5 +123,11 @@ app.post('/getprojectquestions', (req, res) => {
 app.post('/exportcsv', (req, res) => {
     exportcsv.exportcsv(req, db, (response) => {
         console.log(response);
+    })
+})
+
+app.post('/submitanswers', (req, res) => {
+    submitAnswers.submitAnswers(req, db, (response) => {
+        res.send(response)
     })
 })

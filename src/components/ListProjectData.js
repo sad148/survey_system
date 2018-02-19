@@ -31,7 +31,7 @@ class ListProjectData extends Component {
     }
 
     sharelink = (data) => {
-        let baseUrl = `${window.location.hostname}:3000/survey_system/questions/${data}`;
+        let baseUrl = `${window.location.hostname}:3000/survey_system/answers/${data}`;
         let input = (<Input value={baseUrl}></Input>);
         this.setState({link: input, visible: true})
     }
