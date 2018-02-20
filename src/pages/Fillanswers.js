@@ -26,7 +26,6 @@ const columns = [{
 
 export default class Fillanswers extends Component {
     state = {
-        data: [],
         step1: [],
         value: 1,
         otherSteps: [],
