@@ -1,6 +1,9 @@
 import React, {Component} from 'react';
 import {Table, Button, Popover, Icon, Divider, Modal, Input} from 'antd';
+import exportcsv from '../actions/ExportCSV'
 
+var download = require('../utils/download')
+console.log(download);
 const columns = [{
     title: 'Project Name',
     dataIndex: 'projectName'
@@ -36,6 +39,15 @@ class ListProjectData extends Component {
         this.setState({link: input, visible: true})
     }
 
+    exportcsv = (projectId) => {
+        exportcsv.exportcsv(projectId, (response) => {
+            if (response.code == 200)
+                download.download(response.data, "export.csv", "text/csv");
+            else
+                this.props.dispatch({type: "DISPLAY_ERROR", message: "Error in exporting"})
+        })
+    }
+
     formData = (data) => {
         data.projects.map((item) => {
             let content = (
@@ -47,6 +59,9 @@ class ListProjectData extends Component {
                     <p style={{cursor: "pointer"}}>Clone <Icon type="copy"/></p>
                     <Divider/>
                     <p style={{cursor: "pointer"}}>Edit <Icon type="edit"/></p>
+                    <Divider/>
+                    <p style={{cursor: "pointer"}} onClick={() => this.exportcsv(item.projectId)}>Export csv <Icon
+                        type="download"/></p>
                 </div>
             );
             return item.action = (<Popover content={content} placement="bottomLeft">

@@ -122,7 +122,7 @@ app.post('/getprojectquestions', (req, res) => {
 
 app.post('/exportcsv', (req, res) => {
     exportcsv.exportcsv(req, db, (response) => {
-        console.log(response);
+        res.send(response)
     })
 })
 
