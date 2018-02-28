@@ -95,14 +95,14 @@ export default class Fillanswers extends Component {
                 let radioOptions = [];
                 if (item.stepNum == "step2") {
                     let answersId = uuid().split("-").join("");
-                    for (let i in item.options) {
+                    for (let i = 0; i < item.options.length; i++) {
                         radioOptions.push(<div style={{display: "inline"}}>
                             <input
                                 type="radio"
                                 name={item.questionId}
-                                value={parseInt(i)}
-                                onChange={() => this.onChange(item, parseInt(i), answersId)}></input>
-                            <label style={{marginLeft: "5px", marginRight: "5px"}}>{i}</label>
+                                value={parseInt(item.options[i])}
+                                onChange={() => this.onChange(item, parseInt(item.options[i]), answersId)}></input>
+                            <label style={{marginLeft: "5px", marginRight: "5px"}}>{item.options[i]}</label>
                         </div>)
                     }
 

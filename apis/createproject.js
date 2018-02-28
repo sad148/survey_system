@@ -13,9 +13,9 @@ function createproject(req, db, cb) {
         step2[i].stepNum = "step2"
         step2[i].type = "radio"
         delete step2[i].select;
-        step2[i].options = {}
+        step2[i].options = []
         for(let j = 1;j <= step2[i].limit;j++) {
-            step2[i].options[j] = 0
+            step2[i].options.push(j);
         }
         steps.push(step2[i]);
     }
