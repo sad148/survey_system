@@ -8,7 +8,7 @@ function optionsMapping(option) {
         6: "Disagree",
         7: "Strongly disagree"
     }
-    return mapping[option];
+    return mapping[option] == undefined ? option : mapping[option];
 }
 
 module.exports.optionsMapping = optionsMapping;
