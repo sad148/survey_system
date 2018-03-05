@@ -34,23 +34,27 @@ function exportcsv(req, db, cb) {
                         type: item.type
                     })
                     rows[0][`Q${counter}`] = item.question
+                    counter++;
                 } else {    //for questions which are of checkbox type
                     for (let i = 0; i < item.options.length; i++) {
-                        columns.push(`Q${counter}_${i + 1}`);
-                        if (!questionIdColumnMapping[item.questionId])
-                            questionIdColumnMapping[item.questionId] = []
+                        if (item.options[i] !== null) {
+                            columns.push(`Q${counter}_${i}`);
+                            console.log(item.options[i]);
+                            if (!questionIdColumnMapping[item.questionId])
+                                questionIdColumnMapping[item.questionId] = []
 
-                        //otherColumnName key is used to concatenate question name and option which is later split and value is mapped to the particular question
-                        //please check mapAnswerToQues for clear understanding
-                        questionIdColumnMapping[item.questionId].push({
-                            csvColumnName: `Q${counter}_${i + 1}`,
-                            otherColumnName: `Q${counter}_${item.options[i]}`,
-                            type: item.type
-                        })
-                        rows[0][`Q${counter}_${i}`] = `${item.question}_${item.options[i]}`
+                            //otherColumnName key is used to concatenate question name and option which is later split and value is mapped to the particular question
+                            //please check mapAnswerToQues for clear understanding
+                            questionIdColumnMapping[item.questionId].push({
+                                csvColumnName: `Q${counter}_${i}`,
+                                otherColumnName: `Q${counter}_${item.options[i]}`,
+                                type: item.type
+                            })
+                            rows[0][`Q${counter}_${i}`] = `${item.question}_${item.options[i]}`
+                            counter++;
+                        }
                     }
                 }
-                counter++;
             })
             //get answers submitted by all users for the particular survey
             let data = db.collection(`${projectId}::answers`);
@@ -87,17 +91,30 @@ function exportcsv(req, db, cb) {
                             message: "No answers submitted yet"
                         })
                     } else {
-                        //answers are grouped on userId and submittedEpoch(time stamp) to maintain uniqueness
+                        //answers are grouped on userId and submittedEpoch(time stamp) basis to maintain uniqueness
                         //traversing through the data received for submitted answers
                         for (let i = 0; i < res.length; i++) {
                             rows[i + 1] = {}
                             let answers = res[i].answer;
-                            //traversing through single userId and submittedEpoch object to get answers
-                            for (let j = 0; j < answers.length; j++) {
-                                mapAnswerToQues(answers[j], rows[i + 1], questionIdColumnMapping)
+                            let obj = {}
+                            for (let k = 0; k < answers.length; k++) {
+                                obj[answers[k].questionId] = answers[k].answer
+                            }
+                            for (let item in questionIdColumnMapping) {
+                                mapAnswerToQues(obj, rows[i + 1], item, questionIdColumnMapping[item])
                             }
                         }
+                        let records = []
+                        for (let i = 0; i < rows.length; i++) {
+                            let rowsData = Object.values(rows[i])
+                            records[i] = rowsData
+                        }
+
                         let csv = json2csv({data: rows, field: columns})
+                        csv = csv.split("\r")
+                        columns = csv[0];
+                        fs.writeFile("export.csv", csv, function (err, res) {
+                        })
                         cb({
                             code: 200,
                             message: "Success",
@@ -109,22 +126,32 @@ function exportcsv(req, db, cb) {
     })
 }
 
-function mapAnswerToQues(answer, row, questionIdColumnMapping) {
+function mapAnswerToQues(obj, row, questionId, questionIdColumnMapping) {
     //getting object mapping for options of a specific questionId
-    let values = questionIdColumnMapping[answer.questionId]
-    //to check type of question(checkbox, text, radio, etc)
-    let type = values.type
-    for (let z = 0; z < values.length; z++) {
-        if (type === "checkbox") {
-            //split the otherColumnName to get option name and map it with answer submitted by user
-            let columnSplit = values[z].otherColumnName.split('_');
-            if (answer.answer == columnSplit[1]) {
-                //set value for combination of question number and option to 1 if the user has selected this option
-                row[values[z].csvColumnName] = 1;
+    let values = questionIdColumnMapping
+    let type = values[0].type
+    if (obj[questionId]) {
+        for (let z = 0; z < values.length; z++) {
+            if (type === "checkbox") {
+                console.log(obj, values);
+                //split the otherColumnName to get option name and map it with answer submitted by user
+                let columnSplit = values[z].otherColumnName.split('_');
+                if (obj[questionId] == columnSplit[1]) {
+                    //set value for combination of question number and option to 1 if the user has selected this option
+                    row[values[z].csvColumnName] = 1;
+                } else {
+                    //set value for combination of question number and option to 0 if the user has not selected this option
+                    row[values[z].csvColumnName] = 0;
+                }
+            } else {
+                //set the selected value or entered text directly to the question number
+                row[values[z].csvColumnName] = optionsMapping.optionsMapping(obj[questionId])
             }
-        } else {
-            //set the selected value or entered text directly to the question number
-            row[values[z].csvColumnName] = optionsMapping.optionsMapping(answer.answer)
+        }
+    } else {
+        for (let z = 0; z < values.length; z++) {
+            //set value for combination of question number and option to 0 if the user has not answered this question
+            row[values[z].csvColumnName] = 0;
         }
     }
 }
