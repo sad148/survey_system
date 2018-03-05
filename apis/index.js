@@ -12,6 +12,7 @@ var createproject = require('./createproject')
 var getprojectslist = require('./getprojectslist');
 var getprojectquestions = require('./getprojectquestions');
 var exportcsv = require('./exportcsv');
+var exportspss = require('./exportspss');
 var submitAnswers = require('./submitAnswers')
 
 const MongoClient = require('mongodb').MongoClient;
@@ -126,8 +127,31 @@ app.post('/exportcsv', (req, res) => {
     })
 })
 
+app.post('/exportspss', (req, res) => {
+    exportspss.exportspss(req, db, (response) => {
+        res.send(response)
+    })
+})
+
 app.post('/submitanswers', (req, res) => {
     submitAnswers.submitAnswers(req, db, (response) => {
         res.send(response)
+    })
+})
+
+app.get('/download/:projectId', (req, res) => {
+    let projectId = req.params.projectId
+    let path = __dirname.substring(0, __dirname.lastIndexOf('\\'));
+    path += `\\exports\\${projectId}.sav`;
+    fs.access(path, (err) => {
+        if (err) {
+            console.log(path);
+            res.send({
+                code: 400,
+                message: "Error in downloading"
+            })
+        } else {
+            res.download(path, 'export.sav');
+        }
     })
 })
