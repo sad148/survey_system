@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {Table, Button, Popover, Icon, Divider, Modal, Input} from 'antd';
 import exportcsv from '../actions/ExportCSV'
+import exportspss from '../actions/ExportSPSS'
 
 var download = require('../utils/download')
 console.log(download);
@@ -48,6 +49,15 @@ class ListProjectData extends Component {
         })
     }
 
+    exportspss = (projectId) => {
+        exportspss.exportspss(projectId, (response) => {
+            if (response.code == 200) {
+                window.location.href = `http://localhost:3009/download/${projectId}`;
+            } else
+                this.props.dispatch({type: "DISPLAY_ERROR", message: "Error in exporting"})
+        })
+    }
+
     formData = (data) => {
         data.projects.map((item) => {
             let content = (
@@ -61,6 +71,9 @@ class ListProjectData extends Component {
                     <p style={{cursor: "pointer"}}>Edit <Icon type="edit"/></p>
                     <Divider/>
                     <p style={{cursor: "pointer"}} onClick={() => this.exportcsv(item.projectId)}>Export csv <Icon
+                        type="download"/></p>
+                    <Divider/>
+                    <p style={{cursor: "pointer"}} onClick={() => this.exportspss(item.projectId)}>Export spss <Icon
                         type="download"/></p>
                 </div>
             );
