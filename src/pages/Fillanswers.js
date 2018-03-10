@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {Table, Radio, Input, Card, Checkbox, Button} from 'antd';
+import {Table, Radio, Input, Card, Checkbox, Button, Icon} from 'antd';
 import _ from 'lodash/filter';
 import uniqBy from 'lodash/uniqBy'
 import uuid from 'uuid/v4'
@@ -31,7 +31,7 @@ export default class Fillanswers extends Component {
         otherSteps: [],
         answers: [],
         data: "",
-        userId: uuid().split("-").join("")
+        userId: ""
     }
 
     componentWillMount = () => {
@@ -45,8 +45,7 @@ export default class Fillanswers extends Component {
             id: data.questionId,
             answer: option,
             answersId: answersId,
-            question: data.question,
-            userId: this.state.userId
+            question: data.question
         })
         this.state.answers = uniqBy(this.state.answers, 'answersId')
     }
@@ -58,8 +57,7 @@ export default class Fillanswers extends Component {
                 id: data.questionId,
                 answer: option,
                 answersId: answersId,
-                question: data.question,
-                userId: this.state.userId
+                question: data.question
             })
         } else {
             let filter = []
@@ -78,8 +76,7 @@ export default class Fillanswers extends Component {
             id: data.questionId,
             answer: document.getElementById(data.questionId).value,
             answersId: answersId,
-            question: data.question,
-            userId: this.state.userId
+            question: data.question
         })
         this.state.answers = uniqBy(this.state.answers, 'answersId')
     }
@@ -158,7 +155,15 @@ export default class Fillanswers extends Component {
                             </div>
                         )
                     } else {
-
+                        let answersId = uuid().split("-").join("");
+                        otherSteps.push(
+                            <div style={{marginBottom: "10px"}}>
+                                <Card title={++counter + "." + item.question} style={{width: "100%"}}>
+                                    <Input id={item.questionId}
+                                           onChange={() => this.getTextAreaValue(item, answersId)}/>
+                                </Card>
+                            </div>
+                        )
                     }
                 } else if (item.stepNum == "step4") {
                     let answersId = uuid().split("-").join("");
@@ -177,25 +182,46 @@ export default class Fillanswers extends Component {
         })
     }
 
-    handleSubmit = () => {
-        let data = {
-            answers: this.state.answers,
-            surveyId: this.state.surveyId
-        }
-        submitAnswers.submitAnswers(data, (response) => {
-            if (response.code == 200) {
-                alert('Answers submitted successfully');
-            }
+    generateID = () => {
+        this.setState({
+            userId: uuid().split("-").join("")
         })
-        console.log(this.state.answers);
+    }
+
+    updateIdText = (e) => {
+        this.setState({
+            userId: e.target.value
+        })
+    }
+
+    handleSubmit = () => {
+        if (this.state.userId.trim() == "") {
+            alert('Please enter participant id')
+        } else {
+            let answers = this.state.answers
+            this.state.answers.map(answer => answer.userId = this.state.userId.trim())
+            let data = {
+                answers: this.state.answers,
+                surveyId: this.state.surveyId
+            }
+            submitAnswers.submitAnswers(data, (response) => {
+                if (response.code == 200) {
+                    alert('Answers submitted successfully');
+                }
+            })
+        }
     }
 
     render = () => {
         return (
             <div style={{padding: "50px"}}>
                 <label>Participant id:</label><br/>
-                <Input id='participantId' style={{width: "300px"}} disabled={true}
-                       value={this.state.userId}></Input><br/><br/>
+                <Input id='participantId' style={{width: "300px"}}
+                       placeholder={"Please enter your participant id"}
+                       value={this.state.userId} onChange={this.updateIdText}></Input>&nbsp;<Button
+                title="Generate new participant id"
+                onClick={this.generateID}><Icon
+                type="reload"/></Button><br/><br/>
                 <Table dataSource={this.state.step1} columns={columns} indentSize={10} size={"small"}
                        pagination={false}/>
                 <br/>
