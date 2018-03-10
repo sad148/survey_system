@@ -39,7 +39,6 @@ function exportcsv(req, db, cb) {
                     for (let i = 0; i < item.options.length; i++) {
                         if (item.options[i] !== null) {
                             columns.push(`Q${counter}_${i}`);
-                            console.log(item.options[i]);
                             if (!questionIdColumnMapping[item.questionId])
                                 questionIdColumnMapping[item.questionId] = []
 
@@ -133,7 +132,6 @@ function mapAnswerToQues(obj, row, questionId, questionIdColumnMapping) {
     if (obj[questionId]) {
         for (let z = 0; z < values.length; z++) {
             if (type === "checkbox") {
-                console.log(obj, values);
                 //split the otherColumnName to get option name and map it with answer submitted by user
                 let columnSplit = values[z].otherColumnName.split('_');
                 if (obj[questionId] == columnSplit[1]) {
