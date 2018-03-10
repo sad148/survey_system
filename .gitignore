@@ -31,3 +31,4 @@ yarn-error.log*
 *.log
 *.iml
 *lock
+/apis/models/data.json
