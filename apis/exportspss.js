@@ -34,7 +34,7 @@ function exportspss(req, db, cb) {
                         type: item.type
                     })
                     varNames.push(`Q${counter}`)
-                    varTypes[`Q${counter}`] = 0;
+                    varTypes[`Q${counter}`] = 1;
                     measureLevels[`Q${counter}`] = "nominal"
                     rows[0][`Q${counter}`] = item.question
                     counter++;
@@ -54,7 +54,7 @@ function exportspss(req, db, cb) {
                             })
                             rows[0][`Q${counter}_${i}`] = `${item.question}_${item.options[i]}`
                             measureLevels[`Q${counter}_${i}`] = "nominal"
-                            varTypes[`Q${counter}_${i}`] = 0;
+                            varTypes[`Q${counter}_${i}`] = 1;
                             varNames.push(`Q${counter}_${i}`)
                             counter++;
                         }
@@ -163,25 +163,25 @@ function mapAnswerToQues(obj, row, questionId, questionIdColumnMapping, varTypes
                 let columnSplit = values[z].otherColumnName.split('_');
                 if (obj[questionId] == columnSplit[1]) {
                     //set value for combination of question number and option to 1 if the user has selected this option
-                    row[values[z].csvColumnName] = 1;
+                    row[values[z].csvColumnName] = "1";
                 } else {
                     //set value for combination of question number and option to 0 if the user has not selected this option
-                    row[values[z].csvColumnName] = 0;
+                    row[values[z].csvColumnName] = "0";
                 }
             } else {
                 //set the selected value or entered text directly to the question number
-                row[values[z].csvColumnName] = obj[questionId]
+                row[values[z].csvColumnName] = obj[questionId].toString();
                 if (!Number.isInteger(row[values[z].csvColumnName])) {
                     varTypes[values[z].csvColumnName] = varTypes[values[z].csvColumnName] < row[values[z].csvColumnName].length ? row[values[z].csvColumnName].length : varTypes[values[z].csvColumnName];
                 } else {
-                    varTypes[values[z].csvColumnName] = 0;
+                    varTypes[values[z].csvColumnName] = 1;
                 }
             }
         }
     } else {
         for (let z = 0; z < values.length; z++) {
             //set value for combination of question number and option to 0 if the user has not answered this question
-            row[values[z].csvColumnName] = 0;
+            row[values[z].csvColumnName] = "0";
         }
     }
 }
