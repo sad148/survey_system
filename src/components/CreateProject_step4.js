@@ -50,7 +50,8 @@ class OpenEndedQuestions extends Component {
         let id = uuid().split("-").join("");
         this.state.questions.push({
             question: question,
-            questionId: id
+            questionId: id,
+            required: false
         })
         let display = (<div>
             <input type='checkbox' id={id + 'checkbox'}/>
