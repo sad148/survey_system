@@ -53,6 +53,10 @@ class AddQuestionPopup extends Component {
         this.setState({restrictions: restrictions, options: ""})
     }
 
+    handleRequired = (value) => {
+        this.state.questionAnsMap.required = value
+    }
+
     createOptions = (type) => {
         let noOfOptions = document.getElementById('optionNumber').value
         if (noOfOptions > 0 && noOfOptions < 8) {
@@ -73,7 +77,6 @@ class AddQuestionPopup extends Component {
                                                                                                             style={{width: "50%"}}/></Checkbox>
                     </div>)
             }
-            console.log(options);
             type == "radio" ? this.setState({options: (<RadioGroup>{options}</RadioGroup>)}) : this.setState({
                 options: (<CheckboxGroup>{options}</CheckboxGroup>)
             })
@@ -97,7 +100,6 @@ class AddQuestionPopup extends Component {
         this.props.form.validateFields((err, values) => {
             if (!err) {
                 this.simpleDialog.hide();
-                console.log(this.state.questionAnsMap);
                 this.props.props.dispatch({type: "ADD_NEW_DEMOGRAPHIC_QUESTION", payload: this.state.questionAnsMap})
             }
         });
@@ -126,10 +128,25 @@ class AddQuestionPopup extends Component {
                             {getFieldDecorator('answerType', {
                                 rules: [{required: true, message: 'Please select answer type'}],
                             })(
-                                <Select defaultValue='Select...' style={{width: 200}} onChange={this.handleChange}>
+                                <Select style={{width: 200}} onChange={this.handleChange}>
                                     <Option value="radio"><input type="radio" disabled/>Select single option</Option>
                                     <Option value="checkbox"><input type="checkbox" disabled/>Select multiple
                                         options</Option>
+                                </Select>
+                            )}
+                        </FormItem>
+                        <FormItem
+                            label="Required"
+                        >
+                            {getFieldDecorator('required', {
+                                rules: [{
+                                    required: true,
+                                    message: 'Please select if the question is mandatory to answer'
+                                }],
+                            })(
+                                <Select style={{width: 200}} onChange={this.handleRequired}>
+                                    <Option value="yes">Yes</Option>
+                                    <Option value="no">No</Option>
                                 </Select>
                             )}
                         </FormItem>
