@@ -54,7 +54,7 @@ class AddQuestionPopup extends Component {
     }
 
     handleRequired = (value) => {
-        this.state.questionAnsMap.required = value
+        this.state.questionAnsMap.required = value === "yes" ? true : false;
     }
 
     createOptions = (type) => {
