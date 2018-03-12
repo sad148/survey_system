@@ -34,6 +34,7 @@ class CreateProjectStep2 extends Component {
                     tuqData[i].questionId = tuqData[i].id
                     this.state.selectedRowKeys.push(tuqData[i]);
                     tuqData[i].key = tuqData[i].id
+                    tuqData[i].required = true
                     let type = [];
                     for (let j = 0; j < tuqData[i].limit; j++) {
                         type[j] = (<div style={{marginRight: "10px"}}><label>{j + 1}</label><br/><input disabled
@@ -57,6 +58,7 @@ class CreateProjectStep2 extends Component {
                     muqData[i].questionId = muqData[i].id
                     this.state.selectedRowKeys.push(muqData[i]);
                     muqData[i].key = muqData[i].id
+                    muqData[i].required = true
                     let type = []
                     for (let j = 0; j < muqData[i].limit; j++) {
                         type[j] = (<div><label>{j + 1}</label><br/><input disabled style={{cursor: "not-allowed"}}
@@ -114,6 +116,7 @@ class CreateProjectStep2 extends Component {
         const hasSelected = selectedRowKeys.length > 0;
         return (
             <div style={{marginTop: "10px"}}>
+                <label style={{color: "red"}}>*These questions will be mandatory to answer</label>
                 <div style={{marginBottom: 16}}>
                     <span>
                         {hasSelected ? `Selected ${selectedRowKeys.length} items` : ''}

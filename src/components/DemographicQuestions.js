@@ -41,6 +41,8 @@ class DemographicQuestions extends Component {
                 this.state.questions[data[i].questionId]["questionId"] = data[i].questionId
                 this.state.questions[data[i].questionId]["type"] = data[i].type;
                 this.state.questions[data[i].questionId]["options"] = data[i].options;
+                this.state.questions[data[i].questionId]["required"] = true;
+
                 let options = [];
                 if (data[i].type == "radio" || data[i].type == "checkbox") {
                     for (let j = 0; j < data[i].options.length; j++) {
@@ -48,7 +50,7 @@ class DemographicQuestions extends Component {
                         </p>)
                     }
                     cards.push(<div key={data[i].questionId} id={data[i].questionId}>
-                        <input type="checkbox"
+                        <input type="checkbox" checked={true} disabled
                                id={data[i].questionId + "checkbox"}/>
                         <Card title={data[i].question} style={{width: "100%", marginBottom: "10px"}}>
                             {options}
@@ -56,7 +58,7 @@ class DemographicQuestions extends Component {
                     </div>)
                 } else if (data[i].type == "text") {
                     cards.push(<div key={data[i].questionId} id={data[i].questionId}>
-                        <input type="checkbox"
+                        <input type="checkbox" checked={true} disabled
                                id={data[i].questionId + "checkbox"}/>
                         <Card title={data[i].question} style={{width: "100%", marginBottom: "10px"}}>
                             <Input type="text" disabled style={{width: "10px"}}/>
@@ -78,14 +80,14 @@ class DemographicQuestions extends Component {
         this.state.questions[nextProps.data.questionId]["questionId"] = nextProps.data.questionId
         this.state.questions[nextProps.data.questionId]["type"] = nextProps.data.type;
         this.state.questions[nextProps.data.questionId]["options"] = nextProps.data.options;
-
-        for (let i = 1; i < nextProps.data.options.length; i++) {
+        this.state.questions[nextProps.data.questionId]["required"] = nextProps.data.required;
+        for (let i = 0; i < nextProps.data.options.length; i++) {
             options.push(<p><input type={nextProps.data.type}
                                    disabled></input><label>{nextProps.data.options[i]}</label></p>)
         }
         let card = (<div key={nextProps.data.questionId} id={nextProps.data.questionId}>
             <input type="checkbox" id={nextProps.data.questionId + "checkbox"} defaultChecked/>
-            <Card title={nextProps.data.question} extra={<a href="#">More</a>}
+            <Card title={nextProps.data.question}
                   style={{width: "100%", marginBottom: "10px"}}>
                 {options}
             </Card>
@@ -94,7 +96,6 @@ class DemographicQuestions extends Component {
     }
 
     previous = () => {
-        console.log(this.props);
         this.props.props.dispatch({type: "RESET_CREATE_PROJECT_STEPS"})
         this.props.props.dispatch({type: "PREVIOUS", payload: this.props.props.data})
     }
