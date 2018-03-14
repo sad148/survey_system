@@ -243,6 +243,8 @@ export default class Fillanswers extends Component {
                 submitAnswers.submitAnswers(data, (response) => {
                     if (response.code == 200) {
                         alert('Answers submitted successfully');
+                        //close window as soon as answers are submitted to avoid redundant data
+                        window.close();
                     }
                 })
             }
