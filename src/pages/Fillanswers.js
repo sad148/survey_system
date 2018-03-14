@@ -1,14 +1,10 @@
 import React, {Component} from 'react'
-import {Table, Radio, Input, Card, Checkbox, Button, Icon} from 'antd';
-import _ from 'lodash/filter';
+import {Table, Input, Card, Button, Icon} from 'antd';
 import uniqBy from 'lodash/uniqBy'
 import uuid from 'uuid/v4'
 import submitAnswers from '../actions/SubmitAnswers'
 
 const TextArea = Input.TextArea
-const RadioGroup = Radio.Group;
-const CheckboxGroup = Checkbox.Group;
-
 const getprojectquestions = require('../actions/GetProjectQuestions')
 const columns = [{
     title: 'Sr.No',
@@ -31,54 +27,15 @@ export default class Fillanswers extends Component {
         otherSteps: [],
         answers: [],
         data: "",
-        userId: ""
+        userId: "",
+        questionIdSet: new Set(),
+        checkedAnswers: new Set()
     }
 
     componentWillMount = () => {
         this.setState({
             surveyId: this.props.params.projectId
         })
-    }
-
-    onChange = (data, option, answersId) => {
-        this.state.answers.unshift({
-            id: data.questionId,
-            answer: option,
-            answersId: answersId,
-            question: data.question
-        })
-        this.state.answers = uniqBy(this.state.answers, 'answersId')
-    }
-
-    toggleCheckbox = (data, option, answersId) => {
-        let checkedFlag = document.getElementById(data.questionId + option).checked
-        if (checkedFlag) {
-            this.state.answers.unshift({
-                id: data.questionId,
-                answer: option,
-                answersId: answersId,
-                question: data.question
-            })
-        } else {
-            let filter = []
-            for (let i = 0; i < this.state.answers.length; i++) {
-                console.log(this.state.answers[i].answersId, answersId);
-                if (this.state.answers[i].answersId != answersId) {
-                    filter.push(this.state.answers[i])
-                }
-            }
-            this.state.answers = filter
-        }
-    }
-
-    getTextAreaValue = (data, answersId) => {
-        this.state.answers.unshift({
-            id: data.questionId,
-            answer: document.getElementById(data.questionId).value,
-            answersId: answersId,
-            question: data.question
-        })
-        this.state.answers = uniqBy(this.state.answers, 'answersId')
     }
 
     componentDidMount = () => {
@@ -90,6 +47,8 @@ export default class Fillanswers extends Component {
             this.state.data = data;
             data.map((item) => {
                 let radioOptions = [];
+                if (item.required)
+                    this.state.questionIdSet.add(item.questionId)
                 if (item.stepNum == "step2") {
                     let answersId = uuid().split("-").join("");
                     for (let i = 0; i < item.options.length; i++) {
@@ -105,7 +64,8 @@ export default class Fillanswers extends Component {
 
                     step1.push({
                         srno: ++counter,
-                        question: item.question,
+                        question: <label id={`required${item.questionId}`}
+                                         className={"requiredClass"}>{item.required ? `*${item.question}` : item.question}</label>,
                         options: radioOptions
                     })
                 } else if (item.stepNum == "step3") {
@@ -126,7 +86,9 @@ export default class Fillanswers extends Component {
                         }
                         otherSteps.push(
                             <div style={{marginBottom: "10px"}}>
-                                <Card title={++counter + "." + item.question} style={{width: "100%"}}>
+                                <Card title={<label
+                                    id={`required${item.questionId}`}>{item.required ? "*" + ++counter + "." + item.question : ++counter + "." + item.question}</label>}
+                                      style={{width: "100%"}}>
                                     {radioOptions}
                                 </Card>
                             </div>
@@ -149,7 +111,9 @@ export default class Fillanswers extends Component {
                         }
                         otherSteps.push(
                             <div style={{marginBottom: "10px"}}>
-                                <Card title={++counter + "." + item.question} style={{width: "100%"}}>
+                                <Card title={<label
+                                    id={`required${item.questionId}`}>{item.required ? "*" + ++counter + "." + item.question : ++counter + "." + item.question}</label>}
+                                      style={{width: "100%"}}>
                                     {radioOptions}
                                 </Card>
                             </div>
@@ -158,7 +122,9 @@ export default class Fillanswers extends Component {
                         let answersId = uuid().split("-").join("");
                         otherSteps.push(
                             <div style={{marginBottom: "10px"}}>
-                                <Card title={++counter + "." + item.question} style={{width: "100%"}}>
+                                <Card title={<label
+                                    id={`required${item.questionId}`}>{item.required ? "*" + ++counter + "." + item.question : ++counter + "." + item.question}</label>}
+                                      style={{width: "100%"}}>
                                     <Input id={item.questionId}
                                            onChange={() => this.getTextAreaValue(item, answersId)}/>
                                 </Card>
@@ -170,9 +136,12 @@ export default class Fillanswers extends Component {
                     let dividerArr = []
                     otherSteps.push(
                         <div style={{marginBottom: "10px"}}>
-                            <Card title={++counter + "." + item.question} style={{width: "100%"}}>
-                                <TextArea style={{resize: "none"}} id={item.questionId} rows={10}
-                                          onChange={() => this.getTextAreaValue(item, answersId)}></TextArea>
+                            <Card title={<label
+                                id={`required${item.questionId}`}>{item.required ? "*" + ++counter + "." + item.question : ++counter + "." + item.question}</label>}
+                                  style={{width: "100%"}}>
+                                <TextArea
+                                    style={{resize: "none"}} id={item.questionId} rows={10}
+                                    onChange={() => this.getTextAreaValue(item, answersId)}></TextArea>
                             </Card>
                         </div>
                     )
@@ -180,6 +149,59 @@ export default class Fillanswers extends Component {
             })
             this.setState({step1: step1, otherSteps: otherSteps})
         })
+    }
+
+
+    onChange = (data, option, answersId) => {
+        this.state.answers.unshift({
+            id: data.questionId,
+            answer: option,
+            answersId: answersId,
+            question: data.question
+        })
+        if (data.required)
+            this.state.checkedAnswers.add(data.questionId);
+        this.state.answers = uniqBy(this.state.answers, 'answersId')
+    }
+
+    toggleCheckbox = (data, option, answersId) => {
+        let set = new Set();
+        let checkedFlag = document.getElementById(data.questionId + option).checked
+        if (checkedFlag) {
+            if (data.required)
+                this.state.checkedAnswers.add(data.questionId);
+            this.state.answers.unshift({
+                id: data.questionId,
+                answer: option,
+                answersId: answersId,
+                question: data.question
+            })
+        } else {
+            let filter = []
+            for (let i = 0; i < this.state.answers.length; i++) {
+                if (this.state.answers[i].answersId != answersId) {
+                    filter.push(this.state.answers[i])
+                    set.add(this.state.answers[i].id);
+                }
+            }
+            if (!set.has(data.questionId))
+                this.state.checkedAnswers.delete(data.questionId);
+            this.state.answers = filter
+        }
+    }
+
+    getTextAreaValue = (data, answersId) => {
+        this.state.answers.unshift({
+            id: data.questionId,
+            answer: document.getElementById(data.questionId).value,
+            answersId: answersId,
+            question: data.question
+        })
+        if (document.getElementById(data.questionId).value.trim().length > 0 && data.required)
+            this.state.checkedAnswers.add(data.questionId);
+        else
+            this.state.checkedAnswers.delete(data.questionId);
+        this.state.answers = uniqBy(this.state.answers, 'answersId')
     }
 
     generateID = () => {
@@ -204,11 +226,26 @@ export default class Fillanswers extends Component {
                 answers: this.state.answers,
                 surveyId: this.state.surveyId
             }
-            submitAnswers.submitAnswers(data, (response) => {
-                if (response.code == 200) {
-                    alert('Answers submitted successfully');
+            let questionIdSet = [...this.state.questionIdSet]
+            let flag = false;
+            for (let i in questionIdSet) {
+                if (!this.state.checkedAnswers.has(questionIdSet[i])) {
+                    document.getElementById(`required${questionIdSet[i]}`).style.color = "red"
+                    flag = true
                 }
-            })
+                else
+                    document.getElementById(`required${questionIdSet[i]}`).style.color = "black"
+            }
+
+            if (flag)
+                alert("Please answer questions marked in red")
+            else {
+                submitAnswers.submitAnswers(data, (response) => {
+                    if (response.code == 200) {
+                        alert('Answers submitted successfully');
+                    }
+                })
+            }
         }
     }
 
@@ -222,6 +259,7 @@ export default class Fillanswers extends Component {
                 title="Generate new participant id"
                 onClick={this.generateID}><Icon
                 type="reload"/></Button><br/><br/>
+                <label style={{color: "red"}}>Please fill all questions marked as </label>*
                 <Table dataSource={this.state.step1} columns={columns} indentSize={10} size={"small"}
                        pagination={false}/>
                 <br/>
