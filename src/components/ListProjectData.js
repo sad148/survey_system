@@ -1,6 +1,10 @@
 import React, {Component} from 'react';
 import {Table, Button, Popover, Icon, Divider, Modal, Input} from 'antd';
+import exportcsv from '../actions/ExportCSV'
+import exportspss from '../actions/ExportSPSS'
 
+var download = require('../utils/download')
+console.log(download);
 const columns = [{
     title: 'Project Name',
     dataIndex: 'projectName'
@@ -31,9 +35,27 @@ class ListProjectData extends Component {
     }
 
     sharelink = (data) => {
-        let baseUrl = `${window.location.hostname}:3000/survey_system/questions/${data}`;
+        let baseUrl = `${window.location.hostname}:3000/survey_system/answers/${data}`;
         let input = (<Input value={baseUrl}></Input>);
         this.setState({link: input, visible: true})
+    }
+
+    exportcsv = (projectId) => {
+        exportcsv.exportcsv(projectId, (response) => {
+            if (response.code == 200)
+                download.download(response.data, "export.csv", "text/csv");
+            else
+                this.props.dispatch({type: "DISPLAY_ERROR", message: "Error in exporting"})
+        })
+    }
+
+    exportspss = (projectId) => {
+        exportspss.exportspss(projectId, (response) => {
+            if (response.code == 200) {
+                window.location.href = `http://localhost:3009/download/${projectId}`;
+            } else
+                this.props.dispatch({type: "DISPLAY_ERROR", message: "Error in exporting"})
+        })
     }
 
     formData = (data) => {
@@ -47,6 +69,12 @@ class ListProjectData extends Component {
                     <p style={{cursor: "pointer"}}>Clone <Icon type="copy"/></p>
                     <Divider/>
                     <p style={{cursor: "pointer"}}>Edit <Icon type="edit"/></p>
+                    <Divider/>
+                    <p style={{cursor: "pointer"}} onClick={() => this.exportcsv(item.projectId)}>Export csv <Icon
+                        type="download"/></p>
+                    <Divider/>
+                    <p style={{cursor: "pointer"}} onClick={() => this.exportspss(item.projectId)}>Export spss <Icon
+                        type="download"/></p>
                 </div>
             );
             return item.action = (<Popover content={content} placement="bottomLeft">

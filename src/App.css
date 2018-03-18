@@ -10,7 +10,6 @@
 
 .App {
     text-align: center;
-
 }
 
 html {
@@ -97,6 +96,30 @@ div#registerLinkDiv {
     border: 1px solid;
     border-radius: 0px;
     width: 50%;
+    position: absolute;
+    /*overflow-y: hidden;*/
+}
+
+#login {
+    width: 20%;
+    margin-top: 10%;
+    margin-left: 38%;
+    border: 1px solid;
+    border-radius: 4px lightgray;
+    border-radius: 10px;
+    padding: 20px;
+    border-color: lightgray;
+}
+
+.ant-layout {
+    height: 100%;
+}
+
+#components-layout-demo-top-side-2 .logo {
+    width: 120px;
+    background: rgba(255, 255, 255, .2);
+    margin: 16px 28px 16px 0;
+    float: left;
 }
 
 ul.ant-menu.ant-menu-dark.ant-menu-inline-collapsed.ant-menu-root.ant-menu-vertical {
@@ -110,6 +133,10 @@ ul.ant-menu.ant-menu-dark.ant-menu-root.ant-menu-vertical {
 .header.ant-layout-header {
     line-height: 50px;
 }
+
+/*ul.ant-menu.ant-menu-dark.ant-menu-inline-collapsed.ant-menu-root.ant-menu-vertical {*/
+/*margin-top: 74%;*/
+/*}*/
 
 .ant-layout-sider-children {
     height: 100%;
@@ -182,4 +209,45 @@ div#mainLayout {
 
 div#listProjectsTable {
     padding: 30px;
+}
+button#signin {
+    left: 40%;
+}
+
+button#register { /*{ where button is css attribute hence no . or #*/
+    left: 38%;
+}
+
+.ant-checkbox-wrapper { /*this is a classname hence . is used*/
+    width: 100%;
+}
+
+#components-form-demo-normal-login .login-form { /*this is an id hence # is used*/
+    max-width: 300px;
+}
+
+#components-form-demo-normal-login .login-form-forgot {
+    float: right;
+}
+
+#components-form-demo-normal-login .login-form-button {
+    width: 100%;
+}
+
+#components-layout-demo-custom-trigger .trigger {
+    font-size: 18px;
+    line-height: 64px;
+    padding: 0 24px;
+    cursor: pointer;
+    transition: color .3s;
+}
+
+#components-layout-demo-custom-trigger .trigger:hover {
+    color: #1890ff;
+}
+
+#components-layout-demo-custom-trigger .logo {
+    height: 32px;
+    background: rgba(255, 255, 255, .2);
+    margin: 16px;
 }
