@@ -1,16 +1,18 @@
-import React, { Component } from 'react';
-import { Layout, Menu, Breadcrumb, Icon } from 'antd';
-import { browserHistory } from 'react-router';
-const { SubMenu } = Menu;
-const { Header, Content, Sider } = Layout;
+import React, {Component} from 'react';
+import {Layout, Menu, Breadcrumb, Icon} from 'antd';
+import {browserHistory} from 'react-router';
 
-class Homepage extends Component{
+const {SubMenu} = Menu;
+const {Header, Content, Sider} = Layout;
+
+class Homepage extends Component {
     componentWillMount = () => {
 
     }
 
     componentDidMount = () => {
-
+        console.log("inside componentdidmount");
+        browserHistory.push('/survey_system/list_projects')
     }
 
     state = {
@@ -18,12 +20,12 @@ class Homepage extends Component{
     };
     onCollapse = (collapsed) => {
         console.log(collapsed);
-        this.setState({ collapsed });
+        this.setState({collapsed});
     }
 
     componentWillReceiveProps = (nextProps) => {
-        if(nextProps.projectDataReceived == true) {
-            this.setState({projectData:nextProps.projectData})
+        if (nextProps.projectDataReceived == true) {
+            this.setState({projectData: nextProps.projectData})
         }
     }
 
@@ -37,46 +39,21 @@ class Homepage extends Component{
 
     render = () => {
         return (
-        <div style={{"height":"100%"}}>
-            <Layout style={{height:"100%"}}>
-                <Sider width={200} style={{ background: '#fff' }}
-                       collapsible
-                       collapsed={this.state.collapsed}
-                       onCollapse={this.onCollapse}
-                >
-                    <div className="logo">
+            <div id="homepage">
+                <div id="heading">
+                    <label style={{color: "#17509e", fontSize: "30px", width: "50%"}}>PITT Usability
+                        Questionnaires</label><br/>
+                    <label style={{color: "#17509e", width: "50%"}}>For Telehealth System (TQU) and Mobile Health Apps
+                        (MAUQ)</label>
+                    <div id={"welcomeDiv"} style={{float: "right"}}>
+                        <label className={"fontColor"}>Welcome Saurabh</label><br/>
+                        <a>Logout</a>
                     </div>
-                    <Menu
-                        theme="dark"
-                        mode="vertical"
-                        defaultSelectedKeys={['1']}
-                        style={{ height: '100%', borderRight: 0 }}
-                    >
-                        <Menu.Item key="1"><Icon type="bars" /><span className="nav-text" onClick={this.listProjects}>List Project</span></Menu.Item>
-                        <Menu.Item key="2"><Icon type="plus-circle-o" /><span className="nav-text" onClick={this.createProject}>Create Project</span></Menu.Item>
-                    </Menu>
-                </Sider>
-                <Layout style={{width:"100%"}}>
-                    <Header className="header">
-                        <div className="logo" />
-                        <Menu
-                            theme="dark"
-                            mode="horizontal"
-                            defaultSelectedKeys={['1']}
-                            style={{ lineHeight: '64px' }}
-                        >
-                            <Menu.Item key="1">Home</Menu.Item>
-                            <Menu.Item key="2">Survey</Menu.Item>
-                            <Menu.Item key="3">Analytics</Menu.Item>
-                            <Menu.Item key="4">Reports</Menu.Item>
-                        </Menu>
-                    </Header>
-                    <Layout style={{ padding: '24px 24px 24px 24px' }}>
-                        {this.props.children}
-                    </Layout>
-                </Layout>
-            </Layout>
-        </div>
+                </div>
+                <div className={"content"}>
+                    {this.props.children}
+                </div>
+            </div>
         )
     }
 }

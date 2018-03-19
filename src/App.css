@@ -188,17 +188,6 @@ div#navbarTitle {
     color: #17509e;
 }
 
-tr {
-    color: blue;
-    background-color: white;
-    height:50px;
-}
-table, th, td {
-    border-spacing: 0px 10px;
-}
-th {
-    color:white;
-}
 div#mainLayout {
     background-image: url('./media/background-main.png');
     background-size: cover;
@@ -210,6 +199,7 @@ div#mainLayout {
 div#listProjectsTable {
     padding: 30px;
 }
+
 button#signin {
     left: 40%;
 }
@@ -250,4 +240,77 @@ button#register { /*{ where button is css attribute hence no . or #*/
     height: 32px;
     background: rgba(255, 255, 255, .2);
     margin: 16px;
+}
+
+#homepage {
+    background-image: url("./media/background-main.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    grid-template-rows: 10%;
+    height: 100%;
+    display: grid;
+    padding: 40px;
+    position: absolute;
+    width: 100%;
+}
+
+#heading {
+    position: relative;
+}
+
+.content {
+    background-color: rgba(53, 111, 183, 0.91);
+    overflow-y: auto;
+}
+
+div#welcomeDiv {
+    top: 16%;
+    position: absolute;
+    left: 92%;
+}
+
+th {
+    color: white;
+}
+
+table {
+    width: 100%;
+    height: 100%;
+    border-spacing: 20px;
+    border-collapse: separate;
+    -webkit-border-horizontal-spacing: 0px;
+}
+
+td {
+    text-align: center;
+    background-color: #ffffffba;
+    padding: 20px;
+    font-size: 15px;
+    color: #17509e;
+    font-weight: bold;
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: darkslategrey;
+    outline: 1px solid slategrey;
+    border-radius: 10px;
+}
+
+input[type="submit"] {
+    cursor: pointer;
+    background-color: #17509e;
+    border: 0px solid;
+    color: white;
+    padding: 10px;
+    border-radius: 20px;
 }

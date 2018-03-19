@@ -4,7 +4,6 @@ import exportcsv from '../actions/ExportCSV'
 import exportspss from '../actions/ExportSPSS'
 
 var download = require('../utils/download')
-console.log(download);
 const columns = [{
     title: 'Project Name',
     dataIndex: 'projectName'
@@ -22,6 +21,7 @@ class ListProjectData extends Component {
         input: ""
     }
     componentWillMount = () => {
+        console.log(this.props.projectData)
         this.formData(this.props.projectData)
     }
     componentWillReceiveProps = (nextProps) => {
@@ -59,47 +59,82 @@ class ListProjectData extends Component {
     }
 
     formData = (data) => {
+        var arr = [];
         data.projects.map((item) => {
-            let content = (
-                <div style={{width: "100px"}}>
-                    <p style={{cursor: "pointer"}} onClick={() => this.sharelink(item.projectId)}>Share <Icon
-                        type="share-alt"/>
-                    </p>
-                    <Divider/>
-                    <p style={{cursor: "pointer"}}>Clone <Icon type="copy"/></p>
-                    <Divider/>
-                    <p style={{cursor: "pointer"}}>Edit <Icon type="edit"/></p>
-                    <Divider/>
-                    <p style={{cursor: "pointer"}} onClick={() => this.exportcsv(item.projectId)}>Export csv <Icon
-                        type="download"/></p>
-                    <Divider/>
-                    <p style={{cursor: "pointer"}} onClick={() => this.exportspss(item.projectId)}>Export spss <Icon
-                        type="download"/></p>
-                </div>
-            );
-            return item.action = (<Popover content={content} placement="bottomLeft">
-                <Button><Icon type="ellipsis"/></Button>
-            </Popover>)
+            arr.push(
+                <tr>
+                    <td style={{textAlign: "left"}}>{item.projectName}</td>
+                    <td>{item.createdAt}</td>
+                    <td>latest date entry</td>
+                    <td>0</td>
+                    <td>Action</td>
+                </tr>
+            )
+            // let content = (
+            //     <div style={{width: "100px"}}>
+            //         <p style={{cursor: "pointer"}} onClick={() => this.sharelink(item.projectId)}>Share <Icon
+            //             type="share-alt"/>
+            //         </p>
+            //         <Divider/>
+            //         <p style={{cursor: "pointer"}}>Clone <Icon type="copy"/></p>
+            //         <Divider/>
+            //         <p style={{cursor: "pointer"}}>Edit <Icon type="edit"/></p>
+            //         <Divider/>
+            //         <p style={{cursor: "pointer"}} onClick={() => this.exportcsv(item.projectId)}>Export csv <Icon
+            //             type="download"/></p>
+            //         <Divider/>
+            //         <p style={{cursor: "pointer"}} onClick={() => this.exportspss(item.projectId)}>Export spss <Icon
+            //             type="download"/></p>
+            //     </div>
+            // );
+            // return item.action = (<Popover content={content} placement="bottomLeft">
+            //     <Button><Icon type="ellipsis"/></Button>
+            // </Popover>)
         })
-
-        this.setState({tableData: data.projects})
+        this.setState({tableData: arr})
     }
 
     render = () => {
         return (
-            <div>
-                <Table columns={columns} dataSource={this.state.tableData}/>
-                <Modal
-                    title="Link"
-                    visible={this.state.visible}
-                    footer={null}
-                    onCancel={this.handleCancel}
-                >
-                    {this.state.link}
-                </Modal>
+            <div id={"listProjectsDiv"} style={{height: "100%", padding: "20px"}}>
+                <div id={"createProjectButtonDiv"}>
+                    <input type="submit" value={"Create Project"}></input>
+                </div>
+                <div style={{height: "100%"}}>
+                    <table style={{borderCollapse: "separate"}}>
+                        <tr>
+                            <th style={{fontSize: "40px"}}>Projects</th>
+                            <th style={{textAlign: "center"}}>Date Created</th>
+                            <th style={{textAlign: "center"}}>Latest Data Entry</th>
+                            <th style={{textAlign: "center"}}>Number of participants</th>
+                            <th style={{textAlign: "center"}}>Action</th>
+                        </tr>
+                        {this.state.tableData}
+                    </table>
+                </div>
             </div>
         )
     }
 }
 
 export default ListProjectData;
+{/*<div>*/
+}
+{/*<Modal*/
+}
+{/*title="Link"*/
+}
+{/*visible={this.state.visible}*/
+}
+{/*footer={null}*/
+}
+{/*onCancel={this.handleCancel}*/
+}
+{/*>*/
+}
+{/*{this.state.link}*/
+}
+{/*</Modal>*/
+}
+{/*</div>*/
+}
