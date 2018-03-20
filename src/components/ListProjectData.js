@@ -1,19 +1,10 @@
 import React, {Component} from 'react';
-import {Table, Button, Popover, Icon, Divider, Modal, Input} from 'antd';
+import {Modal, Input} from 'antd';
 import exportcsv from '../actions/ExportCSV'
 import exportspss from '../actions/ExportSPSS'
+import moment from 'moment'
 
 var download = require('../utils/download')
-const columns = [{
-    title: 'Project Name',
-    dataIndex: 'projectName'
-}, {
-    title: 'Created on',
-    dataIndex: 'createdAt',
-}, {title: 'Responses', dataIndex: 'responses'}, {
-    title: 'Action',
-    dataIndex: 'action'
-}];
 
 class ListProjectData extends Component {
     state = {
@@ -58,38 +49,37 @@ class ListProjectData extends Component {
         })
     }
 
+    selectOption = (projectId) => {
+        let value = document.getElementById(projectId + "action").value
+        if (value === "share")
+            this.sharelink(projectId)
+        else if (value === "csv")
+            this.exportcsv(projectId)
+        else
+            this.exportspss(projectId)
+    }
+
     formData = (data) => {
         var arr = [];
         data.projects.map((item) => {
+            let action = (
+                <select id={item.projectId + "action"} style={{border: "0px"}}>
+                    <option value={"share"}>Share</option>
+                    <option value={"csv"}>Export CSV</option>
+                    <option value={"spss"}>Export SPSS</option>
+                </select>
+            )
             arr.push(
                 <tr>
                     <td style={{textAlign: "left"}}>{item.projectName}</td>
-                    <td>{item.createdAt}</td>
-                    <td>latest date entry</td>
-                    <td>0</td>
-                    <td>Action</td>
+                    <td>{moment(item.createdAt).format('DD-MM-YYYY')}</td>
+                    <td>{!item.latestDateEntry ? "N/A" : moment(item.latestDateEntry).format('DD-MM-YYYY')}</td>
+                    <td>{!item.response ? 0 : item.response}</td>
+                    <td>{action}&nbsp;<input style={{borderRadius: "0px", paddingTop: "2px", paddingBottom: "2px"}}
+                                             type={"submit"} onClick={() => this.selectOption(item.projectId)}
+                                             value={"Go"}/></td>
                 </tr>
             )
-            // let content = (
-            //     <div style={{width: "100px"}}>
-            //         <p style={{cursor: "pointer"}} onClick={() => this.sharelink(item.projectId)}>Share <Icon
-            //             type="share-alt"/>
-            //         </p>
-            //         <Divider/>
-            //         <p style={{cursor: "pointer"}}>Clone <Icon type="copy"/></p>
-            //         <Divider/>
-            //         <p style={{cursor: "pointer"}}>Edit <Icon type="edit"/></p>
-            //         <Divider/>
-            //         <p style={{cursor: "pointer"}} onClick={() => this.exportcsv(item.projectId)}>Export csv <Icon
-            //             type="download"/></p>
-            //         <Divider/>
-            //         <p style={{cursor: "pointer"}} onClick={() => this.exportspss(item.projectId)}>Export spss <Icon
-            //             type="download"/></p>
-            //     </div>
-            // );
-            // return item.action = (<Popover content={content} placement="bottomLeft">
-            //     <Button><Icon type="ellipsis"/></Button>
-            // </Popover>)
         })
         this.setState({tableData: arr})
     }
@@ -112,29 +102,17 @@ class ListProjectData extends Component {
                         {this.state.tableData}
                     </table>
                 </div>
+                <Modal
+                    title={"Link"}
+                    visible={this.state.visible}
+                    footer={null}
+                    onCancel={this.handleCancel}
+                >
+                    {this.state.link}
+                </Modal>
             </div>
         )
     }
 }
 
 export default ListProjectData;
-{/*<div>*/
-}
-{/*<Modal*/
-}
-{/*title="Link"*/
-}
-{/*visible={this.state.visible}*/
-}
-{/*footer={null}*/
-}
-{/*onCancel={this.handleCancel}*/
-}
-{/*>*/
-}
-{/*{this.state.link}*/
-}
-{/*</Modal>*/
-}
-{/*</div>*/
-}
