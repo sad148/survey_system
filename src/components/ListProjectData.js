@@ -3,6 +3,7 @@ import {Modal, Input} from 'antd';
 import exportcsv from '../actions/ExportCSV'
 import exportspss from '../actions/ExportSPSS'
 import moment from 'moment'
+import {browserHistory} from 'react-router'
 
 var download = require('../utils/download')
 
@@ -12,7 +13,6 @@ class ListProjectData extends Component {
         input: ""
     }
     componentWillMount = () => {
-        console.log(this.props.projectData)
         this.formData(this.props.projectData)
     }
     componentWillReceiveProps = (nextProps) => {
@@ -84,11 +84,15 @@ class ListProjectData extends Component {
         this.setState({tableData: arr})
     }
 
+    callCreateProject = () => {
+        browserHistory.push("/survey_system/create_project")
+    }
+
     render = () => {
         return (
             <div id={"listProjectsDiv"} style={{height: "100%", padding: "20px"}}>
                 <div id={"createProjectButtonDiv"}>
-                    <input type="submit" value={"Create Project"}></input>
+                    <input type="submit" value={"Create Project"} onClick={this.callCreateProject}></input>
                 </div>
                 <div style={{height: "100%"}}>
                     <table style={{borderCollapse: "separate"}}>

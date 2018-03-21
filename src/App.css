@@ -311,6 +311,34 @@ input[type="submit"] {
     background-color: #17509e;
     border: 0px solid;
     color: white;
-    padding: 10px;
-    border-radius: 20px;
+}
+
+label.ant-radio-button-wrapper {
+    border-radius: 0;
+    width: 20%;
+    margin-right: 2%;
+    text-align: center;
+}
+
+#defaultQues {
+    display: flex;
+}
+
+label.ant-radio-button-wrapper.ant-radio-button-wrapper-checked {
+    background: #17509e;
+    color: white;
+    border-radius: 0;
+    border-color: transparent;
+}
+
+.ant-steps-item-process > .ant-steps-item-content > .ant-steps-item-title {
+    color: #e6f7ff;
+}
+
+.ant-form-item-required {
+    color: white;
+}
+
+textarea#description {
+    resize: none;
 }

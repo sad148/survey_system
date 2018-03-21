@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
-import { Form, Input, Select, Button, Icon, Radio } from 'antd';
+import {Form, Input, Select, Button, Icon, Radio} from 'antd';
+
 var project_name, description, template;
 const RadioGroup = Radio.Group;
 const RadioButton = Radio.Button;
@@ -13,12 +14,12 @@ class CreateProjectStep1 extends Component {
         this.setState({
             confirmDirty: false,
             autoCompleteResult: [],
-            current:0
+            current: 0
         });
     }
 
     componentDidMount = () => {
-        if (this.props.props.data[0] && this.props.props.data[0].template){
+        if (this.props.props.data[0] && this.props.props.data[0].template) {
             this.props.form.setFieldsValue({"project_name": this.props.props.data[0].project_name || ""})
             this.props.form.setFieldsValue({"description": this.props.props.data[0].description || ""})
             this.props.form.setFieldsValue({"template": this.props.props.data[0].template || 1})
@@ -36,9 +37,9 @@ class CreateProjectStep1 extends Component {
                         description: this.props.form.getFieldValue("description")
                     }
                 }
-                this.props.props.dispatch({type:"RESET_CREATE_PROJECT_STEPS"})
-                this.props.props.dispatch({type:"NEXT", payload:step})
-                } else {
+                this.props.props.dispatch({type: "RESET_CREATE_PROJECT_STEPS"})
+                this.props.props.dispatch({type: "NEXT", payload: step})
+            } else {
                 console.log(err);
             }
         });
@@ -58,7 +59,7 @@ class CreateProjectStep1 extends Component {
     render = () => {
         const {getFieldDecorator} = this.props.form;
         return (
-            <Form>
+            <Form style={{paddingLeft: "20%", paddingRight: "25%", color: "white"}}>
                 <FormItem
                     label="Project Name"
                 >
@@ -74,15 +75,16 @@ class CreateProjectStep1 extends Component {
                     label="Description"
                 >
                     {getFieldDecorator('description')(
-                        <TextArea type="text" onBlur={this.handleConfirmBlur} autosize={{ minRows: 2, maxRows: 6 }}/>
+                        <TextArea type="text" style={{borderRadius: "0px"}} onBlur={this.handleConfirmBlur}
+                                  autosize={{minRows: 6, maxRows: 6}}/>
                     )}
                 </FormItem>
                 <FormItem
                     label="Select default questionnaire"
                 >
                     {getFieldDecorator('defaultQues', {
-                        rules:[{
-                            required:true, message:"Please select default questionnaire"
+                        rules: [{
+                            required: true, message: "Please select default questionnaire"
                         }]
                     })(
                         <RadioGroup onChange={this.onChange} value={this.state.template}>
@@ -92,9 +94,7 @@ class CreateProjectStep1 extends Component {
                     )}
                 </FormItem>
                 <FormItem>
-                    <Button id = 'next' type="primary" htmlType="submit" onClick = {this.next}>
-                        Next<Icon type="right" />
-                    </Button>
+                    <input type={"submit"} style={{width: "42%"}} value={"Continue"} onClick={this.next}/>
                 </FormItem>
             </Form>
         );
