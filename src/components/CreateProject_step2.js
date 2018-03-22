@@ -181,6 +181,7 @@ class CreateProjectStep2 extends Component {
                            "marginTop": "10px",
                            width: "15%",
                            float: "right",
+                           "marginBottom": "10px",
                            paddingBottom: "5px",
                            paddingTop: "5px"
                        }}

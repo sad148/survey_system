@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import {SortableContainer, SortableElement, arrayMove} from 'react-sortable-hoc';
-import {Card, Input, Button} from 'antd';
+import {Card, Input, Button, Checkbox} from 'antd';
 import createproject from '../actions/CreateProject'
 import {Spin} from 'antd';
 import {browserHistory} from "react-router";
@@ -31,7 +31,8 @@ class OpenEndedQuestions extends Component {
         checkedQues: [],
         questions: [],
         finalData: [],
-        showLoader: false
+        showLoader: false,
+        selected: 0
     };
 
     previous = () => {
@@ -47,20 +48,38 @@ class OpenEndedQuestions extends Component {
 
     addNewQuestion = () => {
         let question = document.getElementById("question").value;
+        if (question.trim().length == 0) {
+            return alert('Please enter question')
+        }
+        this.setState(prevState => {
+            selected: prevState.selected++
+        })
         let id = uuid().split("-").join("");
         this.state.questions.push({
             question: question,
             questionId: id,
             required: false
         })
-        let display = (<div>
-            <input type='checkbox' id={id + 'checkbox'}/>
-            <Card title={question} style={{width: "100%", marginBottom: "10px"}}>
-                Answer:<Input disabled/><br/><br/>
-            </Card>
+        let display = (<div style={{textAlign: "left"}}>
+            <label className={"fontColor"}>{question}</label>
+            <Checkbox style={{width: "5%", float: "right"}} onChange={() => this.toggleCheckbox(id + 'checkbox')}
+                      defaultChecked
+                      id={id + 'checkbox'}/>
+            <hr/>
         </div>)
         let items = [...this.state.items, display];
         this.setState({items: items})
+    }
+
+    toggleCheckbox = (id) => {
+        if (document.getElementById(id).checked)
+            this.setState(prevState => {
+                selected: prevState.selected++
+            })
+        else
+            this.setState(prevState => {
+                selected: prevState.selected--
+            })
     }
 
     handleSubmit = () => {
@@ -86,30 +105,59 @@ class OpenEndedQuestions extends Component {
     }
 
     render = () => {
-        return (<div>
-            {
-                (this.state.showLoader == true) ? <Spin size="large"></Spin> : ""
-
-            }
-            <Button id='previous' type="primary" htmlType="submit" onClick={this.previous}
-                    style={{"marginLeft": "5px", "marginBottom": "10px"}}>
-                Previous
-            </Button><br/>
-            Add new question:<Input id="question"/><br/>
-            <Button type="primary" htmlType="submit" onClick={this.addNewQuestion}
-                    style={{"marginLeft": "5px", "marginBottom": "10px", "marginTop": "10px"}}>
-                Add
-            </Button>
-            <SortableList items={this.state.items} onSortEnd={this.onSortEnd}/>
-            <Button id='previous' type="primary" htmlType="submit" onClick={this.previous}
-                    style={{"marginLeft": "5px", "marginTop": "10px"}}>
-                Previous
-            </Button>
-            <Button id='create' type="primary" htmlType="submit" onClick={this.handleSubmit}
-                    style={{"marginLeft": "5px", "marginTop": "10px"}}>
-                Create
-            </Button>
-        </div>);
+        return (
+            <div>
+                <div style={{
+                    backgroundColor: "white",
+                    paddingRight: "40px",
+                    paddingTop: "40px",
+                    paddingLeft: "40px",
+                    width: "70%",
+                    marginLeft: "15%",
+                    marginTop: "10px",
+                    textAlign: "center"
+                }}>
+                    <label className={"fontColor"}>Enter new question below. When done select all questions to be
+                        added.</label>
+                    <br/>
+                    <div>
+                        <input id={"question"} type={"text"} placeholder={"Enter New Question"}
+                               style={{
+                                   color: "white",
+                                   backgroundColor: "#356fb7",
+                                   border: "0px",
+                                   width: "40%",
+                                   marginTop: "20px",
+                                   paddingLeft: "15px",
+                                   paddingTop: "5px",
+                                   paddingBottom: "5px"
+                               }}></input>
+                        <input type={"submit"} onClick={this.addNewQuestion}
+                               style={{
+                                   "marginLeft": "5px", "marginBottom": "10px", "marginTop": "10px", paddingTop: "5px",
+                                   paddingBottom: "5px"
+                               }} value={"Add"}>
+                        </input>
+                        <input type={"submit"} style={{float: "right", marginTop: "20px"}}
+                               value={`Selected ${this.state.selected}`}/>
+                    </div>
+                    <SortableList items={this.state.items} onSortEnd={this.onSortEnd}/>
+                    {/*<Button id='create' type="primary" htmlType="submit" onClick={this.handleSubmit}*/}
+                    {/*style={{"marginLeft": "5px", "marginTop": "10px"}}>*/}
+                    {/*Create*/}
+                    {/*</Button>*/}
+                </div>
+                <input type={"submit"} value={"Continue"} style={{
+                    "marginRight": "15%",
+                    "marginTop": "10px",
+                    "marginBottom": "10px",
+                    width: "15%",
+                    float: "right",
+                    paddingBottom: "5px",
+                    paddingTop: "5px"
+                }}/>
+            </div>
+        );
     }
 }
 

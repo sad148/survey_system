@@ -359,3 +359,16 @@ thead.ant-table-thead {
 .ant-checkbox-checked .ant-checkbox-inner:after {
     border-color: #17509e;
 }
+
+::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+    color: white;
+}
+::-moz-placeholder { /* Firefox 19+ */
+    color: white;
+}
+:-ms-input-placeholder { /* IE 10+ */
+    color: white;
+}
+:-moz-placeholder { /* Firefox 18- */
+    color: white;
+}
