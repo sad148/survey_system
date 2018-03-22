@@ -71,13 +71,14 @@ class ListProjectData extends Component {
             )
             arr.push(
                 <tr>
-                    <td style={{textAlign: "left"}}>{item.projectName}</td>
-                    <td>{moment(item.createdAt).format('DD-MM-YYYY')}</td>
-                    <td>{!item.latestDateEntry ? "N/A" : moment(item.latestDateEntry).format('DD-MM-YYYY')}</td>
-                    <td>{!item.response ? 0 : item.response}</td>
-                    <td>{action}&nbsp;<input style={{borderRadius: "0px", paddingTop: "2px", paddingBottom: "2px"}}
-                                             type={"submit"} onClick={() => this.selectOption(item.projectId)}
-                                             value={"Go"}/></td>
+                    <td className={"listProjectsTD"} style={{textAlign: "left"}}>{item.projectName}</td>
+                    <td className={"listProjectsTD"}>{moment(item.createdAt).format('DD-MM-YYYY')}</td>
+                    <td className={"listProjectsTD"}>{!item.latestDateEntry ? "N/A" : moment(item.latestDateEntry).format('DD-MM-YYYY')}</td>
+                    <td className={"listProjectsTD"}>{!item.response ? 0 : item.response}</td>
+                    <td className={"listProjectsTD"}>{action}&nbsp;<input
+                        style={{borderRadius: "0px", paddingTop: "2px", paddingBottom: "2px"}}
+                        type={"submit"} onClick={() => this.selectOption(item.projectId)}
+                        value={"Go"}/></td>
                 </tr>
             )
         })
@@ -92,7 +93,9 @@ class ListProjectData extends Component {
         return (
             <div id={"listProjectsDiv"} style={{height: "100%", padding: "20px"}}>
                 <div id={"createProjectButtonDiv"}>
-                    <input type="submit" value={"Create Project"} onClick={this.callCreateProject}></input>
+                    <input type="submit" style={{paddingTop: "10px", paddingBottom: "10px", borderRadius: "20px"}}
+                           value={"Create Project"}
+                           onClick={this.callCreateProject}></input>
                 </div>
                 <div style={{height: "100%"}}>
                     <table style={{borderCollapse: "separate"}}>
