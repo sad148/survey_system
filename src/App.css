@@ -281,7 +281,8 @@ table {
     -webkit-border-horizontal-spacing: 0px;
 }
 
-td {
+/*css for table data <td> tag for listing projects on homepage*/
+.listProjectsTD {
     text-align: center;
     background-color: #ffffffba;
     padding: 20px;
@@ -341,4 +342,20 @@ label.ant-radio-button-wrapper.ant-radio-button-wrapper-checked {
 
 textarea#description {
     resize: none;
+}
+
+.primaryFontColor {
+    color: #17509e;
+}
+
+thead.ant-table-thead {
+    display: none;
+}
+
+.ant-table.ant-table-small.ant-table-scroll-position-left {
+    border: 0px;
+}
+
+.ant-checkbox-checked .ant-checkbox-inner:after {
+    border-color: #17509e;
 }
