@@ -60,10 +60,6 @@ class CreateProjectStep2 extends Component {
                                   }} type="dislike"/>
                         </div>)
                     tuqData[i].select = (
-                        // <input type="checkbox"
-                        //        onChange={() => this.toggleCheckbox(tuqData[i])}
-                        //        id={tuqData[i].id + "checkbox"}
-                        //        defaultChecked={true}/>
                         <Checkbox id={tuqData[i].id + "checkbox"} defaultChecked
                                   onChange={() => this.toggleCheckbox(tuqData[i])}/>
                     )
@@ -75,7 +71,6 @@ class CreateProjectStep2 extends Component {
         } else { //MUQ
             //api call to get muq questions
             getMUQ.gettuq((muqData) => {
-                console.log(muqData);
                 for (let i = 0; i < muqData.length; i++) {
                     muqData[i].questionId = muqData[i].id
                     this.state.selectedRowKeys.push(muqData[i]);
@@ -83,12 +78,29 @@ class CreateProjectStep2 extends Component {
                     muqData[i].required = true
                     let type = []
                     for (let j = 0; j < muqData[i].limit; j++) {
-                        type[j] = (<div><label>{j + 1}</label><br/><input disabled style={{cursor: "not-allowed"}}
-                                                                          type='radio'/></div>)
+                        type[j] = (
+                            <div style={{marginRight: "5px"}}><label className={"fontColor"}>{j + 1}</label><br/><input
+                                disabled
+                                style={{cursor: "not-allowed"}}
+                                type='radio'/>
+                            </div>)
                     }
-                    muqData[i].type = (<div style={{display: "inline-flex"}}>{type}</div>)
-                    muqData[i].select = (<input type="checkbox" onChange={() => this.toggleCheckbox(muqData[i])}
-                                                id={muqData[i].id + "checkbox"} defaultChecked={true}/>)
+                    muqData[i].type = (
+                        <div style={{display: "inline-flex"}}>
+                            <Icon className={"fontColor"}
+                                  style={{marginRight: "10px", marginTop: "22px"}}
+                                  type="like"/>
+                            {type}
+                            <Icon className={"fontColor"}
+                                  style={{
+                                      marginRight: "10px",
+                                      marginTop: "25px"
+                                  }} type="dislike"/>
+                        </div>)
+                    muqData[i].select = (
+                        <Checkbox id={muqData[i].id + "checkbox"} defaultChecked
+                                  onChange={() => this.toggleCheckbox(muqData[i])}/>
+                    )
                 }
                 this.setState({
                     tableData: muqData
@@ -101,12 +113,10 @@ class CreateProjectStep2 extends Component {
     toggleCheckbox = (data) => {
         let doc = document.getElementById(data.id + "checkbox");
         if (doc.checked) {
-            console.log("inside if");
             //push if question is checked
             this.state.selectedRowKeys.push(data)
         } else {
             //remove if previously checked and then unchecked
-            console.log("inside else")
             this.state.selectedRowKeys = _(this.state.selectedRowKeys, (item) => {
                 return item.id != data.id;
             })
