@@ -121,6 +121,7 @@ class DemographicQuestions extends Component {
         }
         this.props.props.dispatch({type: "RESET_CREATE_PROJECT_STEPS"})
         this.props.props.dispatch({type: "NEXT", payload: step})
+        this.props.props.jumpToStep(3);
     }
 
     onSortEnd = ({oldIndex, newIndex}) => {
