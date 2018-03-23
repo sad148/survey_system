@@ -1,20 +1,12 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux'
-import {Form, Input, Select, Button} from 'antd';
-import {Layout} from 'antd';
-import {Radio} from 'antd';
-import {Steps, message} from 'antd';
-import '../../node_modules/antd/lib/steps/style/index.css'
 import CreateProjectStep1 from '../components/CreateProject_step1'
 import CreateProjectStep2 from '../components/CreateProject_step2'
 import CreateProjectStep3 from '../components/CreateProject_step3'
 import CreateProjectStep4 from '../components/CreateProject_step4'
-
-const Step = Steps.Step;
-const {Content} = Layout;
-const RadioGroup = Radio.Group;
-const FormItem = Form.Item;
-const Option = Select.Option;
+import CreateProjectStep5 from '../components/CreateProject_step5'
+import StepZilla from 'react-stepzilla';
+import '../../node_modules/react-stepzilla/src/css/main.css'
 
 class CreateProject extends Component {
     componentWillMount = () => {
@@ -50,31 +42,31 @@ class CreateProject extends Component {
     }
 
     render = () => {
-        let steps = [{
-            title: 'Project Details',
-            content: <CreateProjectStep1 props={this.props}/>
-        }, {
-            title: 'Default Questionnaire',
-            content: <CreateProjectStep2 props={this.props}/>
-        }, {
-            title: 'Demographic Questions',
-            content: <CreateProjectStep3 props={this.props}/>
-        }, {
-            title: 'Open Ended Questions',
-            content: <CreateProjectStep4 props={this.props}/>
-        }, {
-            title: 'Finish'
-        }];
+        let steps = [
+            {
+                name: 'Project Details',
+                component: <CreateProjectStep1 props={this.props}/>
+            }, {
+                name: 'Default Questionnaire',
+                component: <CreateProjectStep2 props={this.props}/>
+            }, {
+                name: 'Demographic Questions',
+                component: <CreateProjectStep3 props={this.props}/>
+            }, {
+                name: 'Open Ended Questions',
+                component: <CreateProjectStep4 props={this.props}/>
+            },
+            {
+                name: 'Finish',
+                component: <CreateProjectStep5 props={this.props}/>
+            }];
 
         return (
             <div style={{height: "100%", padding: "60px"}}>
                 <div style={{width: "100%", display: "flex"}}>
                     <h1 style={{color: "white", width: "20%"}}>New Project</h1>
                     <div style={{width: "100%"}}>
-                        <Steps progressDot size="small" current={this.state.current}>
-                            {steps.map(item => <Step key={item.title} title={item.title}/>)}
-                        </Steps>
-                        <div className="steps-content">{steps[this.state.current].content}</div>
+                        <StepZilla steps={steps}/>
                     </div>
                 </div>
             </div>

@@ -39,6 +39,7 @@ class CreateProjectStep1 extends Component {
                 }
                 this.props.props.dispatch({type: "RESET_CREATE_PROJECT_STEPS"})
                 this.props.props.dispatch({type: "NEXT", payload: step})
+                this.props.jumpToStep(1);
             } else {
                 console.log(err);
             }

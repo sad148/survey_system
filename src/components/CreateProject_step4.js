@@ -89,19 +89,27 @@ class OpenEndedQuestions extends Component {
                 step4.push(data)
         })
 
-        let finalData = this.props.props.data
-        finalData["step4"] = {questions: step4};
-        finalData["userid"] = sessionStorage.getItem("userid");
-        this.setState({showLoader: true})
-        createproject.createProject(finalData, (resp) => {
-            if (resp.code == 200) {
-                alert('Project created successfully')
-                browserHistory.replace('/survey_system/home');
-                this.props.props.dispatch(getprojectslist(finalData["userid"]));
-            } else {
-                alert('Error in creating project')
+        //let finalData = this.props.props.data
+        //finalData["step4"] = {questions: step4};
+        //finalData["userid"] = sessionStorage.getItem("userid");
+        let step = {
+            step4: {
+                questions: step4
             }
-        })
+        }
+        this.props.props.dispatch({type: "RESET_CREATE_PROJECT_STEPS"})
+        this.props.props.dispatch({type: "NEXT", payload: step})
+        this.props.jumpToStep(4);
+        //this.setState({showLoader: true})
+        // createproject.createProject(finalData, (resp) => {
+        //     if (resp.code == 200) {
+        //         alert('Project created successfully')
+        //         browserHistory.replace('/survey_system/home');
+        //         this.props.props.dispatch(getprojectslist(finalData["userid"]));
+        //     } else {
+        //         alert('Error in creating project')
+        //     }
+        // })
     }
 
     render = () => {
@@ -147,7 +155,7 @@ class OpenEndedQuestions extends Component {
                     {/*Create*/}
                     {/*</Button>*/}
                 </div>
-                <input type={"submit"} value={"Continue"} style={{
+                <input type={"submit"} value={"Continue"} onClick={this.handleSubmit} style={{
                     "marginRight": "15%",
                     "marginTop": "10px",
                     "marginBottom": "10px",
