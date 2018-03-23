@@ -315,7 +315,7 @@ input[type="submit"] {
 }
 
 label.ant-radio-button-wrapper {
-    border-radius: 0;
+    border-rapmdius: 0;
     width: 20%;
     margin-right: 2%;
     text-align: center;
@@ -363,12 +363,27 @@ thead.ant-table-thead {
 ::-webkit-input-placeholder { /* Chrome/Opera/Safari */
     color: white;
 }
+
 ::-moz-placeholder { /* Firefox 19+ */
     color: white;
 }
+
 :-ms-input-placeholder { /* IE 10+ */
     color: white;
 }
+
 :-moz-placeholder { /* Firefox 18- */
     color: white;
+}
+
+.footer-buttons {
+    display: none;
+}
+
+ol.progtrckr {
+    margin-left: 15%;
+}
+
+input {
+    border: 0px;
 }
