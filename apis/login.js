@@ -43,52 +43,6 @@ function login (req, db, cb) {
         .catch((err) => {
             console.log(err);
         })
-
-    // connection.query('select * from user where email = ? AND password = ?', [username,password], (err, response, fields) => {
-    //     if (err) {
-    //         cb({
-    //             code:400,
-    //             message:"Error in sql query"
-    //         })
-    //     } else {
-    //         if (response.length == 0) {
-    //             cb({
-    //                 code:204,
-    //                 message:"Incorrect username/password"
-    //             })
-    //         } else {
-    //             response = response[0]
-    //             delete response.password;
-    //             connection.query('select * from project where user_id = ?',response.user_id, (err, projectResponse) => {
-    //                 if (err) {
-    //                     cb({
-    //                         code:400,
-    //                         message:"Error in sql query"
-    //                     })
-    //                 } else {
-    //                     response.projects = []
-    //                     if (projectResponse.length == 0) {
-    //                         cb({
-    //                             code: 200,
-    //                             message: "No projects created yet",
-    //                             data: response
-    //                         })
-    //                     } else {
-    //                         for (let i = 0; i < projectResponse.length; i++) {
-    //                             delete projectResponse[i].user_id;
-    //                             response.projects.push(projectResponse[i])
-    //                         }
-    //                         console.log(response);
-    //                         cb({
-    //                             code: 200,
-    //                             data: response
-    //                         })
-    //                     }
-    //                 }
-    //             })
-    //         }
-    //     }
-    // })
 }
 
 module.exports.login = login;

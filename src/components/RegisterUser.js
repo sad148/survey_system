@@ -36,10 +36,6 @@ class RegisterUser extends Component {
     componentWillReceiveProps = (nextProps) => {
         if (nextProps.userRegistered == true) {
             this.props.dispatch({type: "RESET_REGISTER_USER"})
-            this.props.dispatch({
-                type: "TOGGLE_REGISTER_MODAL",
-                payload: false
-            })
             this.setState({visibleSuccessModal: true});
         }
     }
@@ -69,6 +65,7 @@ class RegisterUser extends Component {
         this.setState({
             visibleSuccessModal: false
         });
+        this.props.removeMainModal();
     }
 
     render = () => {
@@ -102,7 +99,7 @@ class RegisterUser extends Component {
             <div>
                 <Form style={{paddingRight: "30px"}}>
                     <div id="registerTitleDiv" style={{textAlign: "center", marginBottom: "10px"}}>
-                        <label style={{fontSize: "40px"}}>Register</label>
+                        <label style={{fontSize: "40px"}} className={"fontColor"}>Register</label>
                     </div>
                     <FormItem
                         {...formItemLayout}
@@ -113,7 +110,7 @@ class RegisterUser extends Component {
                                 required: true, message: 'Please enter your first name',
                             }],
                         })(
-                            <Input type="text" onBlur={this.handleConfirmBlur}/>
+                            <Input type="text" className="form-input loginTextBox" onBlur={this.handleConfirmBlur}/>
                         )}
                     </FormItem>
                     <FormItem
@@ -233,7 +230,7 @@ class RegisterUser extends Component {
                                 //     type: 'number',
                                 //     message: 'Please input numbers only!'
                                 // }
-                                ],
+                            ],
                         })(
                             <Input style={{width: '100%'}}/>
                         )}

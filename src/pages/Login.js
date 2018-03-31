@@ -20,15 +20,6 @@ class Login extends Component {
     }
 
     componentWillReceiveProps = (nextProps) => {
-        if (this.props.toggleRegisterModal == true && nextProps.toggleRegisterModal == false) {
-            this.setState({
-                visible: false
-            });
-        } else if (this.props.toggleRegisterModal == false && nextProps.toggleRegisterModal == true) {
-            this.setState({
-                visible: true
-            });
-        }
         if (nextProps.loginSuccess == true) {
             this.props.dispatch({type: "RESET_LOGIN"})
             browserHistory.replace('/survey_system/home');
@@ -52,9 +43,16 @@ class Login extends Component {
     }
 
     handleCancel = (e) => {
-        this.setState({
-            visible: false,
-        });
+        console.log(this.state.visible)
+        if (this.state.visible) {
+            this.setState({
+                visible: false
+            });
+        } else {
+            this.setState({
+                visible: true
+            });
+        }
     }
 
     render = () => {
@@ -108,17 +106,18 @@ class Login extends Component {
                             </div>
                         </FormItem>
                         <div id="registerLinkDiv">
-                            <label id="registerLink" className={"fontColor"}>Not registered,<a
-                                onClick={() => this.props.dispatch({
-                                    type: "TOGGLE_REGISTER_MODAL",
-                                    payload: true
-                                })}>CLICK HERE</a></label>
+                            <label id="registerLink" className={"fontColor"}>Not registered,
+                                <a
+                                    onClick={this.handleCancel}
+                                >
+                                    CLICK HERE
+                                </a></label>
                         </div>
                     </Form>
                     <Modal visible={this.state.visible} footer={null}
                            style={{top: 20}}
-                           bodyStyle={{backgroundColor: "#356fb7"}}
-                           onCancel={this.handleCancel}><RegisterUser/></Modal>
+                           bodyStyle={{backgroundColor: "white"}}
+                           onCancel={this.handleCancel}><RegisterUser removeMainModal={this.handleCancel}/></Modal>
                     <Error/>
                 </div>
             </div>
@@ -129,7 +128,6 @@ class Login extends Component {
 
 const mapStateToProps = (store) => {
     return {
-        toggleRegisterModal: store.toggleModal.toggleRegisterModal,
         loginSuccess: store.login.loginSuccess,
         data: store.login.data,
         message: store.login.message

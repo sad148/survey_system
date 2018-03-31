@@ -168,7 +168,7 @@ div#mainLayout {
 }
 
 input.ant-input {
-    border: 0px solid;
+    border: solid 1px #5473b7;
     border-radius: 0px;
 }
 
@@ -392,4 +392,14 @@ input {
 .loginTextBox {
     border: solid 1px #5473b7;
     background-color: #e5e6e7;
+}
+
+.ant-select-selection.ant-select-selection--single {
+    border: solid 1px #5473b7;
+    border-radius: 0px;
+    background-color: #e5e6e7;
+}
+
+.ant-select-selection__placeholder, .ant-select-search__field__placeholder {
+    color: #356fb6;
 }
