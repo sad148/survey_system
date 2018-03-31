@@ -72,15 +72,16 @@ class Login extends Component {
                 <div id="loginFormContainer">
                     <Form className="login-form">
                         <div id="loginTextContainer">
-                            <label style={{fontSize: "50px"}} id="loginText">Login</label>
+                            <label style={{fontSize: "50px"}} id="loginText" className={"fontColor"}>Login</label>
                         </div>
                         <FormItem>
                             {getFieldDecorator('username', {
                                 rules: [{required: true, message: 'Please input your email'}],
                             })(
                                 <div>
-                                    <label style={{color: "red"}}>*</label>&nbsp;<label>E-mail</label>
-                                    <Input id='username' className="form-input" autoComplete="off"
+                                    <label style={{color: "red"}}>*</label>&nbsp;<label
+                                    className={"fontColor"}>E-mail</label>
+                                    <Input id='username' className="form-input loginTextBox" autoComplete="off"
                                            prefix={<Icon type="user" style={{color: 'rgba(0,0,0,.25)'}}/>}/>
                                 </div>
                             )}
@@ -90,8 +91,9 @@ class Login extends Component {
                                 rules: [{required: true, message: 'Please input your Password!'}],
                             })(
                                 <div>
-                                    <label style={{color: "red"}}>*</label>&nbsp;<label>Password</label>
-                                    <Input id='password' className="form-input"
+                                    <label style={{color: "red"}}>*</label>&nbsp;<label
+                                    className={"fontColor"}>Password</label>
+                                    <Input id='password' className="form-input loginTextBox"
                                            prefix={<Icon type="lock" style={{color: 'rgba(0,0,0,.25)'}}/>}
                                            type="password"/>
                                 </div>
@@ -106,11 +108,11 @@ class Login extends Component {
                             </div>
                         </FormItem>
                         <div id="registerLinkDiv">
-                            <label id="registerLink">Not registered,<a style={{color: "#e3f4fd"}}
-                                                                       onClick={() => this.props.dispatch({
-                                                                           type: "TOGGLE_REGISTER_MODAL",
-                                                                           payload: true
-                                                                       })}>CLICK HERE</a></label>
+                            <label id="registerLink" className={"fontColor"}>Not registered,<a
+                                onClick={() => this.props.dispatch({
+                                    type: "TOGGLE_REGISTER_MODAL",
+                                    payload: true
+                                })}>CLICK HERE</a></label>
                         </div>
                     </Form>
                     <Modal visible={this.state.visible} footer={null}
