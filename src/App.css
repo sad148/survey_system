@@ -49,7 +49,7 @@ div#loginFormContainer {
     padding-right: 60px;
     padding-bottom: 40px;
     padding-left: 60px;
-    background-color: #356fb7;
+    background-color: white;
     border-radius: 10px;
     justify-self: center;
     justify-items: center;
@@ -185,7 +185,8 @@ div#navbarTitle {
 }
 
 .fontColor {
-    color: #17509e;
+    color: #356fb6;
+    font-weight: bold;
 }
 
 div#mainLayout {
@@ -386,4 +387,9 @@ ol.progtrckr {
 
 input {
     border: 0px;
+}
+
+.loginTextBox {
+    border: solid 1px #5473b7;
+    background-color: #e5e6e7;
 }
