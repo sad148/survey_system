@@ -140,7 +140,7 @@ class CreateProjectStep2 extends Component {
                 marginTop: "10px"
             }}>
                 <div className={"tableDivBlock"}>
-                    <label className={"primaryFontColor"}>Please choose the default
+                    <label className={"fontColor"}>Please choose the default
                         questions provided by selecting the
                         box.</label>
                     <table style={{borderCollapse: "separate"}} cellPadding={10}>

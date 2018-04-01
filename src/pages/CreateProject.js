@@ -62,7 +62,7 @@ class CreateProject extends Component {
             }];
 
         return (
-            <div style={{height: "100%", padding: "60px"}}>
+            <div style={{height: "100%", paddingRight: "60px", paddingLeft: "60px", paddingBottom: "60px"}}>
                 <div style={{width: "100%"}}>
                     <div style={{textAlign: "center"}}>
                         <h1 style={{color: "white"}}>New Project</h1>

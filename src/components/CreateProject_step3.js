@@ -24,12 +24,10 @@ class CreateProjectStep3 extends Component {
     render = () => {
         return (
             <div style={{marginTop: "10px"}}>
-                <Button id='next' type="primary" onClick={this.addQuestionPopup} style={{"marginLeft": "5px"}}>
-                    Add new question
-                </Button> <br/><br/>
                 {(this.props.renderDemographicQuestion == true) ?
-                    <DemographicQuestions data={this.state.newQuestion} render={true} props={this.props}/> :
-                    <DemographicQuestions render={false} props={this.props}/>}
+                    <DemographicQuestions addQuestionPopup={this.addQuestionPopup} data={this.state.newQuestion}
+                                          render={true} props={this.props}/> :
+                    <DemographicQuestions addQuestionPopup={this.addQuestionPopup} render={false} props={this.props}/>}
                 {(this.state.addNewQuestion == true) ? <AddQuestionPopup props={this.props}/> : ""}
             </div>
         );
