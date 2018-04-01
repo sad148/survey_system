@@ -260,7 +260,7 @@ button#register { /*{ where button is css attribute hence no . or #*/
 }
 
 .content {
-    background-color: rgba(53, 111, 183, 0.91);
+    background-color: #6299d1;
     overflow-y: auto;
 }
 
@@ -322,10 +322,6 @@ label.ant-radio-button-wrapper {
     text-align: center;
 }
 
-#defaultQues {
-    display: flex;
-}
-
 label.ant-radio-button-wrapper.ant-radio-button-wrapper-checked {
     background: #17509e;
     color: white;
@@ -343,10 +339,6 @@ label.ant-radio-button-wrapper.ant-radio-button-wrapper-checked {
 
 textarea#description {
     resize: none;
-}
-
-.primaryFontColor {
-    color: #17509e;
 }
 
 thead.ant-table-thead {
@@ -402,4 +394,57 @@ input {
 
 .ant-select-selection__placeholder, .ant-select-search__field__placeholder {
     color: #356fb6;
+}
+
+.ant-radio-group {
+    width: 100%
+}
+
+span .ant-checkbox-checked .ant-checkbox-inner:after {
+    display: block;
+}
+
+.questionTD {
+    font-weight: lighter;
+    text-align: left;
+    padding-right: 5px;
+    border-top: solid 1.1px #17509d;
+    border-bottom: solid 1.1px #17509d;
+    border-left: solid 1.1px #17509d;
+    vertical-align: baseline;
+}
+
+.answerTD {
+    border-top: 1.1px solid rgb(23, 80, 157);
+    border-bottom: 1.1px solid rgb(23, 80, 157);
+}
+
+.checkBoxTD {
+    border-top: 1.1px solid rgb(23, 80, 157);
+    border-bottom: 1.1px solid rgb(23, 80, 157);
+    border-right: 1.1px solid rgb(23, 80, 157);
+}
+
+.tableDivBlock {
+    padding-right: 40px;
+    padding-left: 40px;
+    background-color: white;
+    text-align: center;
+    width: 70%;
+    height: 61vh;
+    overflow-y: auto;
+    margin-left: 15%;
+}
+
+@media only screen and (max-width: 1024px) {
+    .tableDivBlock {
+        height: 64vh;
+    }
+}
+
+@media only screen and (max-width: 769px) {
+    .tableDivBlock {
+        width: 100%;
+        margin-left: 0%;
+    }
 }

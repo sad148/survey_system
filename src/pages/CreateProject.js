@@ -63,8 +63,10 @@ class CreateProject extends Component {
 
         return (
             <div style={{height: "100%", padding: "60px"}}>
-                <div style={{width: "100%", display: "flex"}}>
-                    <h1 style={{color: "white", width: "20%"}}>New Project</h1>
+                <div style={{width: "100%"}}>
+                    <div style={{textAlign: "center"}}>
+                        <h1 style={{color: "white"}}>New Project</h1>
+                    </div>
                     <div style={{width: "100%"}}>
                         <StepZilla steps={steps}/>
                     </div>

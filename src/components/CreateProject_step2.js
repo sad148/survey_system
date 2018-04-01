@@ -1,23 +1,9 @@
 import React, {Component} from 'react';
-import {Icon, Table, Checkbox} from 'antd';
+import {Icon, Checkbox} from 'antd';
 
 var _ = require('lodash/remove')
 var getTUQ = require('../actions/GetTUQ');
 var getMUQ = require('../actions/GetMUQ');
-
-const columns = [{
-    title: 'Questions',
-    dataIndex: 'question',
-    width: "70%"
-}, {
-    title: 'Type',
-    dataIndex: 'type',
-    width: "25%"
-}, {
-    title: 'Select',
-    dataIndex: 'select',
-    width: "25%"
-}];
 
 class CreateProjectStep2 extends Component {
     componentWillMount = () => {
@@ -38,28 +24,28 @@ class CreateProjectStep2 extends Component {
                     this.state.selectedRowKeys.push(tuqData[i]);
                     tuqData[i].key = tuqData[i].id
                     tuqData[i].required = true
-                    let type = [];
+                    let answer = [];
                     for (let j = 0; j < tuqData[i].limit; j++) {
-                        type[j] = (
+                        answer[j] = (
                             <div style={{marginRight: "5px"}}><label className={"fontColor"}>{j + 1}</label><br/><input
                                 disabled
                                 style={{cursor: "not-allowed"}}
                                 type='radio'/>
                             </div>)
                     }
-                    tuqData[i].type = (
+                    tuqData[i].answer = (
                         <div style={{display: "inline-flex"}}>
                             <Icon className={"fontColor"}
                                   style={{marginRight: "10px", marginTop: "22px"}}
                                   type="like"/>
-                            {type}
+                            {answer}
                             <Icon className={"fontColor"}
                                   style={{
                                       marginRight: "10px",
                                       marginTop: "25px"
                                   }} type="dislike"/>
                         </div>)
-                    tuqData[i].select = (
+                    tuqData[i].checkbox = (
                         <Checkbox id={tuqData[i].id + "checkbox"} defaultChecked
                                   onChange={() => this.toggleCheckbox(tuqData[i])}/>
                     )
@@ -76,28 +62,28 @@ class CreateProjectStep2 extends Component {
                     this.state.selectedRowKeys.push(muqData[i]);
                     muqData[i].key = muqData[i].id
                     muqData[i].required = true
-                    let type = []
+                    let answer = []
                     for (let j = 0; j < muqData[i].limit; j++) {
-                        type[j] = (
+                        answer[j] = (
                             <div style={{marginRight: "5px"}}><label className={"fontColor"}>{j + 1}</label><br/><input
                                 disabled
                                 style={{cursor: "not-allowed"}}
                                 type='radio'/>
                             </div>)
                     }
-                    muqData[i].type = (
+                    muqData[i].answer = (
                         <div style={{display: "inline-flex"}}>
                             <Icon className={"fontColor"}
                                   style={{marginRight: "10px", marginTop: "22px"}}
                                   type="like"/>
-                            {type}
+                            {answer}
                             <Icon className={"fontColor"}
                                   style={{
                                       marginRight: "10px",
                                       marginTop: "25px"
                                   }} type="dislike"/>
                         </div>)
-                    muqData[i].select = (
+                    muqData[i].checkbox = (
                         <Checkbox id={muqData[i].id + "checkbox"} defaultChecked
                                   onChange={() => this.toggleCheckbox(muqData[i])}/>
                     )
@@ -153,25 +139,35 @@ class CreateProjectStep2 extends Component {
             <div style={{
                 marginTop: "10px"
             }}>
-                <div style={{
-                    paddingTop: "40px", paddingRight: "40px", paddingLeft: "40px",
-                    backgroundColor: "white",
-                    textAlign: "center",
-                    width: "70%",
-                    marginLeft: "15%"
-                }}>
+                <div className={"tableDivBlock"}>
                     <label className={"primaryFontColor"}>Please choose the default
                         questions provided by selecting the
                         box.</label>
-                    <div style={{marginBottom: 16}}>
-                        <input type="submit" style={{backgroundColor: "#356fb7", float: "right"}}
-                               value={hasSelected ? `Selected ${selectedRowKeys.length} items` : ''}>
-
-                        </input>
-                    </div>
-                    <Table size="small" bordered={false} columns={columns} style={{marginTop: "5%"}}
-                           dataSource={this.state.tableData}
-                           pagination={{pageSize: 7}}/>
+                    <table style={{borderCollapse: "separate"}} cellPadding={10}>
+                        <thead>
+                        <tr>
+                            <th className={"fontColor"} style={{textAlign: "left"}}>Question</th>
+                            <th className={"fontColor"}>Answer</th>
+                            <th className={"fontColor"}><input type="submit"
+                                                               style={{backgroundColor: "#356fb7"}}
+                                                               value={hasSelected ? `Selected ${selectedRowKeys.length}` : ''}/>
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {
+                            this.state.tableData.map(item => {
+                                return (
+                                    <tr style={{border: "1px solid #17509d", padding: "10px"}}>
+                                        <td width="50%" className={"fontColor questionTD"}>{item.question}</td>
+                                        <td className={"answerTD"}>{item.answer}</td>
+                                        <td className={"checkBoxTD"}>{item.checkbox}</td>
+                                    </tr>
+                                )
+                            })
+                        }
+                        </tbody>
+                    </table>
                 </div>
                 <input type={"submit"}
                        id='next'

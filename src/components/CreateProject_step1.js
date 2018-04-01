@@ -61,37 +61,44 @@ class CreateProjectStep1 extends Component {
         const {getFieldDecorator} = this.props.form;
         return (
             <Form style={{paddingLeft: "20%", paddingRight: "25%", color: "white"}}>
-                <FormItem
-                    label="Project Name"
-                >
+                <FormItem>
                     {getFieldDecorator('project_name', {
                         rules: [{
                             required: true, message: 'Please enter you project name',
                         }],
                     })(
-                        <Input type="text" onBlur={this.handleConfirmBlur}/>
+                        <div>
+                            <label style={{color: "red"}}>*</label>&nbsp;<label
+                            style={{color: "white", fontWeight: "bold"}}>Project Name</label>
+                            <Input style={{backgroundColor: "white"}} type="text" onBlur={this.handleConfirmBlur}/>
+                        </div>
                     )}
                 </FormItem>
-                <FormItem
-                    label="Description"
-                >
+                <FormItem>
                     {getFieldDecorator('description')(
-                        <TextArea type="text" style={{borderRadius: "0px"}} onBlur={this.handleConfirmBlur}
-                                  autosize={{minRows: 6, maxRows: 6}}/>
+                        <div>
+                            <label style={{color: "white", fontWeight: "bold"}}>Description</label>
+                            <TextArea type="text" style={{borderRadius: "0px", backgroundColor: "white"}}
+                                      onBlur={this.handleConfirmBlur}
+                                      autosize={{minRows: 6, maxRows: 6}}/>
+                        </div>
                     )}
                 </FormItem>
-                <FormItem
-                    label="Select default questionnaire"
-                >
+                <FormItem>
                     {getFieldDecorator('defaultQues', {
                         rules: [{
                             required: true, message: "Please select default questionnaire"
                         }]
                     })(
-                        <RadioGroup onChange={this.onChange} value={this.state.template}>
-                            <RadioButton value={1}>TUQ</RadioButton>
-                            <RadioButton value={2}>MUQ</RadioButton>
-                        </RadioGroup>
+                        <div>
+                            <label style={{color: "red"}}>*</label>&nbsp;<label
+                            style={{color: "white", fontWeight: "bold"}}>Please select default
+                            questionnaire</label><br/>
+                            <RadioGroup onChange={this.onChange} value={this.state.template}>
+                                <RadioButton value={1}>TUQ</RadioButton>
+                                <RadioButton value={2}>MUQ</RadioButton>
+                            </RadioGroup>
+                        </div>
                     )}
                 </FormItem>
                 <FormItem>
