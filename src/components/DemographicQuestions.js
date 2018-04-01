@@ -152,8 +152,6 @@ class DemographicQuestions extends Component {
     }
 
     render = () => {
-        const {items} = this.state;
-        const hasSelected = items.length > 0;
         return (<div style={{marginTop: "10px"}}>
             <div className={"tableDivBlock"} style={{marginTop: "10px"}}>
                 <input type={"submit"} value={"Add new question"} style={{
@@ -168,7 +166,7 @@ class DemographicQuestions extends Component {
                         <th className={"fontColor"} style={{textAlign: "left"}}>Answer</th>
                         <th className={"fontColor"}><input type="submit"
                                                            style={{backgroundColor: "#356fb7"}}
-                                                           value={hasSelected ? `Selected ${this.state.selectedQuestions}` : ''}
+                                                           value={`Selected ${this.state.selectedQuestions}`}
                         />
                         </th>
                     </tr>
