@@ -8,6 +8,7 @@ function exportcsv(projectId, cb) {
         .set('Content-Type', 'application/json')
         .end((err, res) => {
             if (err) {
+                alert("Error in exporting csv")
                 console.log("Error", err);
             }
             else {

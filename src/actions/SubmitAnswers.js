@@ -8,6 +8,7 @@ function submitAnswers(data, cb) {
         .send({data: data})
         .end((err, res) => {
             if (err) {
+                alert("Error in submitting answer")
                 console.log("Error", err);
             }
             else {
@@ -15,7 +16,7 @@ function submitAnswers(data, cb) {
                     cb(res.body)
                 }
                 else {
-                    cb(res.body)
+                    alert(res.body.message)
                 }
             }
         })

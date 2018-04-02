@@ -8,6 +8,7 @@ function exportspss(projectId, cb) {
         .set('Content-Type', 'application/json')
         .end((err, res) => {
             if (err) {
+                alert("Error in exporting spss")
                 console.log("Error", err);
             }
             else {

@@ -12,7 +12,7 @@ function exportcsv(req, db, cb) {
         if (res.length == 0) {
             cb({
                 code: 204,
-                message: "Error"
+                message: "Error in exporting csv"
             })
         } else {
             let columns = [];
@@ -113,12 +113,20 @@ function exportcsv(req, db, cb) {
                         csv = csv.split("\r")
                         columns = csv[0];
                         fs.writeFile("export.csv", csv, function (err, res) {
+                            if (err) {
+                                cb({
+                                    code: 400,
+                                    message: "Error in exporting csv"
+                                })
+                            } else {
+                                cb({
+                                    code: 200,
+                                    message: "Success",
+                                    data: csv
+                                })
+                            }
                         })
-                        cb({
-                            code: 200,
-                            message: "Success",
-                            data: csv
-                        })
+
                     }
                 })
         }

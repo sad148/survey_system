@@ -6,9 +6,10 @@ function getTUQ(cb) {
     request
         .get(apiUrl + 'muq')
         .set('Content-Type', 'application/json')
-        .end((err,res) => {
-            if(err) {
-                console.log("Error",err);
+        .end((err, res) => {
+            if (err) {
+                alert("Error in retrieving MAUQ questions")
+                cb([]);
             }
             else {
                 cb(res.body.data)

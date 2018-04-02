@@ -43,7 +43,8 @@ class ListProjectData extends Component {
             }
             else {
                 this.setState({showLoader: false})
-                this.props.dispatch({type: "DISPLAY_ERROR", message: "Error in exporting"})
+                alert(response.message)
+                //this.props.dispatch({type: "DISPLAY_ERROR", message: "Error in exporting"})
             }
         })
     }
@@ -56,9 +57,9 @@ class ListProjectData extends Component {
                 window.location.href = `http://localhost:3009/download/${projectId}`;
             } else {
                 this.setState({showLoader: false})
-                this.props.dispatch({type: "DISPLAY_ERROR", message: "Error in exporting"})
+                alert(response.message)
+                //this.props.dispatch({type: "DISPLAY_ERROR", message: "Error in exporting"})
             }
-
         })
     }
 

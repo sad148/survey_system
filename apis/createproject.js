@@ -52,15 +52,17 @@ function createproject(req, db, cb) {
                             })
                         })
                         .catch((err) => {
-                            console.log("insert err", err);
+                            cb({code: 400, message: "Error in creating project"})
+                            //console.log("insert err", err);
                         })
                 })
                 .catch((err) => {
-                    console.log("err", err);
+                    cb({code: 400, message: "Error in creating project"})
+                    //console.log("err", err);
                 })
         })
         .catch((err) => {
-
+            cb({code: 400, message: "Error in creating project"})
         })
 }
 

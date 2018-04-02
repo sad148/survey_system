@@ -9,7 +9,7 @@ function exportspss(req, db, cb) {
         if (res.length == 0) {
             cb({
                 code: 204,
-                message: "Error"
+                message: "Error in exporting spss"
             })
         } else {
             let columns = [];
@@ -135,14 +135,14 @@ function exportspss(req, db, cb) {
                                     } else {
                                         cb({
                                             code: 400,
-                                            message: err
+                                            message: "Error in exporting spss"
                                         })
                                     }
                                 })
                             } else {
                                 cb({
                                     code: 400,
-                                    message: e
+                                    message: "Error in exporting spss"
                                 })
                             }
                         })

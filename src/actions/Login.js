@@ -9,6 +9,7 @@ export default function login(data) {
             .send({data: data})
             .end((err, res) => {
                 if (err) {
+                    alert("Error in logging in")
                     console.log("Error", err);
                 }
                 else {
