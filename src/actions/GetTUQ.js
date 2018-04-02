@@ -1,8 +1,7 @@
 var request = require('superagent');
 
 function getTUQ(cb) {
-    //let apiUrl = sessionStorage.getItem('apiurl');
-    let apiUrl = 'http://localhost:3009/'
+    let apiUrl = sessionStorage.getItem("apiurl");
     request
         .get(apiUrl + 'tuq')
         .set('Content-Type', 'application/json')

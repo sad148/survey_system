@@ -1,7 +1,7 @@
 var request = require('superagent');
 
 function exportspss(projectId, cb) {
-    let apiUrl = 'http://localhost:3009/'
+    let apiUrl = sessionStorage.getItem("apiurl");
     request
         .post(apiUrl + 'exportspss')
         .send({projectId: projectId})

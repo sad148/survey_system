@@ -2,9 +2,7 @@ var request = require('superagent');
 
 export default function registerUser(data) {
     return function (dispatch) {
-        //let apiUrl = sessionStorage.getItem('apiurl');
-        let apiUrl = 'http://localhost:3009/'
-        console.log("inside registeruser api")
+        let apiUrl = sessionStorage.getItem("apiurl");
         request
             .post(apiUrl + 'registerUser')
             .set('Content-Type', 'application/json')

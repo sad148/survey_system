@@ -1,8 +1,7 @@
 var request = require('superagent');
 
 function getProjectQuestions(projectId, cb) {
-    //let apiUrl = sessionStorage.getItem('apiurl');
-    let apiUrl = 'http://localhost:3009/'
+    let apiUrl = sessionStorage.getItem("apiurl");
     request
         .post(apiUrl + 'getprojectquestions')
         .send({projectId: projectId})

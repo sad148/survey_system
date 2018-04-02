@@ -1,8 +1,7 @@
 var request = require('superagent');
 
 function createProject(data, cb) {
-    let apiUrl = 'http://localhost:3009/'
-    console.log(data);
+    let apiUrl = sessionStorage.getItem("apiurl");
     request
         .post(apiUrl + 'createproject')
         .set('Content-Type', 'application/json')

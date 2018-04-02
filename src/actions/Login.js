@@ -2,7 +2,7 @@ var request = require('superagent');
 
 export default function login(data) {
     return function (dispatch) {
-        let apiUrl = 'http://localhost:3009/'
+        let apiUrl = sessionStorage.getItem("apiurl");
         request
             .post(apiUrl + 'login')
             .set('Content-Type', 'application/json')

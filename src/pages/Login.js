@@ -1,18 +1,16 @@
 import React, {Component} from 'react';
 import RegisterUser from '../components/RegisterUser.js';
 import login from '../actions/Login.js';
-import {Layout} from 'antd';
 import {connect} from 'react-redux';
 import {browserHistory} from 'react-router';
 import Error from '../components/Error.js'
-import {Form, Icon, Input, Button, Modal, Card} from 'antd';
-
-const {Header, Footer, Sider, Content} = Layout;
+import {Form, Icon, Input, Modal} from 'antd';
 
 const FormItem = Form.Item;
 
 class Login extends Component {
     componentWillMount = () => {
+        sessionStorage.setItem("apiurl", "http://localhost:3009/")
         this.setState({
             showRegister: false,
             visible: false

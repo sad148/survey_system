@@ -2,9 +2,7 @@ var request = require('superagent');
 
 export default function getprojectslist(userid) {
     return function (dispatch) {
-        console.log("userid", userid);
-        //let apiUrl = sessionStorage.getItem('apiurl');
-        let apiUrl = 'http://localhost:3009/'
+        let apiUrl = sessionStorage.getItem("apiurl");
         request
             .post(apiUrl + 'getprojectslist')
             .set('Content-Type', 'application/json')
