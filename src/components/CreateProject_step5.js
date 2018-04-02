@@ -1,17 +1,44 @@
 import React, {Component} from 'react'
 import {Input, Icon} from 'antd';
+import {browserHistory} from "react-router";
+import getprojectslist from '../actions/GetProjectsList'
+import createproject from '../actions/CreateProject'
+import Loader from './Loader'
 
 const TextArea = Input.TextArea
 
 class CreateProjectStep5 extends Component {
-    componentWillMount = () => {
-        console.log(this.props.props)
+    state = {
+        showLoader: false
     }
+    handleSubmit = () => {
+        let finalData = this.props.props.data
+        finalData["userid"] = sessionStorage.getItem("userid");
+        createproject.createProject(finalData, (resp) => {
+            if (resp.code == 200) {
+                this.setState({
+                    showLoader: false
+                })
+                alert('Project created successfully')
+                browserHistory.replace('/survey_system/home');
+                this.props.props.dispatch(getprojectslist(finalData["userid"]));
+            } else {
+                this.setState({
+                    showLoader: false
+                })
+                alert('Error in creating project')
+            }
+        })
+    }
+
     render = () => {
         return (
             <div style={{
                 marginTop: "10px"
             }}>
+                <div>
+                    {this.state.showLoader ? <Loader/> : ""}
+                </div>
                 <div style={{
                     paddingTop: "10px", paddingRight: "40px", paddingLeft: "40px", paddingBottom: "40px",
                     backgroundColor: "#f1f2f2",
@@ -33,7 +60,8 @@ class CreateProjectStep5 extends Component {
                             borderRadius: "0px",
                             width: "90%",
                             cursor: "not-allowed",
-                            backgroundColor: "white"
+                            backgroundColor: "white",
+                            color: "black"
                         }} disabled
                                   value={this.props.props.data.step1.description || ""}
                                   autosize={{minRows: 4, maxRows: 4}}/><Icon
@@ -77,7 +105,7 @@ class CreateProjectStep5 extends Component {
                     float: "right",
                     paddingBottom: "5px",
                     paddingTop: "5px"
-                }} value={"Submit"}></input>
+                }} value={"Submit"} onClick={this.handleSubmit}></input>
             </div>
         )
     }
