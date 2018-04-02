@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import {arrayMove} from 'react-sortable-hoc';
 import {Input, Checkbox} from 'antd';
 import Sortable from 'react-sortablejs';
+import Loader from './Loader'
 
 var getDemographic = require('../actions/GetDemographic');
 var _ = require('lodash/includes');
@@ -13,7 +14,8 @@ class DemographicQuestions extends Component {
         checkedQues: [],
         questions: [],
         finalData: [],
-        selectedQuestions: 0
+        selectedQuestions: 0,
+        showLoader: true
     };
 
     componentDidMount = () => {
@@ -64,7 +66,8 @@ class DemographicQuestions extends Component {
                     )
                 }
             }
-            this.setState({items: row, selectedQuestions: row.length})
+            console.log("inside component did mount");
+            this.setState({items: row, selectedQuestions: row.length, showLoader: false})
         })
     }
 
@@ -152,46 +155,50 @@ class DemographicQuestions extends Component {
     }
 
     render = () => {
-        return (<div style={{marginTop: "10px"}}>
-            <div className={"tableDivBlock"} style={{marginTop: "10px"}}>
-                <input type={"submit"} value={"Add new question"} style={{
-                    marginTop: "10px", paddingBottom: "5px",
-                    paddingTop: "5px"
-                }}
-                       onClick={this.props.addQuestionPopup}/>
-                <table style={{borderCollapse: "separate"}} cellPadding={10}>
-                    <thead>
-                    <tr>
-                        <th className={"fontColor"} style={{textAlign: "left"}}>Question</th>
-                        <th className={"fontColor"} style={{textAlign: "left"}}>Answer</th>
-                        <th className={"fontColor"}><input type="submit"
-                                                           style={{backgroundColor: "#356fb7"}}
-                                                           value={`Selected ${this.state.selectedQuestions}`}
-                        />
-                        </th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <Sortable style={{width: "100%", display: "contents"}}
-                              onSortEnd={this.onSortEnd}>{this.state.items}</Sortable>
-                    </tbody>
-                </table>
-            </div>
-            <input type={"submit"}
-                   id='next'
-                   onClick={this.next}
-                   value={"Continue"}
-                   style={{
-                       "marginRight": "15%",
-                       "marginTop": "10px",
-                       width: "15%",
-                       float: "right",
-                       "marginBottom": "10px",
-                       paddingBottom: "5px",
-                       paddingTop: "5px"
-                   }}
-            />
-        </div>);
+        return (
+            <div style={{marginTop: "10px"}}>
+                <div>
+                    {this.state.showLoader ? <Loader/> : ""}
+                </div>
+                <div className={"tableDivBlock"} style={{marginTop: "10px"}}>
+                    <input type={"submit"} value={"Add new question"} style={{
+                        marginTop: "10px", paddingBottom: "5px",
+                        paddingTop: "5px"
+                    }}
+                           onClick={this.props.addQuestionPopup}/>
+                    <table style={{borderCollapse: "separate"}} cellPadding={10}>
+                        <thead>
+                        <tr>
+                            <th className={"fontColor"} style={{textAlign: "left"}}>Question</th>
+                            <th className={"fontColor"} style={{textAlign: "left"}}>Answer</th>
+                            <th className={"fontColor"}><input type="submit"
+                                                               style={{backgroundColor: "#356fb7"}}
+                                                               value={`Selected ${this.state.selectedQuestions}`}
+                            />
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <Sortable style={{width: "100%", display: "contents"}}
+                                  onSortEnd={this.onSortEnd}>{this.state.items}</Sortable>
+                        </tbody>
+                    </table>
+                </div>
+                <input type={"submit"}
+                       id='next'
+                       onClick={this.next}
+                       value={"Continue"}
+                       style={{
+                           "marginRight": "15%",
+                           "marginTop": "10px",
+                           width: "15%",
+                           float: "right",
+                           "marginBottom": "10px",
+                           paddingBottom: "5px",
+                           paddingTop: "5px"
+                       }}
+                />
+            </div>);
     }
 }
 

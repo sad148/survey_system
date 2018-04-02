@@ -4,18 +4,21 @@ import exportcsv from '../actions/ExportCSV'
 import exportspss from '../actions/ExportSPSS'
 import moment from 'moment'
 import {browserHistory} from 'react-router'
+import Loader from './Loader'
 
 var download = require('../utils/download')
 
 class ListProjectData extends Component {
     state = {
         visible: false,
-        input: ""
+        input: "",
+        showLoader: true
     }
     componentWillMount = () => {
         this.formData(this.props.projectData)
     }
     componentWillReceiveProps = (nextProps) => {
+        this.setState({showLoader: true})
         this.formData(nextProps.projectData)
     }
 
@@ -32,20 +35,30 @@ class ListProjectData extends Component {
     }
 
     exportcsv = (projectId) => {
+        this.setState({showLoader: true})
         exportcsv.exportcsv(projectId, (response) => {
-            if (response.code == 200)
+            if (response.code == 200) {
                 download.download(response.data, "export.csv", "text/csv");
-            else
+                this.setState({showLoader: false})
+            }
+            else {
+                this.setState({showLoader: false})
                 this.props.dispatch({type: "DISPLAY_ERROR", message: "Error in exporting"})
+            }
         })
     }
 
     exportspss = (projectId) => {
+        this.setState({showLoader: true})
         exportspss.exportspss(projectId, (response) => {
             if (response.code == 200) {
+                this.setState({showLoader: false})
                 window.location.href = `http://localhost:3009/download/${projectId}`;
-            } else
+            } else {
+                this.setState({showLoader: false})
                 this.props.dispatch({type: "DISPLAY_ERROR", message: "Error in exporting"})
+            }
+
         })
     }
 
@@ -82,7 +95,7 @@ class ListProjectData extends Component {
                 </tr>
             )
         })
-        this.setState({tableData: arr})
+        this.setState({tableData: arr, showLoader: false})
     }
 
     callCreateProject = () => {
@@ -91,32 +104,39 @@ class ListProjectData extends Component {
 
     render = () => {
         return (
-            <div id={"listProjectsDiv"} style={{height: "100%", padding: "20px"}}>
-                <div id={"createProjectButtonDiv"}>
-                    <input type="submit" style={{paddingTop: "10px", paddingBottom: "10px", borderRadius: "20px"}}
-                           value={"Create Project"}
-                           onClick={this.callCreateProject}></input>
+            <div>
+                <div>
+                    {
+                        this.state.showLoader ? <Loader/> : ""
+                    }
                 </div>
-                <div style={{height: "100%"}}>
-                    <table style={{borderCollapse: "separate"}}>
-                        <tr>
-                            <th style={{fontSize: "40px"}}>Projects</th>
-                            <th style={{textAlign: "center"}}>Date Created</th>
-                            <th style={{textAlign: "center"}}>Latest Data Entry</th>
-                            <th style={{textAlign: "center"}}>Number of participants</th>
-                            <th style={{textAlign: "center"}}>Action</th>
-                        </tr>
-                        {this.state.tableData}
-                    </table>
+                <div id={"listProjectsDiv"} style={{height: "100%", padding: "20px"}}>
+                    <div id={"createProjectButtonDiv"}>
+                        <input type="submit" style={{paddingTop: "10px", paddingBottom: "10px", borderRadius: "20px"}}
+                               value={"Create Project"}
+                               onClick={this.callCreateProject}></input>
+                    </div>
+                    <div style={{height: "100%"}}>
+                        <table style={{borderCollapse: "separate"}}>
+                            <tr>
+                                <th style={{fontSize: "40px"}}>Projects</th>
+                                <th style={{textAlign: "center"}}>Date Created</th>
+                                <th style={{textAlign: "center"}}>Latest Data Entry</th>
+                                <th style={{textAlign: "center"}}>Number of participants</th>
+                                <th style={{textAlign: "center"}}>Action</th>
+                            </tr>
+                            {this.state.tableData}
+                        </table>
+                    </div>
+                    <Modal
+                        title={"Link"}
+                        visible={this.state.visible}
+                        footer={null}
+                        onCancel={this.handleCancel}
+                    >
+                        {this.state.link}
+                    </Modal>
                 </div>
-                <Modal
-                    title={"Link"}
-                    visible={this.state.visible}
-                    footer={null}
-                    onCancel={this.handleCancel}
-                >
-                    {this.state.link}
-                </Modal>
             </div>
         )
     }

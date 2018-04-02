@@ -448,3 +448,8 @@ span .ant-checkbox-checked .ant-checkbox-inner:after {
         margin-left: 0%;
     }
 }
+
+ol.progtrckr li.progtrckr-todo {
+    color: #fafafa;
+    border-bottom: 3px solid #fafafa;
+}

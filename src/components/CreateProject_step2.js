@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {Icon, Checkbox} from 'antd';
+import Loader from './Loader'
 
 var _ = require('lodash/remove')
 var getTUQ = require('../actions/GetTUQ');
@@ -10,7 +11,7 @@ class CreateProjectStep2 extends Component {
         this.setState({
             tableData: [],
             selectedRowKeys: [], // Check here to configure the default column
-            loading: false,
+            showLoader: true,
             checked: true
         })
     }
@@ -51,7 +52,8 @@ class CreateProjectStep2 extends Component {
                     )
                 }
                 this.setState({
-                    tableData: tuqData
+                    tableData: tuqData,
+                    showLoader: false
                 })
             })
         } else { //MUQ
@@ -89,7 +91,8 @@ class CreateProjectStep2 extends Component {
                     )
                 }
                 this.setState({
-                    tableData: muqData
+                    tableData: muqData,
+                    showLoader:false
                 })
             })
         }
@@ -139,6 +142,11 @@ class CreateProjectStep2 extends Component {
             <div style={{
                 marginTop: "10px"
             }}>
+                <div>
+                    {
+                        this.state.showLoader ? <Loader/> : ""
+                    }
+                </div>
                 <div className={"tableDivBlock"}>
                     <label className={"fontColor"}>Please choose the default
                         questions provided by selecting the
