@@ -105,7 +105,7 @@ div#registerLinkDiv {
     margin-top: 10%;
     margin-left: 38%;
     border: 1px solid;
-    border-radius: 4px;
+    border-radius: 4px lightgray;
     border-radius: 10px;
     padding: 20px;
     border-color: lightgray;
@@ -190,6 +190,9 @@ div#navbarTitle {
 }
 
 div#mainLayout {
+    background-image: url('./media/background-main.png');
+    background-size: cover;
+    background-repeat: no-repeat;
     display: flex;
     flex-direction: column;
 }
@@ -241,6 +244,9 @@ button#register { /*{ where button is css attribute hence no . or #*/
 }
 
 #homepage {
+    background-image: url("./media/background-main.png");
+    background-repeat: no-repeat;
+    background-size: cover;
     grid-template-rows: 10%;
     height: 100%;
     display: grid;
