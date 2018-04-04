@@ -8,7 +8,7 @@ import projects from './reducers/Projects.js';
 import createProjectSteps from './reducers/CreateProjectSteps'
 import errors from './reducers/Errors.js'
 import demographicQuestion from './reducers/DemographicQuestion'
-
+import fillAnswersSteps from './reducers/FillAnswersSteps'
 import {syncHistoryWithStore, routerReducer} from 'react-router-redux';
 import {browserHistory} from 'react-router';
 
@@ -22,6 +22,7 @@ const store = createStore(
         projects,
         errors,
         demographicQuestion,
+        fillAnswersSteps,
         routing: routerReducer
     }), {}, applyMiddleware(logger, thunk, promise())
 )

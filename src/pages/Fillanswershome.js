@@ -45,7 +45,8 @@ class Fillanswershome extends Component {
                     </div>
                 </div>
                 <div className={"content"} style={{backgroundColor: "white"}}>
-                    {this.state.display === 0 ? <Welcomescreen changeDisplay={this.changeDisplay}/> : <Fillanswers/>}
+                    {this.state.display === 0 ? <Welcomescreen changeDisplay={this.changeDisplay}/> :
+                        <Fillanswers data={this.state.questions}/>}
                 </div>
             </div>
         )
