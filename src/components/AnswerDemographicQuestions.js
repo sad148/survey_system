@@ -1,6 +1,5 @@
 import React, {Component} from 'react'
 import uuid from "uuid/v4";
-import {Input} from 'antd'
 import uniqBy from 'lodash/uniqBy'
 import FillAnswersTable from './FillAnswersTable'
 
@@ -35,29 +34,12 @@ export default class AnswerDemographicQuestions extends Component {
                                        className={"fontColor"}>{item.options[j]}
                                 </label>
                             </div>)
-                        // <div>
-                        //     <input
-                        //         type="radio"
-                        //         name={item.questionId}
-                        //         value={item.options[j]}
-                        //         onChange={() => this.onChange(item, item.options[j], answersId)}></input>
-                        //     <label style={{marginLeft: "5px"}}>{item.options[j]}</label>
-                        // </div>)
                     }
                 }
                 step2.push({
                     question: item.question,
                     answer: <div style={{display: "flex"}}>{radioOptions}</div>
                 })
-                // otherSteps.push(
-                //     <div style={{marginBottom: "10px"}}>
-                //         <Card title={<label
-                //             id={`required${item.questionId}`}>{item.required ? "*" + ++counter + "." + item.question : ++counter + "." + item.question}</label>}
-                //               style={{width: "100%"}}>
-                //             {radioOptions}
-                //         </Card>
-                //     </div>
-                // )
             } else if (item.type == "checkbox") {
                 let radioOptions = [];
                 for (let j = 0; j < item.options.length; j++) {
@@ -77,31 +59,12 @@ export default class AnswerDemographicQuestions extends Component {
                                        className={"fontColor"}>{item.options[j]}
                                 </label>
                             </div>)
-
-                        // <div>
-                        //     <input
-                        //         type="checkbox"
-                        //         id={`${item.questionId}${item.options[j]}`}
-                        //         value={item.options[j]}
-                        //         className={item.questionId}
-                        //         onChange={() => this.toggleCheckbox(item, item.options[j], answersId)}></input>
-                        //     <label style={{marginLeft: "5px"}}>{item.options[j]}</label>
-                        // </div>)
                     }
                 }
                 step2.push({
                     question: item.question,
                     answer: <div style={{display: "flex"}}>{radioOptions}</div>
                 })
-                // otherSteps.push(
-                //     <div style={{marginBottom: "10px"}}>
-                //         <Card title={<label
-                //             id={`required${item.questionId}`}>{item.required ? "*" + ++counter + "." + item.question : ++counter + "." + item.question}</label>}
-                //               style={{width: "100%"}}>
-                //             {radioOptions}
-                //         </Card>
-                //     </div>
-                // )
             } else {
                 let answersId = uuid().split("-").join("");
                 step2.push({
@@ -110,16 +73,6 @@ export default class AnswerDemographicQuestions extends Component {
                                    style={{backgroundColor: "white", border: "1px solid #17509d"}}
                                    onChange={() => this.getTextAreaValue(item, answersId)}/>
                 })
-                // otherSteps.push(
-                // <div style={{marginBottom: "10px"}}>
-                // <Card title={<label
-                //             id={`required${item.questionId}`}>{item.required ? "*" + ++counter + "." + item.question : ++counter + "." + item.question}</label>}
-                //               style={{width: "100%"}}>
-                //             <Input id={item.questionId}
-                //                    onChange={() => this.getTextAreaValue(item, answersId)}/>
-                //         </Card>
-                //     </div>
-                // )
             }
         })
         this.setState({tableData: step2})

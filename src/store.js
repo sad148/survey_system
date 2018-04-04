@@ -22,7 +22,7 @@ const store = createStore(
         projects,
         errors,
         demographicQuestion,
-        fillAnswersSteps,
+            fillAnswersSteps,
         routing: routerReducer
     }), {}, applyMiddleware(logger, thunk, promise())
 )

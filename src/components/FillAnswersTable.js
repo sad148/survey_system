@@ -7,8 +7,6 @@ const FillAnswersTable = (props) => {
             <table style={{borderCollapse: "separate"}} cellPadding={10}>
                 <thead>
                 <tr>
-                    {/*<th className={"fontColor"} style={{textAlign: "left"}}></th>*/}
-                    {/*<th className={"fontColor"} style={{textAlign: "right"}}></th>*/}
                     <th></th>
                     <th></th>
                 </tr>

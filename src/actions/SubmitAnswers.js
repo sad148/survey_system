@@ -1,7 +1,8 @@
 var request = require('superagent');
 
 function submitAnswers(data, cb) {
-    let apiUrl = sessionStorage.getItem("apiurl");
+    //let apiUrl = sessionStorage.getItem("apiurl");
+    let apiUrl = "http://localhost:3009/"
     request
         .post(apiUrl + 'submitanswers')
         .set('Content-Type', 'application/json')

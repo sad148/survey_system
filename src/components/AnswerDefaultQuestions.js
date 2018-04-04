@@ -32,18 +32,6 @@ class AnswerDefaultQuestions extends Component {
                             onChange={() => this.onChange(item, parseInt(item.options[i]), answersId)}
                             type='radio'/>
                     </div>
-                    // {/*<input*/
-                    // }
-                    // {/*type="radio"*/
-                    // }
-                    // {/*name={item.questionId}*/
-                    // }
-                    // {/*value={parseInt(item.options[i])}*/
-                    // }
-                    // {/*onChange={() => this.onChange(item, parseInt(item.options[i]), answersId)}></input>*/
-                    // }
-                    // {/*<label style={{marginLeft: "5px", marginRight: "5px"}}>{item.options[i]}</label>*/
-                    // }
                 )
             }
 

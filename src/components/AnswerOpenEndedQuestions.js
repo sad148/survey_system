@@ -3,6 +3,9 @@ import TextArea from 'antd'
 import uuid from 'uuid/v4'
 import uniqBy from 'lodash/uniqBy'
 import FillAnswersTable from './FillAnswersTable'
+import fillAnswersSteps from "../reducers/FillAnswersSteps";
+import store from '../store';
+import submitAnswers from '../actions/SubmitAnswers'
 
 export default class AnswerOpenEndedQuestions extends Component {
     state = {
@@ -16,23 +19,15 @@ export default class AnswerOpenEndedQuestions extends Component {
         this.formData(this.props.questions)
     }
     formData = (data) => {
-        let answersId = uuid().split("-").join("");
-        let dividerArr = []
         let step4 = [];
         console.log(data);
         data.map((item) => {
+            let answersId = uuid().split("-").join("");
             step4.push({
                 question: item.question,
                 answer: (<textarea
                     style={{resize: "none"}} id={item.questionId} rows="4" cols="50"
                     onChange={() => this.getTextAreaValue(item, answersId)}></textarea>)
-                // <div style={{marginBottom: "10px"}}>
-                //     <Card title={<label
-                //         id={`required${item.questionId}`}>{item.required ? "*" + ++counter + "." + item.question : ++counter + "." + item.question}</label>}
-                //           style={{width: "100%"}}>
-                //
-                //     </Card>
-                // </div>
             })
         })
         this.setState({
@@ -47,11 +42,33 @@ export default class AnswerOpenEndedQuestions extends Component {
             answersId: answersId,
             question: data.question
         })
-        if (document.getElementById(data.questionId).value.trim().length > 0 && data.required)
-            this.state.checkedAnswers.add(data.questionId);
-        else
-            this.state.checkedAnswers.delete(data.questionId);
         this.state.answers = uniqBy(this.state.answers, 'answersId')
+    }
+
+    handleSubmit = () => {
+        let userId = document.getElementById("participantId").value
+        let surveyId = window.location.pathname.split('/')
+        surveyId = surveyId[surveyId.length - 1]
+        let allAnswers = store.getState().fillAnswersSteps.fillAnswersStepsData
+        let finalAnswer = [];
+        for (let step in allAnswers) {
+            finalAnswer.push(...allAnswers[step].answers)
+        }
+        if (this.state.answers.length > 0)
+            finalAnswer.push(...this.state.answers)
+
+        finalAnswer.map(answer => answer.userId = userId.trim())
+        let data = {
+            answers: finalAnswer,
+            surveyId: surveyId
+        }
+        submitAnswers.submitAnswers(data, (response) => {
+            if (response.code == 200) {
+                alert('Answers submitted successfully');
+                //close window as soon as answers are submitted to avoid redundant data
+                window.close();
+            }
+        })
     }
 
     render = () => {
@@ -61,7 +78,7 @@ export default class AnswerOpenEndedQuestions extends Component {
                                   instructions={"Instructions: Please type your ansewer in the box to the right."}/>
                 <input type={"submit"}
                        id='next'
-                       onClick={this.next}
+                       onClick={this.handleSubmit}
                        value={"Submit"}
                        style={{
                            "marginRight": "15%",
