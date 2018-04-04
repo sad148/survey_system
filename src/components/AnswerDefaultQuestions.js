@@ -89,13 +89,15 @@ class AnswerDefaultQuestions extends Component {
         console.log(this.props)
         this.props.props.dispatch({type: "RESET_FILL_ANSWERS_STEPS"})
         this.props.props.dispatch({type: "NEXT", payload: step})
-        //this.props.jumpToStep(2);
+        this.props.jumpToStep(1);
     }
 
     render = () => {
         return (
             <div>
-                <FillAnswersTable props={this.state.tableData}/>
+                <FillAnswersTable props={this.state.tableData}
+                                  instructions={"Instructions: Please rate these questions on the provided scale. One\n" +
+                                  "                being the lowest and seven the highest."}/>
                 <input type={"submit"}
                        id='next'
                        onClick={this.next}

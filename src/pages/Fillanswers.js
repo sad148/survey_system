@@ -6,6 +6,7 @@ import submitAnswers from '../actions/SubmitAnswers'
 import StepZilla from 'react-stepzilla';
 import AnswerDefaultQuestions from '../components/AnswerDefaultQuestions'
 import {connect} from 'react-redux'
+import AnswerDemographicQuestions from '../components/AnswerDemographicQuestions'
 
 const TextArea = Input.TextArea
 const getprojectquestions = require('../actions/GetProjectQuestions')
@@ -271,6 +272,10 @@ class Fillanswers extends Component {
                 name: 'Default Questions',
                 component: <AnswerDefaultQuestions questions={this.state.questions.step2} props={this.props}/>
             },
+            {
+                name: "Demographic Questions",
+                component: <AnswerDemographicQuestions questions={this.state.questions.step3} props={this.props}/>
+            }
             // {
             //     name: 'Demographic Questions',
             //     component: <CreateProjectStep3 props={this.props}/>

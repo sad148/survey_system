@@ -3,13 +3,14 @@ import React from 'react'
 const FillAnswersTable = (props) => {
     return (
         <div className={"tableDivBlock"}>
-            <label className={"fontColor"}>Instructions: Please rate these questions on the provided scale. One
-                being the lowest and seven the highest.</label>
+            <label className={"fontColor"}>{props.instructions}</label>
             <table style={{borderCollapse: "separate"}} cellPadding={10}>
                 <thead>
                 <tr>
-                    <th className={"fontColor"} style={{textAlign: "left"}}>Question</th>
-                    <th className={"fontColor"} style={{textAlign: "right"}}>Answer</th>
+                    {/*<th className={"fontColor"} style={{textAlign: "left"}}></th>*/}
+                    {/*<th className={"fontColor"} style={{textAlign: "right"}}></th>*/}
+                    <th></th>
+                    <th></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -20,10 +21,10 @@ const FillAnswersTable = (props) => {
                                 padding: "10px",
                                 backgroundColor: "#d3d3d380"
                             }}>
-                                <td width="50%" className={"fontColor questionTD"}
-                                    style={{border: "0px"}}>{item.question}</td>
+                                <td width={props.width || "50%"} className={"fontColor questionTD"}
+                                    style={{border: "0px", verticalAlign: "inherit"}}>{item.question}</td>
                                 <td className={"answerTD"}
-                                    style={{border: "0px", textAlign: "right"}}>{item.answer}</td>
+                                    style={{border: "0px", textAlign: props.align || "right"}}>{item.answer}</td>
                             </tr>
                         )
                     })
