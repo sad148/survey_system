@@ -5,8 +5,10 @@ import uuid from 'uuid/v4'
 import submitAnswers from '../actions/SubmitAnswers'
 import StepZilla from 'react-stepzilla';
 import AnswerDefaultQuestions from '../components/AnswerDefaultQuestions'
-import {connect} from 'react-redux'
 import AnswerDemographicQuestions from '../components/AnswerDemographicQuestions'
+import AnswerOpenEndedQuestions from '../components/AnswerOpenEndedQuestions'
+
+import {connect} from 'react-redux'
 
 const TextArea = Input.TextArea
 const getprojectquestions = require('../actions/GetProjectQuestions')
@@ -275,6 +277,11 @@ class Fillanswers extends Component {
             {
                 name: "Demographic Questions",
                 component: <AnswerDemographicQuestions questions={this.state.questions.step3} props={this.props}/>
+            },
+
+            {
+                name: "Open Ended Questions",
+                component: <AnswerOpenEndedQuestions questions={this.state.questions.step4} props={this.props}/>
             }
             // {
             //     name: 'Demographic Questions',
