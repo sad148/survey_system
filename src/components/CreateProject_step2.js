@@ -20,81 +20,66 @@ class CreateProjectStep2 extends Component {
         if (this.props.props.data["step1"].template == 1) {    //TUQ
             //api call to get tuq questions
             getTUQ.gettuq((tuqData) => {
-                for (let i = 0; i < tuqData.length; i++) {
-                    tuqData[i].questionId = tuqData[i].id
-                    this.state.selectedRowKeys.push(tuqData[i]);
-                    tuqData[i].key = tuqData[i].id
-                    tuqData[i].required = true
-                    let answer = [];
-                    for (let j = 0; j < tuqData[i].limit; j++) {
-                        answer[j] = (
-                            <div style={{marginRight: "5px"}}><label className={"fontColor"}>{j + 1}</label><br/><input
-                                disabled
-                                style={{cursor: "not-allowed"}}
-                                type='radio'/>
-                            </div>)
-                    }
-                    tuqData[i].answer = (
-                        <div style={{display: "inline-flex"}}>
-                            <Icon className={"fontColor"}
-                                  style={{marginRight: "10px", marginTop: "22px"}}
-                                  type="like"/>
-                            {answer}
-                            <Icon className={"fontColor"}
-                                  style={{
-                                      marginRight: "10px",
-                                      marginTop: "25px"
-                                  }} type="dislike"/>
-                        </div>)
-                    tuqData[i].checkbox = (
-                        <Checkbox id={tuqData[i].id + "checkbox"} defaultChecked
-                                  onChange={() => this.toggleCheckbox(tuqData[i])}/>
-                    )
-                }
-                this.setState({
-                    tableData: tuqData,
-                    showLoader: false
-                })
+                this.formData(tuqData)
             })
         } else { //MUQ
             //api call to get muq questions
             getMUQ.gettuq((muqData) => {
-                for (let i = 0; i < muqData.length; i++) {
-                    muqData[i].questionId = muqData[i].id
-                    this.state.selectedRowKeys.push(muqData[i]);
-                    muqData[i].key = muqData[i].id
-                    muqData[i].required = true
-                    let answer = []
-                    for (let j = 0; j < muqData[i].limit; j++) {
-                        answer[j] = (
-                            <div style={{marginRight: "5px"}}><label className={"fontColor"}>{j + 1}</label><br/><input
-                                disabled
-                                style={{cursor: "not-allowed"}}
-                                type='radio'/>
-                            </div>)
-                    }
-                    muqData[i].answer = (
-                        <div style={{display: "inline-flex"}}>
-                            <Icon className={"fontColor"}
-                                  style={{marginRight: "10px", marginTop: "22px"}}
-                                  type="like"/>
-                            {answer}
-                            <Icon className={"fontColor"}
-                                  style={{
-                                      marginRight: "10px",
-                                      marginTop: "25px"
-                                  }} type="dislike"/>
-                        </div>)
-                    muqData[i].checkbox = (
-                        <Checkbox id={muqData[i].id + "checkbox"} defaultChecked
-                                  onChange={() => this.toggleCheckbox(muqData[i])}/>
-                    )
-                }
-                this.setState({
-                    tableData: muqData,
-                    showLoader:false
-                })
+                this.formData(muqData)
             })
+        }
+    }
+
+    formData = (data) => {
+        for (let i = 0; i < data.length; i++) {
+            data[i].questionId = data[i].id
+            data[i].key = data[i].id
+            let answer = [];
+            for (let j = 0; j < data[i].limit; j++) {
+                answer[j] = (
+                    <div style={{marginRight: "5px"}}><label className={"fontColor"}>{j + 1}</label><br/><input
+                        disabled
+                        style={{cursor: "not-allowed"}}
+                        type='radio'/>
+                    </div>)
+            }
+            data[i].answer = (
+                <div style={{display: "inline-flex"}}>
+                    <Icon className={"fontColor"}
+                          style={{marginRight: "10px", marginTop: "22px"}}
+                          type="like"/>
+                    {answer}
+                    <Icon className={"fontColor"}
+                          style={{
+                              marginRight: "10px",
+                              marginTop: "25px"
+                          }} type="dislike"/>
+                </div>)
+            data[i].checkbox = (
+                <Checkbox id={data[i].id + "checkbox"} defaultChecked={this.checkQuestion(data[i])}
+                          onChange={() => this.toggleCheckbox(data[i])}/>
+            )
+        }
+        this.setState({
+            tableData: data,
+            showLoader: false
+        })
+    }
+
+    //to check if the question was checked or unchecked by the user previously
+    checkQuestion = (data) => {
+        if (!this.props.props.data.step2) {
+            this.state.selectedRowKeys.push(data);
+            return true;
+        } else {
+            let questions = this.props.props.data.step2.questions
+            for (let i = 0; i < questions.length; i++) {
+                if (data.id == questions[i].questionId) {
+                    this.state.selectedRowKeys.push(data);
+                    return true;
+                }
+            }
+            return false;
         }
     }
 
