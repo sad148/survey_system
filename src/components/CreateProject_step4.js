@@ -16,9 +16,34 @@ class OpenEndedQuestions extends Component {
         selected: 0
     };
 
-    previous = () => {
-        this.props.props.dispatch({type: "RESET_CREATE_PROJECT_STEPS"})
-        this.props.props.dispatch({type: "PREVIOUS", payload: this.props.props.data})
+    componentDidMount = () => {
+        let display = []
+        console.log("inside idi mount");
+        if (this.props.props.data.step4) {
+            let data = this.props.props.data.step4.questions
+            for (let i = 0; i < data.length; i++) {
+                let id = uuid().split("-").join("");
+                this.state.questions.push({
+                    question: data[i].question,
+                    questionId: id
+                })
+                display.push(<tr>
+                        <td height="10" className={"fontColor questionTD"} style={{height: "10px"}}>{data[i].question}</td>
+                        <td height="10" className={"checkBoxTD"} style={{height: "10px"}}>
+                            <Checkbox
+                                style={{width: "5%", float: "right"}}
+                                onChange={() => this.toggleCheckbox(id + 'checkbox')}
+                                defaultChecked
+                                id={id + 'checkbox'}
+                            />
+                        </td>
+                    </tr>
+                )
+            }
+            this.setState({
+                items: display
+            })
+        }
     }
 
     onSortEnd = ({oldIndex, newIndex}) => {
@@ -55,6 +80,7 @@ class OpenEndedQuestions extends Component {
     }
 
     toggleCheckbox = (id) => {
+        console.log(id);
         if (document.getElementById(id).checked)
             this.setState(prevState => {
                 selected: prevState.selected++
