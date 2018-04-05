@@ -1,50 +1,44 @@
 import React, {Component} from 'react';
-import {Form, Input, Select, Button, Icon, Radio} from 'antd';
+import {Radio} from 'antd';
 
-var project_name, description, template;
 const RadioGroup = Radio.Group;
 const RadioButton = Radio.Button;
-const FormItem = Form.Item;
-const Option = Select.Option;
-const TextArea = Input.TextArea
 
 class CreateProjectStep1 extends Component {
     componentWillMount = () => {
-        console.log("inside componentwillmount", this.props.form.getFieldsValue());
         this.setState({
-            confirmDirty: false,
-            autoCompleteResult: [],
-            current: 0
+            template: 1
         });
     }
 
     componentDidMount = () => {
-        if (this.props.props.data[0] && this.props.props.data[0].template) {
-            this.props.form.setFieldsValue({"project_name": this.props.props.data[0].project_name || ""})
-            this.props.form.setFieldsValue({"description": this.props.props.data[0].description || ""})
-            this.props.form.setFieldsValue({"template": this.props.props.data[0].template || 1})
+        if (this.props.props.data.step1) {
+            console.log("inside if");
+            document.getElementById("project_name").value = this.props.props.data.step1.project_name || ""
+            document.getElementById("project_description").value = this.props.props.data.step1.description || ""
+            this.setState({"template": parseInt(this.props.props.data.step1.template) || 1})
         }
     }
 
-    next = (e) => {
-        e.preventDefault();
-        this.props.form.validateFieldsAndScroll((err, values) => {
-            if (!err) {
-                let step = {
-                    step1: {
-                        template: this.props.form.getFieldValue("defaultQues"),
-                        project_name: this.props.form.getFieldValue("project_name"),
-                        description: this.props.form.getFieldValue("description")
-                    }
+    next = () => {
+        let projectName = document.getElementById("project_name").value
+        let projectDescription = document.getElementById("project_description").value
+        if (projectName.trim().length <= 0) {
+            alert("Please enter project name");
+        } else {
+            let step = {
+                step1: {
+                    template: this.state.template,
+                    project_name: projectName,
+                    description: projectDescription
                 }
-                this.props.props.dispatch({type: "RESET_CREATE_PROJECT_STEPS"})
-                this.props.props.dispatch({type: "NEXT", payload: step})
-                this.props.jumpToStep(1);
-            } else {
-                console.log(err);
             }
-        });
+            this.props.props.dispatch({type: "RESET_CREATE_PROJECT_STEPS"})
+            this.props.props.dispatch({type: "NEXT", payload: step})
+            this.props.jumpToStep(1);
+        }
     }
+
 
     onChange = (e) => {
         this.setState({
@@ -52,62 +46,37 @@ class CreateProjectStep1 extends Component {
         });
     }
 
-    handleConfirmBlur = (e) => {
-        const value = e.target.value;
-        this.setState({confirmDirty: this.state.confirmDirty || !!value});
-    }
-
     render = () => {
-        const {getFieldDecorator} = this.props.form;
         return (
-            <Form style={{paddingLeft: "20%", paddingRight: "25%", color: "white"}}>
-                <FormItem>
-                    {getFieldDecorator('project_name', {
-                        rules: [{
-                            required: true, message: 'Please enter you project name',
-                        }],
-                    })(
-                        <div>
-                            <label style={{color: "red"}}>*</label>&nbsp;<label
-                            style={{color: "white", fontWeight: "bold"}}>Project Name</label>
-                            <Input style={{backgroundColor: "white"}} type="text" onBlur={this.handleConfirmBlur}/>
-                        </div>
-                    )}
-                </FormItem>
-                <FormItem>
-                    {getFieldDecorator('description')(
-                        <div>
-                            <label style={{color: "white", fontWeight: "bold"}}>Description</label>
-                            <TextArea type="text" style={{borderRadius: "0px", backgroundColor: "white"}}
-                                      onBlur={this.handleConfirmBlur}
-                                      autosize={{minRows: 6, maxRows: 6}}/>
-                        </div>
-                    )}
-                </FormItem>
-                <FormItem>
-                    {getFieldDecorator('defaultQues', {
-                        rules: [{
-                            required: true, message: "Please select default questionnaire"
-                        }]
-                    })(
-                        <div>
-                            <label style={{color: "red"}}>*</label>&nbsp;<label
-                            style={{color: "white", fontWeight: "bold"}}>Please select default
-                            questionnaire</label><br/>
-                            <RadioGroup onChange={this.onChange} value={this.state.template}>
-                                <RadioButton value={1}>TUQ</RadioButton>
-                                <RadioButton value={2}>MUQ</RadioButton>
-                            </RadioGroup>
-                        </div>
-                    )}
-                </FormItem>
-                <FormItem>
-                    <input type={"submit"} style={{width: "42%"}} value={"Continue"} onClick={this.next}/>
-                </FormItem>
-            </Form>
+            <div style={{paddingLeft: "20%", paddingRight: "25%", marginTop: "10px"}}>
+                <div style={{padding: "10px"}}>
+                    <label style={{color: "red"}}>*</label>&nbsp;<label
+                    style={{color: "white", fontWeight: "bold"}}>Project Name</label><br/>
+                    <input id={"project_name"}
+                           style={{backgroundColor: "white", width: "100%", height: "30px", marginTop: "10px"}}
+                           type="text"
+                    />
+                </div>
+                <div style={{padding: "10px"}}>
+                    <label style={{color: "white", fontWeight: "bold", marginTop: "10px"}}>Description</label><br/>
+                    <textarea id={"project_description"} type="text"
+                              style={{borderRadius: "0px", width: "100%", backgroundColor: "white", marginTop: "10px"}}
+                              rows="6" columns="50"/>
+                </div>
+                <div style={{padding: "10px"}}>
+                    <label style={{color: "red", marginTop: "10px"}}>*</label>&nbsp;<label
+                    style={{color: "white", fontWeight: "bold", marginTop: "10px"}}>Please select default
+                    questionnaire</label><br/>
+                    <RadioGroup onChange={this.onChange} style={{marginTop: "10px"}} value={this.state.template}>
+                        <RadioButton value={1}>TUQ</RadioButton>
+                        <RadioButton value={2}>MUQ</RadioButton>
+                    </RadioGroup>
+                </div>
+                <input type={"submit"} style={{width: "42%", marginTop: "10px", padding: "10px"}} value={"Continue"}
+                       onClick={this.next}/>
+            </div>
         );
     }
 }
 
-const WrappedRegistrationForm = Form.create()(CreateProjectStep1);
-export default WrappedRegistrationForm;
+export default CreateProjectStep1;
