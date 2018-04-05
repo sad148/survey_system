@@ -37,6 +37,11 @@ class Homepage extends Component {
         browserHistory.push('/survey_system/create_project')
     }
 
+    logout = () => {
+        sessionStorage.clear();
+        browserHistory.replace('/survey_system/')
+    }
+
     render = () => {
         return (
             <div id="homepage">
@@ -47,7 +52,7 @@ class Homepage extends Component {
                         (MAUQ)</label>
                     <div id={"welcomeDiv"} style={{float: "right"}}>
                         <label className={"fontColor"}>Welcome Saurabh</label><br/>
-                        <a>Logout</a>
+                        <a onClick={this.logout}>Logout</a>
                     </div>
                 </div>
                 <div className={"content"}>
