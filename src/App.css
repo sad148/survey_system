@@ -190,9 +190,6 @@ div#navbarTitle {
 }
 
 div#mainLayout {
-    background-image: url('./media/background-main.png');
-    background-size: cover;
-    background-repeat: no-repeat;
     display: flex;
     flex-direction: column;
 }
@@ -244,9 +241,6 @@ button#register { /*{ where button is css attribute hence no . or #*/
 }
 
 #homepage {
-    background-image: url("./media/background-main.png");
-    background-repeat: no-repeat;
-    background-size: cover;
     grid-template-rows: 10%;
     height: 100%;
     display: grid;
@@ -436,6 +430,17 @@ span .ant-checkbox-checked .ant-checkbox-inner:after {
     margin-left: 15%;
 }
 
+.tableDivBlock1 {
+    padding-right: 40px;
+    padding-left: 40px;
+    background-color: white;
+    text-align: center;
+    width: 70%;
+    height: 61vh;
+    overflow-y: auto;
+    margin-left: 15%;
+}
+
 @media only screen and (max-width: 1024px) {
     .tableDivBlock {
         height: 64vh;
@@ -452,4 +457,18 @@ span .ant-checkbox-checked .ant-checkbox-inner:after {
 ol.progtrckr li.progtrckr-todo {
     color: #fafafa;
     border-bottom: 3px solid #fafafa;
+}
+
+@media only screen and (max-width: 1024px) and (min-width: 1023px) {
+    .tableDivBlock1 {
+        padding-right: 40px;
+        padding-left: 40px;
+        height: 75vh;
+        background-color: white;
+        text-align: center;
+        width: 91%;
+        overflow-y: auto;
+        margin-left: 5%;
+        font-size: 17px;
+    }
 }
