@@ -127,7 +127,7 @@ export default class AnswerDemographicQuestions extends Component {
         }
         this.props.props.dispatch({type: "RESET_FILL_ANSWERS_STEPS"})
         this.props.props.dispatch({type: "NEXT", payload: step})
-        this.props.jumpToStep(2);
+        this.props.next();
     }
 
     render = () => {

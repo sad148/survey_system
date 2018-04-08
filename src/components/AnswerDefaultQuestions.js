@@ -77,7 +77,7 @@ class AnswerDefaultQuestions extends Component {
         console.log(this.props)
         this.props.props.dispatch({type: "RESET_FILL_ANSWERS_STEPS"})
         this.props.props.dispatch({type: "NEXT", payload: step})
-        this.props.jumpToStep(1);
+        this.props.next();
     }
 
     render = () => {
