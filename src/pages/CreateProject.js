@@ -23,23 +23,23 @@ class CreateProject extends Component {
             this.props.dispatch({type: "RESET_REGISTER_USER"})
         }
 
-        if (nextProps.next == true)
-            this.next()
-        else if (nextProps.next == false)
-            this.prev()
+        // if (nextProps.next == true)
+        //     this.next()
+        // else if (nextProps.next == false)
+        //     this.prev()
     }
 
-    next = () => {
-        const current = this.state.current + 1;
-        console.log("current -", current);
-        this.setState({current});
-    }
-
-    prev = () => {
-        const current = this.state.current - 1;
-        console.log("current -", current);
-        this.setState({current});
-    }
+    // next = () => {
+    //     const current = this.state.current + 1;
+    //     console.log("current -", current);
+    //     this.setState({current});
+    // }
+    //
+    // prev = () => {
+    //     const current = this.state.current - 1;
+    //     console.log("current -", current);
+    //     this.setState({current});
+    // }
 
     render = () => {
         let steps = [
@@ -52,7 +52,8 @@ class CreateProject extends Component {
             }, {
                 name: 'Demographic Questions',
                 component: <CreateProjectStep3 props={this.props}/>
-            }, {
+            },
+            {
                 name: 'Open Ended Questions',
                 component: <CreateProjectStep4 props={this.props}/>
             },

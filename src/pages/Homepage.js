@@ -2,26 +2,18 @@ import React, {Component} from 'react';
 import {browserHistory} from 'react-router';
 
 class Homepage extends Component {
-    componentDidMount = () => {
-        browserHistory.push('/survey_system/list_projects')
-    }
-
     state = {
         username: sessionStorage.getItem("username")
     };
+
+    componentDidMount = () => {
+        browserHistory.push('/survey_system/list_projects')
+    }
 
     componentWillReceiveProps = (nextProps) => {
         if (nextProps.projectDataReceived == true) {
             this.setState({projectData: nextProps.projectData})
         }
-    }
-
-    listProjects = (data) => {
-        browserHistory.push('/survey_system/list_projects')
-    }
-
-    createProject = () => {
-        browserHistory.push('/survey_system/create_project')
     }
 
     logout = () => {
