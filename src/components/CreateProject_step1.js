@@ -1,8 +1,7 @@
 import React, {Component} from 'react';
-import {Radio} from 'antd';
+import {Select} from 'antd';
 
-const RadioGroup = Radio.Group;
-const RadioButton = Radio.Button;
+const Option = Select.Option;
 
 class CreateProjectStep1 extends Component {
     componentWillMount = () => {
@@ -16,7 +15,6 @@ class CreateProjectStep1 extends Component {
             console.log("inside if");
             document.getElementById("project_name").value = this.props.props.data.step1.project_name || ""
             document.getElementById("project_description").value = this.props.props.data.step1.description || ""
-            this.setState({"template": parseInt(this.props.props.data.step1.template) || 1})
         }
     }
 
@@ -40,9 +38,9 @@ class CreateProjectStep1 extends Component {
     }
 
 
-    onChange = (e) => {
+    onChange = (type) => {
         this.setState({
-            template: e.target.value
+            template: type.key
         });
     }
 
@@ -67,10 +65,13 @@ class CreateProjectStep1 extends Component {
                     <label style={{color: "red", marginTop: "10px"}}>*</label>&nbsp;<label
                     style={{color: "white", fontWeight: "bold", marginTop: "10px"}}>Please select default
                     questionnaire</label><br/>
-                    <RadioGroup onChange={this.onChange} style={{marginTop: "10px"}} value={this.state.template}>
-                        <RadioButton value={1}>TUQ</RadioButton>
-                        <RadioButton value={2}>MUQ</RadioButton>
-                    </RadioGroup>
+                    <Select labelInValue style={{width: 120, backgroundColor: "white"}} onChange={this.onChange}>
+                        <Option value="1">TUQ</Option>
+                        <Option value="2">MAUQ Patient Interactive</Option>
+                        <Option value="3">MAUQ Provider Interactive</Option>
+                        <Option value="4">MAUQ Patient Standalone</Option>
+                        <Option value="5">MAUQ Provider Interactive</Option>
+                    </Select>
                 </div>
                 <input type={"submit"} style={{width: "42%", marginTop: "10px", padding: "10px"}} value={"Continue"}
                        onClick={this.next}/>
