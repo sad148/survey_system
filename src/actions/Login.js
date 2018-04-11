@@ -15,6 +15,7 @@ export default function login(data) {
                 else {
                     if (res.body.code == 200) {
                         sessionStorage.setItem("userid", res.body.data.user_id);
+                        sessionStorage.setItem("username", res.body.data.first_name);
                         sessionStorage.setItem("apiUrl", 'http://localhost:3009/');
                         dispatch({type: "LOGIN_SUCCESS", data: res.body.data})
                     }
