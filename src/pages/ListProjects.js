@@ -1,19 +1,20 @@
 import React, {Component} from 'react';
-import {Layout} from 'antd';
 import {connect} from "react-redux";
 import ListProjectData from '../components/ListProjectData.js'
-import '../../node_modules/antd/lib/layout/style/index.css'
-import '../../node_modules/antd/lib/icon/style/'
-
-const {Content} = Layout;
+import getprojectslist from '../actions/GetProjectsList'
 
 class ListProjects extends Component {
     componentWillMount = () => {
-        console.log(this.props.projectDataReceived);
-        if (this.props.projectDataReceived == true)
+        if (this.props.projectDataReceived == true) {
             this.setState({render: true})
-        else
+        }
+        else {
+            if (sessionStorage.getItem("username")) {
+                let userid = sessionStorage.getItem("userid")
+                this.props.dispatch(getprojectslist(userid))
+            }
             this.setState({render: false})
+        }
     }
     componentWillReceiveProps = (nextProps) => {
         if (nextProps.projectDataReceived == true)

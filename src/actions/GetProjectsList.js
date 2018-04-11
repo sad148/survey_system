@@ -18,7 +18,6 @@ export default function getprojectslist(userid) {
                     else {
                         alert("Error in getting list of projects")
                     }
-                    // dispatch({type:"DISPLAY_ERROR", message:res.body.message})
                 }
             })
     }
