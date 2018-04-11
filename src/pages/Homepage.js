@@ -1,27 +1,14 @@
 import React, {Component} from 'react';
-import {Layout, Menu, Breadcrumb, Icon} from 'antd';
 import {browserHistory} from 'react-router';
 
-const {SubMenu} = Menu;
-const {Header, Content, Sider} = Layout;
-
 class Homepage extends Component {
-    componentWillMount = () => {
-
-    }
-
     componentDidMount = () => {
-        console.log("inside componentdidmount");
         browserHistory.push('/survey_system/list_projects')
     }
 
     state = {
-        collapsed: false,
+        username: sessionStorage.getItem("username")
     };
-    onCollapse = (collapsed) => {
-        console.log(collapsed);
-        this.setState({collapsed});
-    }
 
     componentWillReceiveProps = (nextProps) => {
         if (nextProps.projectDataReceived == true) {
@@ -51,7 +38,7 @@ class Homepage extends Component {
                     <label style={{color: "#17509e", width: "50%"}}>For Telehealth System (TQU) and Mobile Health Apps
                         (MAUQ)</label>
                     <div id={"welcomeDiv"} style={{float: "right"}}>
-                        <label className={"fontColor"}>Welcome Saurabh</label><br/>
+                        <label className={"fontColor"}>Welcome {this.state.username}</label><br/>
                         <a onClick={this.logout}>Logout</a>
                     </div>
                 </div>
