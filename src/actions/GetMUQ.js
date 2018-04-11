@@ -1,9 +1,9 @@
 var request = require('superagent');
 
-function getTUQ(cb) {
+function getTUQ(type, cb) {
     let apiUrl = sessionStorage.getItem("apiurl");
     request
-        .get(apiUrl + 'muq')
+        .get(apiUrl + 'muq/' + type)
         .set('Content-Type', 'application/json')
         .end((err, res) => {
             if (err) {
