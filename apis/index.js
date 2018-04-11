@@ -78,10 +78,8 @@ app.get('/tuq', (req, res) => {
 app.get('/muq/:type', (req, res) => {
     let template;
     let type = parseInt(req.params.type)
-    console.log(type);
     switch (type) {
         case 2:
-            console.log("inside case 2");
             template = swig.compileFile(__dirname + '/models/mauq1.json');
             break;
         case 3:
@@ -98,7 +96,6 @@ app.get('/muq/:type', (req, res) => {
         variable: 'mobile application'
     });
     muqData = muqData.split('\n');
-    console.log(muqData);
     for (let i = 0; i < muqData.length; i++) {
         muqData[i] = muqData[i].toString();
         muqData[i] = JSON.parse(muqData[i]);
