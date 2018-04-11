@@ -2,7 +2,7 @@ import React from 'react'
 
 const FillAnswersTable = (props) => {
     return (
-        <div className={"tableDivBlock"}>
+        <div className={"tableDivBlock1"}>
             <label className={"fontColor"}>{props.instructions}</label>
             <table style={{borderCollapse: "separate"}} cellPadding={10}>
                 <thead>
