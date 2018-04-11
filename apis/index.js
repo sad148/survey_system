@@ -75,14 +75,30 @@ app.get('/tuq', (req, res) => {
     }
 })
 
-app.get('/muq', (req, res) => {
-    let template = swig.compileFile(__dirname + '/models/muq.json');
-    let muqData = []
+app.get('/muq/:type', (req, res) => {
+    let template;
+    let type = parseInt(req.params.type)
+    console.log(type);
+    switch (type) {
+        case 2:
+            console.log("inside case 2");
+            template = swig.compileFile(__dirname + '/models/mauq1.json');
+            break;
+        case 3:
+            template = swig.compileFile(__dirname + '/models/mauq2.json');
+            break;
+        case 4:
+            template = swig.compileFile(__dirname + '/models/mauq3.json');
+            break;
+        case 5:
+            template = swig.compileFile(__dirname + '/models/mauq4.json');
+            break;
+    }
     muqData = template({
         variable: 'mobile application'
     });
-
     muqData = muqData.split('\n');
+    console.log(muqData);
     for (let i = 0; i < muqData.length; i++) {
         muqData[i] = muqData[i].toString();
         muqData[i] = JSON.parse(muqData[i]);
