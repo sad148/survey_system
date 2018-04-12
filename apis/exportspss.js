@@ -123,10 +123,11 @@ function exportspss(req, db, cb) {
                             "varLabel": rows[0],
                             "measureLevels": measureLevels
                         }
-                        fs.writeFile(`${__dirname}\\models\\data.json`, JSON.stringify(data, 5), function (e, r) {
+                        let fileName = `${__dirname}\\models\\${projectId}.json`
+                        fs.writeFile(fileName, JSON.stringify(data, 5), function (e, r) {
                             if (!e) {
                                 let pythonPath = __dirname + "\\models\\convertToSpss.py " + projectId + ".sav"
-                                shell.exec("py " + pythonPath, function (err, res) {
+                                shell.exec("py " + pythonPath + " " + fileName, function (err, res) {
                                     if (!err) {
                                         cb({
                                             code: 200,
