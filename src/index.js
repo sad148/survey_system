@@ -6,7 +6,7 @@ import store, {history} from './store.js'
 import Login from './pages/Login.js'
 import Homepage from './pages/Homepage.js'
 import {Router, Route, IndexRoute} from "react-router";
-
+import AnswersSubmitConfirmation from './pages/AnswersSubmitConfirmation'
 import CreateProject from './pages/CreateProject'
 import ListProjects from './pages/ListProjects'
 import Fillanswers from './pages/Fillanswers'
@@ -26,6 +26,7 @@ ReactDOM.render(
             </Route>
             {/*<Route path="/survey_system/answers/:projectId" component={Fillanswers}/>*/}
             <Route path="/survey_system/answers/:projectId" component={Fillanswershome}/>
+            <Route path="/survey_system/submit" component={AnswersSubmitConfirmation}/>
         </Router>
     </Provider>,
     document.getElementById('root')
