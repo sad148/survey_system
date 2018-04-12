@@ -3,9 +3,9 @@ import TextArea from 'antd'
 import uuid from 'uuid/v4'
 import uniqBy from 'lodash/uniqBy'
 import FillAnswersTable from './FillAnswersTable'
-import fillAnswersSteps from "../reducers/FillAnswersSteps";
 import store from '../store';
 import submitAnswers from '../actions/SubmitAnswers'
+import {browserHistory} from 'react-router';
 
 export default class AnswerOpenEndedQuestions extends Component {
     state = {
@@ -20,7 +20,6 @@ export default class AnswerOpenEndedQuestions extends Component {
     }
     formData = (data) => {
         let step4 = [];
-        console.log(data);
         data.map((item) => {
             let answersId = uuid().split("-").join("");
             step4.push({
@@ -65,8 +64,7 @@ export default class AnswerOpenEndedQuestions extends Component {
         submitAnswers.submitAnswers(data, (response) => {
             if (response.code == 200) {
                 alert('Answers submitted successfully');
-                //close window as soon as answers are submitted to avoid redundant data
-                window.close();
+                browserHistory.replace("/survey_system/submit");
             }
         })
     }

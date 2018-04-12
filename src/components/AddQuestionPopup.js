@@ -15,7 +15,7 @@ class AddQuestionPopup extends Component {
     }
 
     componentDidMount = () => {
-        this.setState({questionAnsMap: []});
+        this.setState({questionAnsMap: {}});
     }
 
     componentWillReceiveProps = (nextProps, nextState) => {
@@ -90,7 +90,7 @@ class AddQuestionPopup extends Component {
         e.preventDefault();
         this.props.form.validateFields((err, values) => {
             if (!err) {
-                this.props.props.dispatch({type: "ADD_NEW_DEMOGRAPHIC_QUESTION", payload: this.state.questionAnsMap})
+                this.props.props.dispatch({type: "ADD_NEW_DEMOGRAPHIC_QUESTION", payload: [this.state.questionAnsMap]})
                 this.props.form.resetFields();
                 this.setState({
                     restrictions: "",

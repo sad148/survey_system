@@ -24,7 +24,7 @@ class CreateProjectStep2 extends Component {
             })
         } else { //MUQ
             //api call to get muq questions
-            getMUQ.gettuq((muqData) => {
+            getMUQ.gettuq(this.props.props.data["step1"].template, (muqData) => {
                 this.formData(muqData)
             })
         }

@@ -3,10 +3,11 @@ import {arrayMove} from 'react-sortable-hoc';
 import {Input, Checkbox} from 'antd';
 import Sortable from 'react-sortablejs';
 import Loader from './Loader'
+import store from '../store'
 
 var getDemographic = require('../actions/GetDemographic');
 var _ = require('lodash/includes');
-var unique = require('lodash/uniq');
+var unique = require('lodash/uniqBy');
 
 class DemographicQuestions extends Component {
     state = {
@@ -20,88 +21,76 @@ class DemographicQuestions extends Component {
 
     componentDidMount = () => {
         getDemographic.getdemographic((data) => {
-            let row = []
-            for (let i = 0; i < data.length; i++) {
-                if (!this.state.questions[data[i].questionId])
-                    this.state.questions[data[i].questionId] = {}
-                this.state.questions[data[i].questionId]["question"] = data[i].question
-                this.state.questions[data[i].questionId]["questionId"] = data[i].questionId
-                this.state.questions[data[i].questionId]["type"] = data[i].type;
-                this.state.questions[data[i].questionId]["options"] = data[i].options;
-
-                let options = [];
-                if (data[i].type == "radio" || data[i].type == "checkbox") {
-                    for (let j = 0; j < data[i].options.length; j++) {
-                        options.push(<p><input type={data[i].type}
-                                               disabled></input><label
-                            className={"fontColor"}>{data[i].options[j]}</label>
-                        </p>)
-                    }
-                    row.push(
-                        <tr style={{border: "1px solid #17509d", padding: "10px", cursor: "move"}}
-                            id={data[i].questionId}
-                            key={data[i].questionId}>
-                            <td width="50%" className={"fontColor questionTD"}>{data[i].question}</td>
-                            <td className={"answerTD"} style={{textAlign: "left"}}>{options}</td>
-                            <td className={"checkBoxTD"}><Checkbox
-                                onChange={() => this.updateSelectedCounter(data[i].questionId + "checkbox")}
-                                id={data[i].questionId + "checkbox"} defaultChecked/>
-                            </td>
-                        </tr>
-                    )
-                } else if (data[i].type == "text") {
-                    row.push(
-                        <tr style={{border: "1px solid #17509d", padding: "10px", cursor: "move"}}
-                            id={data[i].questionId}
-                            key={data[i].questionId}>
-                            <td width="50%" className={"fontColor questionTD"}>{data[i].question}</td>
-                            <td className={"answerTD fontColor"} style={{textAlign: "left"}}><Input type="text" disabled
-                                                                                                    style={{width: "50px"}}/>
-                            </td>
-                            <td className={"checkBoxTD"}><Checkbox
-                                onChange={() => this.updateSelectedCounter(data[i].questionId + "checkbox")}
-                                id={data[i].questionId + "checkbox"} defaultChecked/>
-                            </td>
-                        </tr>
-                    )
-                }
-            }
-            console.log("inside component did mount");
-            this.setState({items: row, selectedQuestions: row.length, showLoader: false})
+            this.formData(data)
         })
     }
 
     //to create a new question
     componentWillReceiveProps = (nextProps) => {
-        let options = [];
+        console.log("nextProps", nextProps)
         if (nextProps.render == false)
             return;
-        if (!this.state.questions[nextProps.data.questionId])
-            this.state.questions[nextProps.data.questionId] = {}
-        this.state.questions[nextProps.data.questionId]["question"] = nextProps.data.question
-        this.state.questions[nextProps.data.questionId]["questionId"] = nextProps.data.questionId
-        this.state.questions[nextProps.data.questionId]["type"] = nextProps.data.type;
-        this.state.questions[nextProps.data.questionId]["options"] = nextProps.data.options;
-        for (let i = 0; i < nextProps.data.options.length; i++) {
-            options.push(<p><input type={nextProps.data.type}
-                                   disabled></input><label className={"fontColor"}>{nextProps.data.options[i]}</label>
-            </p>)
+        this.formData(nextProps.data)
+    }
+
+    formData = (data) => {
+        let row = []
+        let storeData = store.getState().createProjectSteps.createProjectStepsData
+        if (storeData.step3) {
+            console.log(...storeData.step3.questions)
+            data.push(...storeData.step3.questions)
         }
-        let row = (
-            <tr style={{border: "1px solid #17509d", padding: "10px", cursor: "move"}} id={nextProps.data.questionId}
-                key={nextProps.data.questionId}>
-                <td width="50%" className={"fontColor questionTD"}>{nextProps.data.question}</td>
-                <td className={"answerTD"} style={{textAlign: "left"}}>{options}</td>
-                <td className={"checkBoxTD"}><Checkbox id={nextProps.data.questionId + "checkbox"}
-                                                       onChange={() => this.updateSelectedCounter(nextProps.data.questionId + "checkbox")}
-                                                       defaultChecked/>
-                </td>
-            </tr>
-        )
+        console.log(data)
+        data = unique(data, "questionId")
+        for (let i = 0; i < data.length; i++) {
+            if (!this.state.questions[data[i].questionId])
+                this.state.questions[data[i].questionId] = {}
+            this.state.questions[data[i].questionId]["question"] = data[i].question
+            this.state.questions[data[i].questionId]["questionId"] = data[i].questionId
+            this.state.questions[data[i].questionId]["type"] = data[i].type;
+            this.state.questions[data[i].questionId]["options"] = data[i].options;
+            let options = [];
+            if (data[i].type == "radio" || data[i].type == "checkbox") {
+                for (let j = 0; j < data[i].options.length; j++) {
+                    options.push(<p><input type={data[i].type}
+                                           disabled></input><label
+                        className={"fontColor"}>{data[i].options[j]}</label>
+                    </p>)
+                }
+                row.push(
+                    <tr style={{border: "1px solid #17509d", padding: "10px", cursor: "move"}}
+                        id={data[i].questionId}
+                        key={data[i].questionId}>
+                        <td width="50%" className={"fontColor questionTD"}>{data[i].question}</td>
+                        <td className={"answerTD"} style={{textAlign: "left"}}>{options}</td>
+                        <td className={"checkBoxTD"}><Checkbox
+                            onChange={() => this.updateSelectedCounter(data[i].questionId + "checkbox")}
+                            id={data[i].questionId + "checkbox"} defaultChecked/>
+                        </td>
+                    </tr>
+                )
+            } else if (data[i].type == "text") {
+                row.push(
+                    <tr style={{border: "1px solid #17509d", padding: "10px", cursor: "move"}}
+                        id={data[i].questionId}
+                        key={data[i].questionId}>
+                        <td width="50%" className={"fontColor questionTD"}>{data[i].question}</td>
+                        <td className={"answerTD fontColor"} style={{textAlign: "left"}}><Input type="text" disabled
+                                                                                                style={{width: "50px"}}/>
+                        </td>
+                        <td className={"checkBoxTD"}><Checkbox
+                            onChange={() => this.updateSelectedCounter(data[i].questionId + "checkbox")}
+                            id={data[i].questionId + "checkbox"} defaultChecked/>
+                        </td>
+                    </tr>
+                )
+            }
+        }
         this.setState(prevState => {
             return {
                 items: [...prevState.items, row],
-                selectedQuestions: prevState.selectedQuestions + 1
+                selectedQuestions: prevState.selectedQuestions + 1,
+                showLoader: false
             }
         })
     }
@@ -112,22 +101,21 @@ class DemographicQuestions extends Component {
     }
 
     next = () => {
-        let items = this.state.items
-        let keys = Object.keys(this.state.questions);
-        for (let i = 0; i < items.length; i++) {
-            if (document.getElementById(items[i].props.id + "checkbox").checked) {
-                this.state.checkedQues.push(items[i].props.id);
+        let items = this.state.questions
+        console.log()
+        console.log(items)
+        for (let i in items) {
+            if (document.getElementById(i + "checkbox").checked) {
+                this.state.checkedQues.push(items[i]);
             }
         }
-        for (let j = 0; j < this.state.checkedQues.length; j++) {
-            if (_(keys, this.state.checkedQues[j])) {
-                this.state.finalData.push(this.state.questions[this.state.checkedQues[j]])
-            }
-        }
-        this.state.finalData = unique(this.state.finalData, "questionId")
+
+        //this.state.checkedQues = unique(this.state.checkedQues, "questionId")
+
+
         let step = {
             step3: {
-                questions: this.state.finalData
+                questions: this.state.checkedQues
             }
         }
         this.props.props.dispatch({type: "RESET_CREATE_PROJECT_STEPS"})
