@@ -3,6 +3,7 @@ const uuid = require('uuid/v1');
 function createproject(req, db, cb) {
     let data = req.body.data;
     let userid = req.body.data.userid;
+    let description = req.body.data.description
     let step1 = data.step1
     let step2 = data.step2.questions
     let step3 = data.step3.questions
@@ -34,6 +35,7 @@ function createproject(req, db, cb) {
     let projectData = {
         userid: userid,
         projectId: projectId,
+        description: description,
         projectName: step1.project_name,
         createdAt: new Date(),
         response: 0,
