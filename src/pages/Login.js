@@ -21,6 +21,7 @@ class Login extends Component {
         if (nextProps.loginSuccess == true) {
             this.props.dispatch({type: "RESET_LOGIN"})
             browserHistory.replace('/survey_system/home');
+            //projects reducer
             this.props.dispatch({type: "PROJECT_DATA", payload: nextProps.data});
         }
     }

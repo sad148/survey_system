@@ -16,28 +16,55 @@ function login(req, db, cb) {
                 delete res.password;
                 res.projects = []
                 const projectsData = db.collection('projects');
-                projectsData.find({userid: res.user_id}, {sort: {'createdAt': -1}}).toArray(function (err, projectsResp) {
-                    if (err) {
-                        cb({
-                            code: 400,
-                            message: "Error in getting list of projects"
-                        })
-                    } else {
-                        if (res.length == 0) {
+                if (username === "admin") {
+                    projectsData.find({}, {sort: {'createdAt': -1}}).toArray(function (err, projectsResp) {
+                        if (err) {
                             cb({
-                                code: 200,
-                                message: "No projects created yet",
-                                data: res
+                                code: 400,
+                                message: "Error in getting list of projects"
                             })
                         } else {
-                            res.projects = projectsResp
-                            cb({
-                                code: 200,
-                                data: res
-                            })
+                            res.admin = true;
+                            if (res.length == 0) {
+                                cb({
+                                    code: 200,
+                                    message: "No projects created yet",
+                                    data: res
+                                })
+                            } else {
+                                res.projects = projectsResp
+                                cb({
+                                    code: 200,
+                                    data: res
+                                })
+                            }
                         }
-                    }
-                })
+                    });
+                } else {
+                    projectsData.find({userid: res.user_id}, {sort: {'createdAt': -1}}).toArray(function (err, projectsResp) {
+                        if (err) {
+                            cb({
+                                code: 400,
+                                message: "Error in getting list of projects"
+                            })
+                        } else {
+                            res.admin = false;
+                            if (res.length == 0) {
+                                cb({
+                                    code: 200,
+                                    message: "No projects created yet",
+                                    data: res
+                                })
+                            } else {
+                                res.projects = projectsResp
+                                cb({
+                                    code: 200,
+                                    data: res
+                                })
+                            }
+                        }
+                    })
+                }
             }
         })
         .catch((err) => {

@@ -104,6 +104,7 @@ class ListProjectData extends Component {
     }
 
     render = () => {
+        console.log("inside render", this.props);
         return (
             <div>
                 <div>
@@ -112,11 +113,15 @@ class ListProjectData extends Component {
                     }
                 </div>
                 <div id={"listProjectsDiv"} style={{height: "100%", padding: "20px"}}>
-                    <div id={"createProjectButtonDiv"}>
-                        <input type="submit" style={{paddingTop: "10px", paddingBottom: "10px", borderRadius: "20px"}}
-                               value={"Create Project"}
-                               onClick={this.callCreateProject}></input>
-                    </div>
+                    {
+                        (this.props.projectData.admin) ? "" : <div id={"createProjectButtonDiv"}>
+                            <input type="submit"
+                                   style={{paddingTop: "10px", paddingBottom: "10px", borderRadius: "20px"}}
+                                   value={"Create Project"}
+                                   onClick={this.callCreateProject}></input>
+                        </div>
+                    }
+
                     <div style={{height: "100%"}}>
                         <table style={{borderCollapse: "separate"}}>
                             <tr>
