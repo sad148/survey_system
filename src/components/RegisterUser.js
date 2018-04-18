@@ -6,6 +6,7 @@ import registerUser from '../actions/RegisterUser'
 
 var metadata = require('../utils/metadata.js');
 metadata = metadata.metadatadataValues()
+var validateemail = require('../actions/ValidateEmail');
 const FormItem = Form.Item;
 const Option = Select.Option;
 
@@ -24,7 +25,6 @@ class RegisterUser extends Component {
             position.push(<Option value={metadata.position[i].id}>{metadata.position[i].value}</Option>)
         }
         this.setState({
-            confirmDirty: false,
             autoCompleteResult: [],
             countries: countries,
             role: role,
@@ -48,10 +48,7 @@ class RegisterUser extends Component {
             }
         });
     }
-    handleConfirmBlur = (e) => {
-        const value = e.target.value;
-        this.setState({confirmDirty: this.state.confirmDirty || !!value});
-    }
+
     checkPassword = (rule, value, callback) => {
         const form = this.props.form;
         if (value && value !== form.getFieldValue('password')) {
@@ -59,6 +56,16 @@ class RegisterUser extends Component {
         } else {
             callback();
         }
+    }
+
+    checkEmail = (rule, value, callback) => {
+        validateemail.validateemail((value), response => {
+            if (!response.validate) {
+                callback();
+            } else {
+                callback("Email is already used");
+            }
+        })
     }
 
     handleCancel = (e) => {
@@ -110,7 +117,7 @@ class RegisterUser extends Component {
                                 required: true, message: 'Please enter your first name',
                             }],
                         })(
-                            <Input type="text" className="form-input loginTextBox" onBlur={this.handleConfirmBlur}/>
+                            <Input type="text" className="form-input loginTextBox"/>
                         )}
                     </FormItem>
                     <FormItem
@@ -122,7 +129,7 @@ class RegisterUser extends Component {
                                 required: true, message: 'Please enter your last name',
                             }],
                         })(
-                            <Input type="text" onBlur={this.handleConfirmBlur}/>
+                            <Input type="text"/>
                         )}
                     </FormItem>
                     <FormItem
@@ -134,6 +141,8 @@ class RegisterUser extends Component {
                                 type: 'email', message: 'The input is not valid E-mail!',
                             }, {
                                 required: true, message: 'Please input your E-mail!',
+                            }, {
+                                validator: this.checkEmail
                             }],
                         })(
                             <Input/>
@@ -162,7 +171,7 @@ class RegisterUser extends Component {
                                 validator: this.checkPassword,
                             }],
                         })(
-                            <Input type="password" onBlur={this.handleConfirmBlur}/>
+                            <Input type="password"/>
                         )}
                     </FormItem>
                     <FormItem
@@ -170,7 +179,7 @@ class RegisterUser extends Component {
                         label="Address"
                     >
                         {getFieldDecorator('address')(
-                            <Input type="text" onBlur={this.handleConfirmBlur}/>
+                            <Input type="text"/>
                         )}
                     </FormItem>
                     <FormItem
@@ -206,7 +215,7 @@ class RegisterUser extends Component {
                                 required: true, message: 'Please enter your organization',
                             }],
                         })(
-                            <Input type="text" onBlur={this.handleConfirmBlur}
+                            <Input type="text"
                                    placeholder="Please enter your organization"/>
                         )}
                     </FormItem>
@@ -232,7 +241,7 @@ class RegisterUser extends Component {
                                 // }
                             ],
                         })(
-                            <Input style={{width: '100%'}}/>
+                            <Input type="number" style={{width: '100%'}}/>
                         )}
                     </FormItem>
                     <FormItem {...tailFormItemLayout}>
