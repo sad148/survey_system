@@ -169,11 +169,7 @@ class RegisterUser extends Component {
                         {...formItemLayout}
                         label="Address"
                     >
-                        {getFieldDecorator('address', {
-                            rules: [{
-                                required: true, message: 'Please enter your address',
-                            }],
-                        })(
+                        {getFieldDecorator('address')(
                             <Input type="text" onBlur={this.handleConfirmBlur}/>
                         )}
                     </FormItem>
@@ -205,7 +201,11 @@ class RegisterUser extends Component {
                         {...formItemLayout}
                         label="Organization"
                     >
-                        {getFieldDecorator('organization')(
+                        {getFieldDecorator('organization', {
+                            rules: [{
+                                required: true, message: 'Please enter your organization',
+                            }],
+                        })(
                             <Input type="text" onBlur={this.handleConfirmBlur}
                                    placeholder="Please enter your organization"/>
                         )}
