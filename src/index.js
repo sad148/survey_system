@@ -24,7 +24,6 @@ ReactDOM.render(
                 <Route path="/survey_system/list_projects" component={ListProjects}/>
                 <Route path="/survey_system/create_project" component={CreateProject}/>
             </Route>
-            {/*<Route path="/survey_system/answers/:projectId" component={Fillanswers}/>*/}
             <Route path="/survey_system/answers/:projectId" component={Fillanswershome}/>
             <Route path="/survey_system/submit" component={AnswersSubmitConfirmation}/>
         </Router>
