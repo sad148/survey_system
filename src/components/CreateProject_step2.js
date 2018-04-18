@@ -100,8 +100,8 @@ class CreateProjectStep2 extends Component {
 
     next = () => {
         //this.props.props.dispatch({type: "DISPLAY_ERROR", message: "Select at least one question"})
-        if (this.state.selectedRowKeys.length < 6) {
-            alert('Please select at least 5 questions')
+        if (this.state.selectedRowKeys.length < 16) {
+            alert('Upto 5 questions can be removed')
             //this.props.props.dispatch({type: "DISPLAY_ERROR", message: "Select at least one question"})
         } else {
             let step = {
