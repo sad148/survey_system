@@ -14,7 +14,7 @@ var getprojectquestions = require('./getprojectquestions');
 var exportcsv = require('./exportcsv');
 var exportspss = require('./exportspss');
 var submitAnswers = require('./submitAnswers')
-
+var validateEmail = require('./validateemail')
 const MongoClient = require('mongodb').MongoClient;
 const assert = require('assert');
 const url = 'mongodb://localhost:27017';
@@ -166,5 +166,11 @@ app.get('/download/:projectId', (req, res) => {
         } else {
             res.download(path, 'export.sav');
         }
+    })
+})
+
+app.post('/validateemail', (req, res) => {
+    validateEmail.validateemail(req, db, (response) => {
+        res.send(response)
     })
 })
