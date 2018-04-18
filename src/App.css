@@ -399,7 +399,6 @@ span .ant-checkbox-checked .ant-checkbox-inner:after {
 }
 
 .questionTD {
-    font-weight: lighter;
     text-align: left;
     padding-right: 5px;
     border-top: solid 1.1px #17509d;
