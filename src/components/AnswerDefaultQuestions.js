@@ -23,7 +23,7 @@ class AnswerDefaultQuestions extends Component {
             let answersId = uuid().split("-").join("");
             for (let i = 0; i < item.options.length; i++) {
                 radioOptions.push(
-                    <div style={{marginRight: "5px"}}>
+                    <div style={{marginRight: "20px"}}>
                         <label
                             className={"fontColor"}>{parseInt(item.options[i])}
                         </label><br/>

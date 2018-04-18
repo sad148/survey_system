@@ -19,7 +19,7 @@ const FillAnswersTable = (props) => {
                                 padding: "10px",
                                 backgroundColor: "#d3d3d380"
                             }}>
-                                <td width={props.width || "50%"} className={"fontColor questionTD"}
+                                <td width={props.width || "60%"} className={"fontColor questionTD"}
                                     style={{border: "0px", verticalAlign: "inherit"}}>{item.question}</td>
                                 <td className={"answerTD"}
                                     style={{border: "0px", textAlign: props.align || "right"}}>{item.answer}</td>
