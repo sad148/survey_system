@@ -100,8 +100,7 @@ class CreateProjectStep1 extends Component {
                 </div>
                 <div style={{padding: "10px"}}>
                     <label style={{color: "red", marginTop: "10px"}}>*</label>&nbsp;<label
-                    style={{color: "white", marginTop: "10px"}}>Please select default
-                    questionnaire</label><br/>
+                    style={{color: "white", marginTop: "10px"}}>Please select the type of your system</label><br/>
                     <RadioGroup onChange={this.onChange} value={this.state.template}>
                         <Radio value={1} style={{color: "white"}}>TUQ</Radio>
                         <Radio value={0} style={{color: "white"}}>MAUQ</Radio>
@@ -109,8 +108,8 @@ class CreateProjectStep1 extends Component {
                     {
                         (this.state.options1) ? <div style={{"marginTop": "10px"}}>
                             <label style={{color: "red", marginTop: "10px"}}>*</label>&nbsp;<label
-                            style={{color: "white", marginTop: "10px"}}>Please select type of
-                            MAUQ</label><br/>
+                            style={{color: "white", marginTop: "10px"}}>Please select the primary user of the mobile
+                            health app</label><br/>
                             <RadioGroup onChange={this.onChange}>
                                 <Radio value={2} style={{color: "white"}}>Patient</Radio>
                                 <Radio value={3} style={{color: "white"}}>Provider</Radio>
@@ -120,8 +119,8 @@ class CreateProjectStep1 extends Component {
                     {
                         (this.state.options2) ? <div style={{"marginTop": "10px"}}>
                             <label style={{color: "red", marginTop: "10px"}}>*</label>&nbsp;<label
-                            style={{color: "white", marginTop: "10px"}}>Please select type of
-                            MAUQ</label><br/>
+                            style={{color: "white", marginTop: "10px"}}>Please select the type of the mobile health
+                            app</label><br/>
                             <RadioGroup onChange={this.onChange}>
                                 <Radio value={4} style={{color: "white"}}>Standalone</Radio>
                                 <Radio value={5} style={{color: "white"}}>Interactive</Radio>
