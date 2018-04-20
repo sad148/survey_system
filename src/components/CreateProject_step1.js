@@ -102,8 +102,8 @@ class CreateProjectStep1 extends Component {
                     <label style={{color: "red", marginTop: "10px"}}>*</label>&nbsp;<label
                     style={{color: "white", marginTop: "10px"}}>Please select the type of your system</label><br/>
                     <RadioGroup onChange={this.onChange} value={this.state.template}>
-                        <Radio value={1} style={{color: "white"}}>TUQ</Radio>
-                        <Radio value={0} style={{color: "white"}}>MAUQ</Radio>
+                        <Radio value={1} style={{color: "white"}}>Telehealth System(TUQ)</Radio>
+                        <Radio value={0} style={{color: "white"}}>Mobile Health App(MAUQ)</Radio>
                     </RadioGroup>
                     {
                         (this.state.options1) ? <div style={{"marginTop": "10px"}}>
