@@ -86,8 +86,8 @@ class ListProjectData extends Component {
             arr.push(
                 <tr>
                     <td className={"listProjectsTD"} style={{textAlign: "left"}}>{item.projectName}</td>
-                    <td className={"listProjectsTD"}>{moment(item.createdAt).format('DD-MM-YYYY')}</td>
-                    <td className={"listProjectsTD"}>{!item.latestDateEntry ? "N/A" : moment(item.latestDateEntry).format('DD-MM-YYYY')}</td>
+                    <td className={"listProjectsTD"}>{moment(item.createdAt).format('DD-MMM-YYYY')}</td>
+                    <td className={"listProjectsTD"}>{!item.latestDateEntry ? "N/A" : moment(item.latestDateEntry).format('DD-MMM-YYYY')}</td>
                     <td className={"listProjectsTD"}>{!item.response ? 0 : item.response}</td>
                     <td className={"listProjectsTD"}>{action}&nbsp;<input
                         style={{borderRadius: "0px", paddingTop: "2px", paddingBottom: "2px"}}
