@@ -27,7 +27,6 @@ class DemographicQuestions extends Component {
 
     //to create a new question
     componentWillReceiveProps = (nextProps) => {
-        console.log("nextProps", nextProps)
         if (nextProps.render == false)
             return;
         this.formData(nextProps.data)
@@ -37,10 +36,8 @@ class DemographicQuestions extends Component {
         let row = []
         let storeData = store.getState().createProjectSteps.createProjectStepsData
         if (storeData.step3) {
-            console.log(...storeData.step3.questions)
             data.push(...storeData.step3.questions)
         }
-        console.log(data)
         data = unique(data, "questionId")
         for (let i = 0; i < data.length; i++) {
             if (!this.state.questions[data[i].questionId])
@@ -102,17 +99,11 @@ class DemographicQuestions extends Component {
 
     next = () => {
         let items = this.state.questions
-        console.log()
-        console.log(items)
         for (let i in items) {
             if (document.getElementById(i + "checkbox").checked) {
                 this.state.checkedQues.push(items[i]);
             }
         }
-
-        //this.state.checkedQues = unique(this.state.checkedQues, "questionId")
-
-
         let step = {
             step3: {
                 questions: this.state.checkedQues
