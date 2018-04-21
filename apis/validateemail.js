@@ -1,6 +1,6 @@
 function validateemail(req, db, cb) {
     let data = req.body;
-    let email = data.email;
+    let email = data.email.toLowerCase();
     const usersData = db.collection('users');
     usersData.findOne({email: email})
         .then((response) => {
