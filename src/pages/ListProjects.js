@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from "react-redux";
+import {browserHistory} from 'react-router'
 import ListProjectData from '../components/ListProjectData.js'
 import getprojectslist from '../actions/GetProjectsList'
 
@@ -12,6 +13,8 @@ class ListProjects extends Component {
             if (sessionStorage.getItem("username")) {
                 let userid = sessionStorage.getItem("userid")
                 this.props.dispatch(getprojectslist(userid))
+            } else {
+                browserHistory.replace("/survey_system/login")
             }
             this.setState({render: false})
         }
