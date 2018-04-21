@@ -174,3 +174,11 @@ app.post('/validateemail', (req, res) => {
         res.send(response)
     })
 })
+
+app.get("/metadata", (req, res) => {
+    let metadata = {}
+    metadata.countries = require('./models/countries').countries()
+    metadata.positions = require('./models/position').positions()
+    metadata.roles = require('./models/roles').role()
+    res.send(metadata)
+})
