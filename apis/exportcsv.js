@@ -2,6 +2,7 @@ var _ = require('lodash/includes')
 var uniq = require('lodash/uniq');
 var json2csv = require('json2csv');
 var fs = require('fs');
+var moment = require('moment')
 var optionsMapping = require('./models/optionsMapping');
 
 function exportcsv(req, db, cb) {
@@ -69,7 +70,8 @@ function exportcsv(req, db, cb) {
                         "$group": {
                             "_id": {
                                 "userId": "$userId",
-                                "submittedEpoch": "$submittedEpoch"
+                                "submittedEpoch": "$submittedEpoch",
+                                "submittedTime": "$submittedTime"
                             },
                             answer: {
                                 $push: {
@@ -94,6 +96,8 @@ function exportcsv(req, db, cb) {
                         //traversing through the data received for submitted answers
                         for (let i = 0; i < res.length; i++) {
                             rows[i + 1] = {}
+                            rows[i + 1]["User Id"] = res[i]._id.userId
+                            rows[i + 1]["Submitted Time"] = moment(res[i]._id.submittedTime).format("DD-MMM-YYYY");
                             let answers = res[i].answer;
                             let obj = {}
                             for (let k = 0; k < answers.length; k++) {
@@ -111,22 +115,11 @@ function exportcsv(req, db, cb) {
 
                         let csv = json2csv({data: rows, field: columns})
                         csv = csv.split("\r")
-                        columns = csv[0];
-                        fs.writeFile("export.csv", csv, function (err, res) {
-                            if (err) {
-                                cb({
-                                    code: 400,
-                                    message: "Error in exporting csv"
-                                })
-                            } else {
-                                cb({
-                                    code: 200,
-                                    message: "Success",
-                                    data: csv
-                                })
-                            }
+                        cb({
+                            code: 200,
+                            message: "Success",
+                            data: csv
                         })
-
                     }
                 })
         }

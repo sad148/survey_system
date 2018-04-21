@@ -1,5 +1,6 @@
 var fs = require('fs');
 var shell = require('shelljs');
+var moment = require('moment')
 
 function exportspss(req, db, cb) {
     let projectId = req.body.projectId;
@@ -21,6 +22,11 @@ function exportspss(req, db, cb) {
             let measureLevels = {};
             let counter = 0;
             rows[0] = {};
+            varNames[0] = "User_Id"
+            varNames[1] = "Submitted_Time"
+            //vartypes is set to define column length in the output
+            varTypes["User_Id"] = 40
+            varTypes["Submitted_Time"] = 15
             res.map((item) => {
                 //since checkbox will have multiple options to choose from, separate columns should be created
                 //to check if the question type is not checkbox
@@ -34,7 +40,7 @@ function exportspss(req, db, cb) {
                         type: item.type
                     })
                     varNames.push(`Q${counter}`)
-                    varTypes[`Q${counter}`] = 1;
+                    varTypes[`Q${counter}`] = 3;
                     measureLevels[`Q${counter}`] = "nominal"
                     rows[0][`Q${counter}`] = item.question
                     counter++;
@@ -54,7 +60,7 @@ function exportspss(req, db, cb) {
                             })
                             rows[0][`Q${counter}_${i}`] = `${item.question}_${item.options[i]}`
                             measureLevels[`Q${counter}_${i}`] = "nominal"
-                            varTypes[`Q${counter}_${i}`] = 1;
+                            varTypes[`Q${counter}_${i}`] = 3;
                             varNames.push(`Q${counter}_${i}`)
                             counter++;
                         }
@@ -75,7 +81,8 @@ function exportspss(req, db, cb) {
                         "$group": {
                             "_id": {
                                 "userId": "$userId",
-                                "submittedEpoch": "$submittedEpoch"
+                                "submittedEpoch": "$submittedEpoch",
+                                "submittedTime": "$submittedTime"
                             },
                             answer: {
                                 $push: {
@@ -100,6 +107,8 @@ function exportspss(req, db, cb) {
                         //traversing through the data received for submitted answers
                         for (let i = 0; i < res.length; i++) {
                             rows[i + 1] = {}
+                            rows[i + 1]["User Id"] = res[i]._id.userId
+                            rows[i + 1]["Submitted Time"] = moment(res[i]._id.submittedTime).format("DD-MMM-YYYY");
                             let answers = res[i].answer;
                             let obj = {}
                             for (let k = 0; k < answers.length; k++) {
@@ -173,6 +182,7 @@ function mapAnswerToQues(obj, row, questionId, questionIdColumnMapping, varTypes
                 //set the selected value or entered text directly to the question number
                 row[values[z].csvColumnName] = obj[questionId].toString();
                 if (!Number.isInteger(row[values[z].csvColumnName])) {
+                    //if the answer's length is greater than predefined length of vartype or previously calculated length of vartype then update the length for that specific column
                     varTypes[values[z].csvColumnName] = varTypes[values[z].csvColumnName] < row[values[z].csvColumnName].length ? row[values[z].csvColumnName].length : varTypes[values[z].csvColumnName];
                 } else {
                     varTypes[values[z].csvColumnName] = 1;
