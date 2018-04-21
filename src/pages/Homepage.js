@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import {browserHistory, Link} from 'react-router';
-import {Form} from "antd/lib/index";
 import {connect} from "react-redux";
 
 class Homepage extends Component {
