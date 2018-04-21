@@ -243,14 +243,10 @@ class RegisterUser extends Component {
                         label="Phone Number"
                     >
                         {getFieldDecorator('phone', {
-                            rules: [{required: true, message: 'Please input your phone number!'},
-                                // {
-                                //     type: 'number',
-                                //     message: 'Please input numbers only!'
-                                // }
+                            rules: [{required: true, message: 'Please input your phone number!'}
                             ],
                         })(
-                            <Input type="number" style={{width: '100%'}}/>
+                            <Input type="text" style={{width: '100%'}}/>
                         )}
                     </FormItem>
                     <FormItem {...tailFormItemLayout}>
