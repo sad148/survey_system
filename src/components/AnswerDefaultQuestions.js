@@ -18,41 +18,43 @@ class AnswerDefaultQuestions extends Component {
 
     formData = (data) => {
         let step1 = []
-        data.map((item) => {
-            let radioOptions = [];
-            let answersId = uuid().split("-").join("");
-            for (let i = 0; i < item.options.length; i++) {
-                radioOptions.push(
-                    <div style={{marginRight: "20px"}}>
-                        <label
-                            className={"fontColor"}>{parseInt(item.options[i])}
-                        </label><br/>
-                        <input
-                            name={item.questionId}
-                            onChange={() => this.onChange(item, parseInt(item.options[i]), answersId)}
-                            type='radio'/>
-                    </div>
-                )
-            }
+        if (data != undefined) {
+            data.map((item) => {
+                let radioOptions = [];
+                let answersId = uuid().split("-").join("");
+                for (let i = 0; i < item.options.length; i++) {
+                    radioOptions.push(
+                        <div style={{marginRight: "20px"}}>
+                            <label
+                                className={"fontColor"}>{parseInt(item.options[i])}
+                            </label><br/>
+                            <input
+                                name={item.questionId}
+                                onChange={() => this.onChange(item, parseInt(item.options[i]), answersId)}
+                                type='radio'/>
+                        </div>
+                    )
+                }
 
-            let answer = (
-                <div style={{display: "inline-flex"}}>
-                    <Icon className={"fontColor"}
-                          style={{marginRight: "10px", marginTop: "22px"}}
-                          type="dislike"/>
-                    {radioOptions}
-                    <Icon className={"fontColor"}
-                          style={{
-                              marginRight: "10px",
-                              marginTop: "25px"
-                          }} type="like"/>
-                </div>)
+                let answer = (
+                    <div style={{display: "inline-flex"}}>
+                        <Icon className={"fontColor"}
+                              style={{marginRight: "10px", marginTop: "22px"}}
+                              type="dislike"/>
+                        {radioOptions}
+                        <Icon className={"fontColor"}
+                              style={{
+                                  marginRight: "10px",
+                                  marginTop: "25px"
+                              }} type="like"/>
+                    </div>)
 
-            step1.push({
-                question: item.question,
-                answer: answer
+                step1.push({
+                    question: item.question,
+                    answer: answer
+                })
             })
-        })
+        }
         this.setState({
             tableData: step1
         })

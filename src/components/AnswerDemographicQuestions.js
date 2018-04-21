@@ -16,65 +16,67 @@ export default class AnswerDemographicQuestions extends Component {
     }
     formData = (data) => {
         let step2 = []
-        data.map((item) => {
-            if (item.type == "radio") {
-                let radioOptions = [];
-                let answersId = uuid().split("-").join("");
-                for (let j = 0; j < item.options.length; j++) {
-                    if (item.options[j] != null) {
-                        radioOptions.push(
-                            <div style={{marginRight: "5px"}}>
-                                <input
-                                    name={item.questionId}
-                                    value={item.options[j]}
-                                    onChange={() => this.onChange(item, item.options[j], answersId)}
-                                    type='radio'
-                                />
-                                <label style={{marginLeft: "5px"}}
-                                       className={"fontColor"}>{item.options[j]}
-                                </label>
-                            </div>)
-                    }
-                }
-                step2.push({
-                    question: item.question,
-                    answer: <div style={{display: "flex"}}>{radioOptions}</div>
-                })
-            } else if (item.type == "checkbox") {
-                let radioOptions = [];
-                for (let j = 0; j < item.options.length; j++) {
+        if (data != undefined) {
+            data.map((item) => {
+                if (item.type == "radio") {
+                    let radioOptions = [];
                     let answersId = uuid().split("-").join("");
-                    if (item.options[j] != null) {
-                        radioOptions.push(
-                            <div style={{marginRight: "5px"}}>
-                                <input
-                                    name={item.questionId}
-                                    value={item.options[j]}
-                                    id={`${item.questionId}${item.options[j]}`}
-                                    className={item.questionId}
-                                    onChange={() => this.toggleCheckbox(item, item.options[j], answersId)}
-                                    type='checkbox'
-                                />
-                                <label style={{marginLeft: "5px"}}
-                                       className={"fontColor"}>{item.options[j]}
-                                </label>
-                            </div>)
+                    for (let j = 0; j < item.options.length; j++) {
+                        if (item.options[j] != null) {
+                            radioOptions.push(
+                                <div style={{marginRight: "5px"}}>
+                                    <input
+                                        name={item.questionId}
+                                        value={item.options[j]}
+                                        onChange={() => this.onChange(item, item.options[j], answersId)}
+                                        type='radio'
+                                    />
+                                    <label style={{marginLeft: "5px"}}
+                                           className={"fontColor"}>{item.options[j]}
+                                    </label>
+                                </div>)
+                        }
                     }
+                    step2.push({
+                        question: item.question,
+                        answer: <div style={{display: "flex"}}>{radioOptions}</div>
+                    })
+                } else if (item.type == "checkbox") {
+                    let radioOptions = [];
+                    for (let j = 0; j < item.options.length; j++) {
+                        let answersId = uuid().split("-").join("");
+                        if (item.options[j] != null) {
+                            radioOptions.push(
+                                <div style={{marginRight: "5px"}}>
+                                    <input
+                                        name={item.questionId}
+                                        value={item.options[j]}
+                                        id={`${item.questionId}${item.options[j]}`}
+                                        className={item.questionId}
+                                        onChange={() => this.toggleCheckbox(item, item.options[j], answersId)}
+                                        type='checkbox'
+                                    />
+                                    <label style={{marginLeft: "5px"}}
+                                           className={"fontColor"}>{item.options[j]}
+                                    </label>
+                                </div>)
+                        }
+                    }
+                    step2.push({
+                        question: item.question,
+                        answer: <div style={{display: "flex"}}>{radioOptions}</div>
+                    })
+                } else {
+                    let answersId = uuid().split("-").join("");
+                    step2.push({
+                        question: item.question,
+                        answer: <input type={"text"} id={item.questionId}
+                                       style={{backgroundColor: "white", border: "1px solid #17509d"}}
+                                       onChange={() => this.getTextAreaValue(item, answersId)}/>
+                    })
                 }
-                step2.push({
-                    question: item.question,
-                    answer: <div style={{display: "flex"}}>{radioOptions}</div>
-                })
-            } else {
-                let answersId = uuid().split("-").join("");
-                step2.push({
-                    question: item.question,
-                    answer: <input type={"text"} id={item.questionId}
-                                   style={{backgroundColor: "white", border: "1px solid #17509d"}}
-                                   onChange={() => this.getTextAreaValue(item, answersId)}/>
-                })
-            }
-        })
+            })
+        }
         this.setState({tableData: step2})
     }
 

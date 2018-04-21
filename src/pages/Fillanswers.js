@@ -40,23 +40,36 @@ class Fillanswers extends Component {
     }
 
     render = () => {
+        console.log("inside steps render", this.state.questions);
         let steps = [
             {
+                stepNum: "step2",
                 name: 'Default Questions',
                 component: <AnswerDefaultQuestions questions={this.state.questions.step2} props={this.props}
                                                    next={this.next}/>
             },
             {
+                stepNum: "step3",
                 name: "Demographic Questions",
                 component: <AnswerDemographicQuestions questions={this.state.questions.step3} props={this.props}
                                                        next={this.next}/>
             },
-
             {
+                stepNum: "step4",
                 name: "Open Ended Questions",
-                component: <AnswerOpenEndedQuestions questions={this.state.questions.step4} props={this.props}/>
+                component: <AnswerOpenEndedQuestions questions={this.state.questions.step4}
+                                                     props={this.props}/>
             }
         ]
+        let finalSteps = [];
+        for (let i = 0; i < steps.length; i++) {
+            if (this.state.questions[steps[i].stepNum])
+                finalSteps.push(steps[i])
+        }
+
+        console.log(steps)
+        console.log(finalSteps)
+
         return (
             <div style={{marginTop: "30px"}}>
                 <Steps progressDot current={this.state.current} style={{width: "75%", marginLeft: "15%"}}>

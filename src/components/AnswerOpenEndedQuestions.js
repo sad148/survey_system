@@ -20,15 +20,18 @@ export default class AnswerOpenEndedQuestions extends Component {
     }
     formData = (data) => {
         let step4 = [];
-        data.map((item) => {
-            let answersId = uuid().split("-").join("");
-            step4.push({
-                question: item.question,
-                answer: (<textarea
-                    style={{resize: "none"}} id={item.questionId} rows="4" cols="50"
-                    onChange={() => this.getTextAreaValue(item, answersId)}></textarea>)
+        console.log(data)
+        if (data != undefined) {
+            data.map((item) => {
+                let answersId = uuid().split("-").join("");
+                step4.push({
+                    question: item.question,
+                    answer: (<textarea
+                        style={{resize: "none"}} id={item.questionId} rows="4" cols="50"
+                        onChange={() => this.getTextAreaValue(item, answersId)}></textarea>)
+                })
             })
-        })
+        }
         this.setState({
             tableData: step4
         })
@@ -73,7 +76,7 @@ export default class AnswerOpenEndedQuestions extends Component {
         return (
             <div>
                 <FillAnswersTable props={this.state.tableData} align={"left"} width={"50%"}
-                                  instructions={"Instructions: Please type your ansewer in the box to the right."}/>
+                                  instructions={"Instructions: Please type your answers in the box to the right."}/>
                 <input type={"submit"}
                        id='next'
                        onClick={this.handleSubmit}
