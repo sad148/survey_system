@@ -20,7 +20,7 @@ class Login extends Component {
     componentWillReceiveProps = (nextProps) => {
         if (nextProps.loginSuccess == true) {
             this.props.dispatch({type: "RESET_LOGIN"})
-            browserHistory.replace('/survey_system/home');
+            browserHistory.replace('/survey_system/list_projects');
             //projects reducer
             this.props.dispatch({type: "PROJECT_DATA", payload: nextProps.data});
         }
@@ -58,14 +58,6 @@ class Login extends Component {
         const {getFieldDecorator} = this.props.form;
         return (
             <div id='loginContainer'>
-                <div id="titleContainer">
-                    <div id="title1">
-                        PITT Usability Questionnaire
-                    </div>
-                    <div id="title2">
-                        For Telehealth System (TUQ) and Mobile Health Apps (MAUQ)
-                    </div>
-                </div>
                 <div id="loginFormContainer">
                     <Form className="login-form">
                         <div id="loginTextContainer">

@@ -62,7 +62,6 @@ div#loginContainer {
     grid-row-gap: 20%;
     padding: 10px;
     grid-auto-rows: min-content;
-    background-image: url("./media/background-login.png");
     text-align: left;
     padding: 20px 0;
     background-repeat: no-repeat;
@@ -256,12 +255,6 @@ button#register { /*{ where button is css attribute hence no . or #*/
 .content {
     background-color: #6299d1;
     overflow-y: auto;
-}
-
-div#welcomeDiv {
-    top: 16%;
-    position: absolute;
-    left: 92%;
 }
 
 th {
