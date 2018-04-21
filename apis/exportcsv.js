@@ -86,42 +86,44 @@ function exportcsv(req, db, cb) {
                 ]
             )
                 .toArray(function (err, res) {
-                    if (res.length == 0) {
-                        cb({
-                            code: 204,
-                            message: "No answers submitted yet"
-                        })
-                    } else {
-                        //answers are grouped on userId and submittedEpoch(time stamp) basis to maintain uniqueness
-                        //traversing through the data received for submitted answers
-                        for (let i = 0; i < res.length; i++) {
-                            rows[i + 1] = {}
-                            rows[i + 1]["User Id"] = res[i]._id.userId
-                            rows[i + 1]["Submitted Time"] = moment(res[i]._id.submittedTime).format("DD-MMM-YYYY");
-                            let answers = res[i].answer;
-                            let obj = {}
-                            for (let k = 0; k < answers.length; k++) {
-                                obj[answers[k].questionId] = answers[k].answer
+                        console.log(res)
+                        if (res.length == 0) {
+                            cb({
+                                code: 204,
+                                message: "No answers submitted yet"
+                            })
+                        } else {
+                            //answers are grouped on userId and submittedEpoch(time stamp) basis to maintain uniqueness
+                            //traversing through the data received for submitted answers
+                            for (let i = 0; i < res.length; i++) {
+                                rows[i + 1] = {}
+                                rows[i + 1]["User Id"] = res[i]._id.userId
+                                rows[i + 1]["Submitted Time"] = moment(res[i]._id.submittedTime).format("DD-MMM-YYYY");
+                                let answers = res[i].answer;
+                                let obj = {}
+                                for (let k = 0; k < answers.length; k++) {
+                                    obj[answers[k].questionId] = answers[k].answer
+                                }
+                                for (let item in questionIdColumnMapping) {
+                                    mapAnswerToQues(obj, rows[i + 1], item, questionIdColumnMapping[item])
+                                }
                             }
-                            for (let item in questionIdColumnMapping) {
-                                mapAnswerToQues(obj, rows[i + 1], item, questionIdColumnMapping[item])
+                            let records = []
+                            for (let i = 0; i < rows.length; i++) {
+                                let rowsData = Object.values(rows[i])
+                                records[i] = rowsData
                             }
-                        }
-                        let records = []
-                        for (let i = 0; i < rows.length; i++) {
-                            let rowsData = Object.values(rows[i])
-                            records[i] = rowsData
-                        }
 
-                        let csv = json2csv({data: rows, field: columns})
-                        csv = csv.split("\r")
-                        cb({
-                            code: 200,
-                            message: "Success",
-                            data: csv
-                        })
+                            let csv = json2csv({data: rows, field: columns})
+                            csv = csv.split("\r")
+                            cb({
+                                code: 200,
+                                message: "Success",
+                                data: csv
+                            })
+                        }
                     }
-                })
+                )
         }
     })
 }

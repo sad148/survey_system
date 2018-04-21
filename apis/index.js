@@ -152,10 +152,10 @@ app.post('/submitanswers', (req, res) => {
     })
 })
 
-app.get('/download/:projectId', (req, res) => {
-    let projectId = req.params.projectId
+app.get('/download/:fileName', (req, res) => {
+    let fileName = req.params.fileName
     let path = __dirname.substring(0, __dirname.lastIndexOf('\\'));
-    path += `\\exports\\${projectId}.sav`;
+    path += `\\exports\\${fileName}`
     fs.access(path, (err) => {
         if (err) {
             console.log(path);
@@ -164,7 +164,7 @@ app.get('/download/:projectId', (req, res) => {
                 message: "Error in downloading"
             })
         } else {
-            res.download(path, 'export.sav');
+            res.download(path, fileName);
         }
     })
 })

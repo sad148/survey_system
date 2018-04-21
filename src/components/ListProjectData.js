@@ -34,17 +34,17 @@ class ListProjectData extends Component {
         this.setState({link: input, visible: true})
     }
 
-    exportcsv = (projectId) => {
+    exportcsv = (projectId, projectName, participantCount) => {
         this.setState({showLoader: true})
         exportcsv.exportcsv(projectId, (response) => {
             if (response.code == 200) {
-                download.download(response.data, "export.csv", "text/csv");
+                let fileName = `${projectName}_${moment().format('DD-MMM-YYYY')}_${participantCount}.csv`
+                download.download(response.data, fileName, "text/csv");
                 this.setState({showLoader: false})
             }
             else {
                 this.setState({showLoader: false})
                 alert(response.message)
-                //this.props.dispatch({type: "DISPLAY_ERROR", message: "Error in exporting"})
             }
         })
     }
@@ -54,23 +54,22 @@ class ListProjectData extends Component {
         exportspss.exportspss(projectId, (response) => {
             if (response.code == 200) {
                 this.setState({showLoader: false})
-                window.location.href = `http://localhost:3009/download/${projectId}`;
+                window.location.href = `http://localhost:3009/download/${response.fileName}`;
             } else {
                 this.setState({showLoader: false})
                 alert(response.message)
-                //this.props.dispatch({type: "DISPLAY_ERROR", message: "Error in exporting"})
             }
         })
     }
 
-    selectOption = (projectId) => {
+    selectOption = (projectId, projectName, response) => {
         let value = document.getElementById(projectId + "action").value
         if (value === "share")
             this.sharelink(projectId)
         else if (value === "csv")
-            this.exportcsv(projectId)
+            this.exportcsv(projectId, projectName, response)
         else
-            this.exportspss(projectId)
+            this.exportspss(projectId, projectName, response)
     }
 
     formData = (data) => {
@@ -91,7 +90,8 @@ class ListProjectData extends Component {
                     <td className={"listProjectsTD"}>{!item.response ? 0 : item.response}</td>
                     <td className={"listProjectsTD"}>{action}&nbsp;<input
                         style={{borderRadius: "0px", paddingTop: "2px", paddingBottom: "2px"}}
-                        type={"submit"} onClick={() => this.selectOption(item.projectId)}
+                        type={"submit"}
+                        onClick={() => this.selectOption(item.projectId, item.projectName, item.response)}
                         value={"Go"}/></td>
                 </tr>
             )
