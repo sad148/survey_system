@@ -22,24 +22,7 @@ class CreateProject extends Component {
             alert('Registered successfully');
             this.props.dispatch({type: "RESET_REGISTER_USER"})
         }
-
-        // if (nextProps.next == true)
-        //     this.next()
-        // else if (nextProps.next == false)
-        //     this.prev()
     }
-
-    // next = () => {
-    //     const current = this.state.current + 1;
-    //     console.log("current -", current);
-    //     this.setState({current});
-    // }
-    //
-    // prev = () => {
-    //     const current = this.state.current - 1;
-    //     console.log("current -", current);
-    //     this.setState({current});
-    // }
 
     render = () => {
         let steps = [
