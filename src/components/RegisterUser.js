@@ -4,33 +4,42 @@ import {connect} from 'react-redux';
 import Error from '../components/Error.js'
 import registerUser from '../actions/RegisterUser'
 
-var metadata = require('../utils/metadata.js');
-metadata = metadata.metadatadataValues()
+
 var validateemail = require('../actions/ValidateEmail');
+var getregistermetadata = require('../actions/GetRegisterMetadata')
 const FormItem = Form.Item;
 const Option = Select.Option;
 
 class RegisterUser extends Component {
-    componentWillMount = () => {
+    state = {
+        autoCompleteResult: [],
+        countries: [],
+        role: [],
+        visibleSuccessModal: false,
+        position: []
+    }
+
+    componentDidMount = () => {
         let countries = []
         let role = []
         let position = []
-        for (let i = 0; i < metadata.countries.length; i++) {
-            countries.push(<Option value={metadata.countries[i].id}>{metadata.countries[i].value}</Option>)
-        }
-        for (let i = 0; i < metadata.role.length; i++) {
-            role.push(<Option value={metadata.role[i].id}>{metadata.role[i].value}</Option>)
-        }
-        for (let i = 0; i < metadata.position.length; i++) {
-            position.push(<Option value={metadata.position[i].id}>{metadata.position[i].value}</Option>)
-        }
-        this.setState({
-            autoCompleteResult: [],
-            countries: countries,
-            role: role,
-            visibleSuccessModal: false,
-            position: position
-        });
+        getregistermetadata.getregistermetadata((metadata) => {
+            for (let i = 0; i < metadata.countries.length; i++) {
+                countries.push(<Option value={metadata.countries[i].id}>{metadata.countries[i].value}</Option>)
+            }
+            for (let i = 0; i < metadata.roles.length; i++) {
+                role.push(<Option value={metadata.roles[i].id}>{metadata.roles[i].value}</Option>)
+            }
+            for (let i = 0; i < metadata.positions.length; i++) {
+                position.push(<Option value={metadata.positions[i].id}>{metadata.positions[i].value}</Option>)
+            }
+
+            this.setState({
+                countries: countries,
+                role: role,
+                position: position
+            })
+        })
     }
 
     componentWillReceiveProps = (nextProps) => {
