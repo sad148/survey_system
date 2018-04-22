@@ -9,7 +9,6 @@ import {Router, Route, IndexRoute} from "react-router";
 import AnswersSubmitConfirmation from './pages/AnswersSubmitConfirmation'
 import CreateProject from './pages/CreateProject'
 import ListProjects from './pages/ListProjects'
-import Fillanswers from './pages/Fillanswers'
 import Fillanswershome from './pages/Fillanswershome'
 import About from './components/About'
 import References from './components/References'
@@ -21,8 +20,8 @@ ReactDOM.render(
     <Provider store={store}>
         <Router history={history}>
             <Route path="/survey_system/" component={Homepage}>
+                <IndexRoute component={About}/>
                 <Route path="/survey_system/login" component={Login}/>
-                {/*<IndexRoute component={ListProjects}/>*/}
                 <Route path="/survey_system/about" component={About}/>
                 <Route path="/survey_system/references" component={References}/>
                 <Route path="/survey_system/list_projects" component={ListProjects}/>
