@@ -11,6 +11,9 @@ function registerUser(req, db, cb) {
     delete data.phone;
     data.projects = []
     data.email = data.email.toLowerCase()
+    data.securityAnswer1 = md5(data.securityAnswer1.toLowerCase())
+    data.securityAnswer2 = md5(data.securityAnswer2.toLowerCase())
+    data.securityAnswer3 = md5(data.securityAnswer3.toLowerCase())
     db.collection('users').insertOne(data)
         .then((res) => {
             delete res.ops[0]._id

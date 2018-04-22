@@ -10,6 +10,36 @@ var getregistermetadata = require('../actions/GetRegisterMetadata')
 const FormItem = Form.Item;
 const Option = Select.Option;
 
+var securityQuestions1 = [],
+    securityQuestions2 = [],
+    securityQuestions3 = []
+const questions = {
+    1: "What was your childhood nickname?",
+    2: "What is the name of your favorite childhood friend?",
+    3: "In what city or town did your mother and father meet?",
+    4: "What is the middle name of your oldest child?",
+    5: "What is your favorite team?",
+    6: "What is your favorite movie?",
+    7: "What was your favorite sport in high school?",
+    8: "What was your favorite food as a child?",
+    9: "What was the make of your first car?",
+    10: "What was the name of the hospital where you were born?",
+    11: "In what town was your first job?",
+    12: "What was the name of the company where you had your first job?",
+    13: "What primary school did you attend?",
+    14: "In what town or city did you meet your spouse/partner?",
+    15: "What is the middle name of your oldest child?"
+}
+
+for (let i in questions) {
+    if (i < 6)
+        securityQuestions1.push(<Option value={i}>{questions[i]}</Option>)
+    else if (i > 6 && i < 12)
+        securityQuestions2.push(<Option value={i}>{questions[i]}</Option>)
+    else
+        securityQuestions3.push(<Option value={i}>{questions[i]}</Option>)
+}
+
 class RegisterUser extends Component {
     state = {
         autoCompleteResult: [],
@@ -53,6 +83,9 @@ class RegisterUser extends Component {
         e.preventDefault();
         this.props.form.validateFieldsAndScroll((err, values) => {
             if (!err) {
+                values["securityQuestion1"] = questions[values["securityQuestion1"]]
+                values["securityQuestion2"] = questions[values["securityQuestion2"]]
+                values["securityQuestion3"] = questions[values["securityQuestion3"]]
                 this.props.dispatch(registerUser(values));
             }
         });
@@ -249,6 +282,82 @@ class RegisterUser extends Component {
                             <Input type="text" style={{width: '100%'}}/>
                         )}
                     </FormItem>
+                    <FormItem
+                        {...formItemLayout}
+                        label="Security Question 1"
+                    >
+                        {getFieldDecorator('securityQuestion1', {
+                            rules: [{
+                                required: true, message: 'Please select a security question',
+                            }],
+                        })(
+                            <Select placeholder="Please select a security question">
+                                {securityQuestions1}
+                            </Select>
+                        )}
+                    </FormItem>
+                    <FormItem
+                        {...formItemLayout}
+                        label="Answer 1"
+                    >
+                        {getFieldDecorator('securityAnswer1', {
+                            rules: [{required: true, message: 'Please answer the security question!'}
+                            ],
+                        })(
+                            <Input type="text" style={{width: '100%'}}/>
+                        )}
+                    </FormItem>
+                    <FormItem
+                        {...formItemLayout}
+                        label="Security Question 2"
+                    >
+                        {getFieldDecorator('securityQuestion2', {
+                            rules: [{
+                                required: true, message: 'Please select a security question',
+                            }],
+                        })(
+                            <Select placeholder="Please select a security question">
+                                {securityQuestions2}
+                            </Select>
+                        )}
+                    </FormItem>
+                    <FormItem
+                        {...formItemLayout}
+                        label="Answer 2"
+                    >
+                        {getFieldDecorator('securityAnswer2', {
+                            rules: [{required: true, message: 'Please answer the security question!'}
+                            ],
+                        })(
+                            <Input type="text" style={{width: '100%'}}/>
+                        )}
+                    </FormItem>
+                    <FormItem
+                        {...formItemLayout}
+                        label="Security Question 3"
+                    >
+                        {getFieldDecorator('securityQuestion3', {
+                            rules: [{
+                                required: true, message: 'Please select a security question',
+                            }],
+                        })(
+                            <Select placeholder="Please select a security question">
+                                {securityQuestions3}
+                            </Select>
+                        )}
+                    </FormItem>
+                    <FormItem
+                        {...formItemLayout}
+                        label="Answer 3"
+                    >
+                        {getFieldDecorator('securityAnswer3', {
+                            rules: [{required: true, message: 'Please answer the security question!'}
+                            ],
+                        })(
+                            <Input type="text" style={{width: '100%'}}/>
+                        )}
+                    </FormItem>
+
                     <FormItem {...tailFormItemLayout}>
                         <input type="button" id='register' onClick={this.handleSubmit} value="Register"/>
                     </FormItem>
