@@ -5,6 +5,7 @@ import {connect} from 'react-redux';
 import {browserHistory} from 'react-router';
 import Error from '../components/Error.js'
 import {Form, Icon, Input, Modal} from 'antd';
+import ForgotPassword from '../components/ForgotPassword'
 
 const FormItem = Form.Item;
 
@@ -13,7 +14,8 @@ class Login extends Component {
         sessionStorage.setItem("apiurl", "http://localhost:3009/")
         this.setState({
             showRegister: false,
-            visible: false
+            visible: false,
+            forgotPasswordModal: false
         })
     }
 
@@ -42,7 +44,6 @@ class Login extends Component {
     }
 
     handleCancel = (e) => {
-        console.log(this.state.visible)
         if (this.state.visible) {
             this.setState({
                 visible: false
@@ -52,6 +53,22 @@ class Login extends Component {
                 visible: true
             });
         }
+    }
+
+    forgotPasswordModalCancel = (e) => {
+        if (this.state.forgotPasswordModal) {
+            this.setState({
+                forgotPasswordModal: false
+            });
+        } else {
+            this.setState({
+                forgotPasswordModal: true
+            });
+        }
+    }
+
+    forgotPassword = () => {
+
     }
 
     render = () => {
@@ -90,7 +107,7 @@ class Login extends Component {
                         </FormItem>
                         <FormItem>
                             <div id={"loginPageButtons"}>
-                                <input type="button" id='forgotPwd' onClick={this.handleSubmit}
+                                <input type="button" id='forgotPwd' onClick={this.forgotPasswordModalCancel}
                                        value="Forgot Password"/>
                                 <input type="button" id='signin' onClick={this.handleSubmit} value="Continue"/>
                                 <br/>
@@ -109,6 +126,12 @@ class Login extends Component {
                            style={{top: 20}}
                            bodyStyle={{backgroundColor: "white"}}
                            onCancel={this.handleCancel}><RegisterUser removeMainModal={this.handleCancel}/></Modal>
+                    <Error/>
+                    <Modal visible={this.state.forgotPasswordModal} footer={null}
+                           style={{top: 20}}
+                           bodyStyle={{backgroundColor: "white"}}
+                           onCancel={this.forgotPasswordModalCancel}><ForgotPassword
+                        removeMainModal={this.forgotPasswordModalCancel}/></Modal>
                     <Error/>
                 </div>
             </div>

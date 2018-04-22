@@ -4,7 +4,6 @@ import {connect} from 'react-redux';
 import Error from '../components/Error.js'
 import registerUser from '../actions/RegisterUser'
 
-
 var validateemail = require('../actions/ValidateEmail');
 var getregistermetadata = require('../actions/GetRegisterMetadata')
 const FormItem = Form.Item;
@@ -159,7 +158,7 @@ class RegisterUser extends Component {
                                 required: true, message: 'Please enter your first name',
                             }],
                         })(
-                            <Input type="text" className="form-input loginTextBox"/>
+                            <Input autoComplete={"off"} type="text" className="form-input loginTextBox"/>
                         )}
                     </FormItem>
                     <FormItem
@@ -171,7 +170,7 @@ class RegisterUser extends Component {
                                 required: true, message: 'Please enter your last name',
                             }],
                         })(
-                            <Input type="text"/>
+                            <Input autoComplete={"off"} type="text"/>
                         )}
                     </FormItem>
                     <FormItem
@@ -187,7 +186,7 @@ class RegisterUser extends Component {
                                 validator: this.checkEmail
                             }],
                         })(
-                            <Input/>
+                            <Input autoComplete={"off"}/>
                         )}
                     </FormItem>
                     <FormItem
@@ -199,7 +198,7 @@ class RegisterUser extends Component {
                                 required: true, message: 'Please input your password!',
                             }],
                         })(
-                            <Input type="password"/>
+                            <Input autoComplete={"off"} type="password"/>
                         )}
                     </FormItem>
                     <FormItem
@@ -213,7 +212,7 @@ class RegisterUser extends Component {
                                 validator: this.checkPassword,
                             }],
                         })(
-                            <Input type="password"/>
+                            <Input autoComplete={"off"} type="password"/>
                         )}
                     </FormItem>
                     <FormItem
@@ -221,7 +220,7 @@ class RegisterUser extends Component {
                         label="Address"
                     >
                         {getFieldDecorator('address')(
-                            <Input type="text"/>
+                            <Input autoComplete={"off"} type="text"/>
                         )}
                     </FormItem>
                     <FormItem
@@ -257,7 +256,7 @@ class RegisterUser extends Component {
                                 required: true, message: 'Please enter your organization',
                             }],
                         })(
-                            <Input type="text"
+                            <Input autoComplete={"off"} type="text"
                                    placeholder="Please enter your organization"/>
                         )}
                     </FormItem>
@@ -279,7 +278,7 @@ class RegisterUser extends Component {
                             rules: [{required: true, message: 'Please input your phone number!'}
                             ],
                         })(
-                            <Input type="text" style={{width: '100%'}}/>
+                            <Input autoComplete={"off"} type="text" style={{width: '100%'}}/>
                         )}
                     </FormItem>
                     <FormItem
@@ -304,7 +303,7 @@ class RegisterUser extends Component {
                             rules: [{required: true, message: 'Please answer the security question!'}
                             ],
                         })(
-                            <Input type="text" style={{width: '100%'}}/>
+                            <Input autoComplete={"off"} type="text" style={{width: '100%'}}/>
                         )}
                     </FormItem>
                     <FormItem
@@ -329,7 +328,7 @@ class RegisterUser extends Component {
                             rules: [{required: true, message: 'Please answer the security question!'}
                             ],
                         })(
-                            <Input type="text" style={{width: '100%'}}/>
+                            <Input autoComplete={"off"} type="text" style={{width: '100%'}}/>
                         )}
                     </FormItem>
                     <FormItem
@@ -354,7 +353,7 @@ class RegisterUser extends Component {
                             rules: [{required: true, message: 'Please answer the security question!'}
                             ],
                         })(
-                            <Input type="text" style={{width: '100%'}}/>
+                            <Input autoComplete={"off"} type="text" style={{width: '100%'}}/>
                         )}
                     </FormItem>
 

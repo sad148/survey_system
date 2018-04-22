@@ -15,31 +15,24 @@ var exportcsv = require('./exportcsv');
 var exportspss = require('./exportspss');
 var submitAnswers = require('./submitAnswers')
 var validateEmail = require('./validateemail')
+var getUserDetails = require('./getUserDetails')
+var updatePassword = require('./updatePassword')
 const MongoClient = require('mongodb').MongoClient;
 const assert = require('assert');
 const url = 'mongodb://localhost:27017';
 const dbName = 'survey_system';
-//const connection = "";
 var client;
 var db;
 app.use(bodyParser.json());
 app.use(cors())
 app.listen(3009, () => {
     console.log("Listening on 3009");
-    // connection = mysql.createConnection({
-    //     host     : 'localhost',
-    //     user     : 'survey_system',
-    //     password : 'root',
-    //     database : 'survey_system'
-    // });
-    // connection.connect();
     MongoClient.connect(url, function (err, response) {
         client = response
         assert.equal(null, err);
         console.log("Connected successfully to server");
         db = client.db(dbName);
     });
-    // module.exports = {connection:connection};
 })
 
 
@@ -171,6 +164,17 @@ app.get('/download/:fileName', (req, res) => {
 
 app.post('/validateemail', (req, res) => {
     validateEmail.validateemail(req, db, (response) => {
+        res.send(response)
+    })
+})
+
+app.post('/getuserdetails', (req, res) => {
+    getUserDetails.getUserDetails(req, db, (response) => {
+        res.send(response)
+    })
+})
+app.post('/updatepassword', (req, res) => {
+    updatePassword.updatePassword(req, db, (response) => {
         res.send(response)
     })
 })
