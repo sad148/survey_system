@@ -1,5 +1,6 @@
 var fs = require('fs');
 var shell = require('shelljs');
+var moment = require('moment')
 
 function exportspss(req, db, cb) {
     let projectId = req.body.projectId;
@@ -9,7 +10,7 @@ function exportspss(req, db, cb) {
         if (res.length == 0) {
             cb({
                 code: 204,
-                message: "Error"
+                message: "Error in exporting spss"
             })
         } else {
             let columns = [];
@@ -21,6 +22,11 @@ function exportspss(req, db, cb) {
             let measureLevels = {};
             let counter = 0;
             rows[0] = {};
+            varNames[0] = "User_Id"
+            varNames[1] = "Submitted_Time"
+            //vartypes is set to define column length in the output
+            varTypes["User_Id"] = 40
+            varTypes["Submitted_Time"] = 15
             res.map((item) => {
                 //since checkbox will have multiple options to choose from, separate columns should be created
                 //to check if the question type is not checkbox
@@ -34,7 +40,7 @@ function exportspss(req, db, cb) {
                         type: item.type
                     })
                     varNames.push(`Q${counter}`)
-                    varTypes[`Q${counter}`] = 1;
+                    varTypes[`Q${counter}`] = 3;
                     measureLevels[`Q${counter}`] = "nominal"
                     rows[0][`Q${counter}`] = item.question
                     counter++;
@@ -54,7 +60,7 @@ function exportspss(req, db, cb) {
                             })
                             rows[0][`Q${counter}_${i}`] = `${item.question}_${item.options[i]}`
                             measureLevels[`Q${counter}_${i}`] = "nominal"
-                            varTypes[`Q${counter}_${i}`] = 1;
+                            varTypes[`Q${counter}_${i}`] = 3;
                             varNames.push(`Q${counter}_${i}`)
                             counter++;
                         }
@@ -75,7 +81,8 @@ function exportspss(req, db, cb) {
                         "$group": {
                             "_id": {
                                 "userId": "$userId",
-                                "submittedEpoch": "$submittedEpoch"
+                                "submittedEpoch": "$submittedEpoch",
+                                "submittedTime": "$submittedTime"
                             },
                             answer: {
                                 $push: {
@@ -100,6 +107,8 @@ function exportspss(req, db, cb) {
                         //traversing through the data received for submitted answers
                         for (let i = 0; i < res.length; i++) {
                             rows[i + 1] = {}
+                            rows[i + 1]["User Id"] = res[i]._id.userId
+                            rows[i + 1]["Submitted Time"] = moment(res[i]._id.submittedTime).format("DD-MMM-YYYY");
                             let answers = res[i].answer;
                             let obj = {}
                             for (let k = 0; k < answers.length; k++) {
@@ -123,26 +132,38 @@ function exportspss(req, db, cb) {
                             "varLabel": rows[0],
                             "measureLevels": measureLevels
                         }
-                        fs.writeFile(`${__dirname}\\models\\data.json`, JSON.stringify(data, 5), function (e, r) {
+                        let jsonFileName = `${__dirname}\\models\\${projectId}.json`
+                        fs.writeFile(jsonFileName, JSON.stringify(data, 5), function (e, r) {
                             if (!e) {
-                                let pythonPath = __dirname + "\\models\\convertToSpss.py " + projectId + ".sav"
-                                shell.exec("py " + pythonPath, function (err, res) {
-                                    if (!err) {
-                                        cb({
-                                            code: 200,
-                                            message: "Success"
+                                db.collection("projects").findOne({projectId: projectId})
+                                    .then((projectDetails) => {
+                                        let exportFileName = `${projectDetails.projectName.split(" ").join("_")}_${moment().format('DD-MMM-YYYY')}_${projectDetails.response}.sav`
+                                        let pythonPath = __dirname + "\\models\\convertToSpss.py " + exportFileName
+                                        shell.exec("py " + pythonPath + " " + jsonFileName, function (err, res) {
+                                            if (!err) {
+                                                cb({
+                                                    code: 200,
+                                                    message: "Success",
+                                                    fileName: exportFileName
+                                                })
+                                            } else {
+                                                cb({
+                                                    code: 400,
+                                                    message: "Error in exporting spss"
+                                                })
+                                            }
                                         })
-                                    } else {
+                                    })
+                                    .catch((err) => {
                                         cb({
                                             code: 400,
-                                            message: err
+                                            message: "Error in exporting spss"
                                         })
-                                    }
-                                })
+                                    })
                             } else {
                                 cb({
                                     code: 400,
-                                    message: e
+                                    message: "Error in exporting spss"
                                 })
                             }
                         })
@@ -172,6 +193,7 @@ function mapAnswerToQues(obj, row, questionId, questionIdColumnMapping, varTypes
                 //set the selected value or entered text directly to the question number
                 row[values[z].csvColumnName] = obj[questionId].toString();
                 if (!Number.isInteger(row[values[z].csvColumnName])) {
+                    //if the answer's length is greater than predefined length of vartype or previously calculated length of vartype then update the length for that specific column
                     varTypes[values[z].csvColumnName] = varTypes[values[z].csvColumnName] < row[values[z].csvColumnName].length ? row[values[z].csvColumnName].length : varTypes[values[z].csvColumnName];
                 } else {
                     varTypes[values[z].csvColumnName] = 1;

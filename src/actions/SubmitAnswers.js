@@ -1,13 +1,15 @@
 var request = require('superagent');
 
 function submitAnswers(data, cb) {
-    let apiUrl = 'http://localhost:3009/'
+    //let apiUrl = sessionStorage.getItem("apiurl");
+    let apiUrl = "http://localhost:3009/"
     request
         .post(apiUrl + 'submitanswers')
         .set('Content-Type', 'application/json')
         .send({data: data})
         .end((err, res) => {
             if (err) {
+                alert("Error in submitting answer")
                 console.log("Error", err);
             }
             else {
@@ -15,7 +17,7 @@ function submitAnswers(data, cb) {
                     cb(res.body)
                 }
                 else {
-                    cb(res.body)
+                    alert(res.body.message)
                 }
             }
         })

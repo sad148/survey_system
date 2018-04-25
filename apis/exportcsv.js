@@ -2,6 +2,7 @@ var _ = require('lodash/includes')
 var uniq = require('lodash/uniq');
 var json2csv = require('json2csv');
 var fs = require('fs');
+var moment = require('moment')
 var optionsMapping = require('./models/optionsMapping');
 
 function exportcsv(req, db, cb) {
@@ -12,7 +13,7 @@ function exportcsv(req, db, cb) {
         if (res.length == 0) {
             cb({
                 code: 204,
-                message: "Error"
+                message: "Error in exporting csv"
             })
         } else {
             let columns = [];
@@ -69,7 +70,8 @@ function exportcsv(req, db, cb) {
                         "$group": {
                             "_id": {
                                 "userId": "$userId",
-                                "submittedEpoch": "$submittedEpoch"
+                                "submittedEpoch": "$submittedEpoch",
+                                "submittedTime": "$submittedTime"
                             },
                             answer: {
                                 $push: {
@@ -84,43 +86,44 @@ function exportcsv(req, db, cb) {
                 ]
             )
                 .toArray(function (err, res) {
-                    if (res.length == 0) {
-                        cb({
-                            code: 204,
-                            message: "No answers submitted yet"
-                        })
-                    } else {
-                        //answers are grouped on userId and submittedEpoch(time stamp) basis to maintain uniqueness
-                        //traversing through the data received for submitted answers
-                        for (let i = 0; i < res.length; i++) {
-                            rows[i + 1] = {}
-                            let answers = res[i].answer;
-                            let obj = {}
-                            for (let k = 0; k < answers.length; k++) {
-                                obj[answers[k].questionId] = answers[k].answer
+                        console.log(res)
+                        if (res.length == 0) {
+                            cb({
+                                code: 204,
+                                message: "No answers submitted yet"
+                            })
+                        } else {
+                            //answers are grouped on userId and submittedEpoch(time stamp) basis to maintain uniqueness
+                            //traversing through the data received for submitted answers
+                            for (let i = 0; i < res.length; i++) {
+                                rows[i + 1] = {}
+                                rows[i + 1]["User Id"] = res[i]._id.userId
+                                rows[i + 1]["Submitted Time"] = moment(res[i]._id.submittedTime).format("DD-MMM-YYYY");
+                                let answers = res[i].answer;
+                                let obj = {}
+                                for (let k = 0; k < answers.length; k++) {
+                                    obj[answers[k].questionId] = answers[k].answer
+                                }
+                                for (let item in questionIdColumnMapping) {
+                                    mapAnswerToQues(obj, rows[i + 1], item, questionIdColumnMapping[item])
+                                }
                             }
-                            for (let item in questionIdColumnMapping) {
-                                mapAnswerToQues(obj, rows[i + 1], item, questionIdColumnMapping[item])
+                            let records = []
+                            for (let i = 0; i < rows.length; i++) {
+                                let rowsData = Object.values(rows[i])
+                                records[i] = rowsData
                             }
-                        }
-                        let records = []
-                        for (let i = 0; i < rows.length; i++) {
-                            let rowsData = Object.values(rows[i])
-                            records[i] = rowsData
-                        }
 
-                        let csv = json2csv({data: rows, field: columns})
-                        csv = csv.split("\r")
-                        columns = csv[0];
-                        fs.writeFile("export.csv", csv, function (err, res) {
-                        })
-                        cb({
-                            code: 200,
-                            message: "Success",
-                            data: csv
-                        })
+                            let csv = json2csv({data: rows, field: columns})
+                            csv = csv.split("\r")
+                            cb({
+                                code: 200,
+                                message: "Success",
+                                data: csv
+                            })
+                        }
                     }
-                })
+                )
         }
     })
 }

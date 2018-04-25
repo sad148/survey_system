@@ -1,30 +1,24 @@
 import React, {Component} from 'react';
-import {Table, Button, Popover, Icon, Divider, Modal, Input} from 'antd';
+import {Modal, Input} from 'antd';
 import exportcsv from '../actions/ExportCSV'
 import exportspss from '../actions/ExportSPSS'
+import moment from 'moment'
+import {browserHistory} from 'react-router'
+import Loader from './Loader'
 
 var download = require('../utils/download')
-console.log(download);
-const columns = [{
-    title: 'Project Name',
-    dataIndex: 'projectName'
-}, {
-    title: 'Created on',
-    dataIndex: 'createdAt',
-}, {title: 'Responses', dataIndex: 'responses'}, {
-    title: 'Action',
-    dataIndex: 'action'
-}];
 
 class ListProjectData extends Component {
     state = {
         visible: false,
-        input: ""
+        input: "",
+        showLoader: true
     }
     componentWillMount = () => {
         this.formData(this.props.projectData)
     }
     componentWillReceiveProps = (nextProps) => {
+        this.setState({showLoader: true})
         this.formData(nextProps.projectData)
     }
 
@@ -40,63 +34,115 @@ class ListProjectData extends Component {
         this.setState({link: input, visible: true})
     }
 
-    exportcsv = (projectId) => {
+    exportcsv = (projectId, projectName, participantCount) => {
+        this.setState({showLoader: true})
         exportcsv.exportcsv(projectId, (response) => {
-            if (response.code == 200)
-                download.download(response.data, "export.csv", "text/csv");
-            else
-                this.props.dispatch({type: "DISPLAY_ERROR", message: "Error in exporting"})
+            if (response.code == 200) {
+                let fileName = `${projectName}_${moment().format('DD-MMM-YYYY')}_${participantCount}.csv`
+                download.download(response.data, fileName, "text/csv");
+                this.setState({showLoader: false})
+            }
+            else {
+                this.setState({showLoader: false})
+                alert(response.message)
+            }
         })
     }
 
     exportspss = (projectId) => {
+        this.setState({showLoader: true})
         exportspss.exportspss(projectId, (response) => {
             if (response.code == 200) {
-                window.location.href = `http://localhost:3009/download/${projectId}`;
-            } else
-                this.props.dispatch({type: "DISPLAY_ERROR", message: "Error in exporting"})
+                this.setState({showLoader: false})
+                window.location.href = `http://localhost:3009/download/${response.fileName}`;
+            } else {
+                this.setState({showLoader: false})
+                alert(response.message)
+            }
         })
+    }
+
+    selectOption = (projectId, projectName, response) => {
+        let value = document.getElementById(projectId + "action").value
+        if (value === "share")
+            this.sharelink(projectId)
+        else if (value === "csv")
+            this.exportcsv(projectId, projectName, response)
+        else
+            this.exportspss(projectId, projectName, response)
     }
 
     formData = (data) => {
+        var arr = [];
         data.projects.map((item) => {
-            let content = (
-                <div style={{width: "100px"}}>
-                    <p style={{cursor: "pointer"}} onClick={() => this.sharelink(item.projectId)}>Share <Icon
-                        type="share-alt"/>
-                    </p>
-                    <Divider/>
-                    <p style={{cursor: "pointer"}}>Clone <Icon type="copy"/></p>
-                    <Divider/>
-                    <p style={{cursor: "pointer"}}>Edit <Icon type="edit"/></p>
-                    <Divider/>
-                    <p style={{cursor: "pointer"}} onClick={() => this.exportcsv(item.projectId)}>Export csv <Icon
-                        type="download"/></p>
-                    <Divider/>
-                    <p style={{cursor: "pointer"}} onClick={() => this.exportspss(item.projectId)}>Export spss <Icon
-                        type="download"/></p>
-                </div>
-            );
-            return item.action = (<Popover content={content} placement="bottomLeft">
-                <Button><Icon type="ellipsis"/></Button>
-            </Popover>)
+            let action = (
+                <select id={item.projectId + "action"} style={{border: "0px"}}>
+                    <option value={"share"}>Share</option>
+                    <option value={"csv"}>Export CSV</option>
+                    <option value={"spss"}>Export SPSS</option>
+                </select>
+            )
+            arr.push(
+                <tr>
+                    <td className={"listProjectsTD"} style={{textAlign: "left"}}>{item.projectName}</td>
+                    <td className={"listProjectsTD"}>{moment(item.createdAt).format('DD-MMM-YYYY')}</td>
+                    <td className={"listProjectsTD"}>{!item.latestDateEntry ? "N/A" : moment(item.latestDateEntry).format('DD-MMM-YYYY')}</td>
+                    <td className={"listProjectsTD"}>{!item.response ? 0 : item.response}</td>
+                    <td className={"listProjectsTD"}>{action}&nbsp;<input
+                        style={{borderRadius: "0px", paddingTop: "2px", paddingBottom: "2px"}}
+                        type={"submit"}
+                        onClick={() => this.selectOption(item.projectId, item.projectName, item.response)}
+                        value={"Go"}/></td>
+                </tr>
+            )
         })
+        this.setState({tableData: arr, showLoader: false})
+    }
 
-        this.setState({tableData: data.projects})
+    callCreateProject = () => {
+        browserHistory.push("/survey_system/create_project")
     }
 
     render = () => {
+        console.log("inside render", this.props);
         return (
             <div>
-                <Table columns={columns} dataSource={this.state.tableData}/>
-                <Modal
-                    title="Link"
-                    visible={this.state.visible}
-                    footer={null}
-                    onCancel={this.handleCancel}
-                >
-                    {this.state.link}
-                </Modal>
+                <div>
+                    {
+                        this.state.showLoader ? <Loader/> : ""
+                    }
+                </div>
+                <div id={"listProjectsDiv"} style={{height: "100%", padding: "20px"}}>
+                    {
+                        (this.props.projectData.admin) ? "" : <div id={"createProjectButtonDiv"}>
+                            <input type="submit"
+                                   style={{paddingTop: "10px", paddingBottom: "10px", borderRadius: "20px"}}
+                                   value={"Create Project"}
+                                   onClick={this.callCreateProject}></input>
+                        </div>
+                    }
+
+                    <div style={{height: "100%"}}>
+                        <table style={{borderCollapse: "separate"}}>
+                            <tr>
+                                <th style={{fontSize: "40px"}}>Projects</th>
+                                <th style={{textAlign: "center"}}>Date Created</th>
+                                <th style={{textAlign: "center"}}>Latest Data Entry</th>
+                                <th style={{textAlign: "center"}}>Number of participants</th>
+                                <th style={{textAlign: "center"}}>Action</th>
+                            </tr>
+                            {this.state.tableData}
+                        </table>
+                    </div>
+                    <Modal
+                        title={"Link"}
+                        visible={this.state.visible}
+                        footer={null}
+                        onCancel={this.handleCancel}
+                    >
+                        {this.state.link}
+                    </Modal>
+                </div>
             </div>
         )
     }

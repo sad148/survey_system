@@ -1,5 +1,5 @@
-import { createStore, combineReducers, applyMiddleware } from "redux";
-import { createLogger } from "redux-logger";
+import {createStore, combineReducers, applyMiddleware} from "redux";
+import {createLogger} from "redux-logger";
 import promise from "redux-promise-middleware";
 import thunk from "redux-thunk";
 import registerUser from './reducers/RegisterUser.js';
@@ -8,9 +8,9 @@ import projects from './reducers/Projects.js';
 import createProjectSteps from './reducers/CreateProjectSteps'
 import errors from './reducers/Errors.js'
 import demographicQuestion from './reducers/DemographicQuestion'
-import { syncHistoryWithStore, routerReducer } from 'react-router-redux';
-//import { createBrowserHistory } from 'history';
-import { browserHistory } from 'react-router';
+import fillAnswersSteps from './reducers/FillAnswersSteps'
+import {syncHistoryWithStore, routerReducer} from 'react-router-redux';
+import {browserHistory} from 'react-router';
 
 const logger = createLogger({})
 
@@ -22,8 +22,9 @@ const store = createStore(
         projects,
         errors,
         demographicQuestion,
+            fillAnswersSteps,
         routing: routerReducer
-    }),{},applyMiddleware(logger,thunk,promise())
+    }), {}, applyMiddleware(logger, thunk, promise())
 )
 
 export const history = syncHistoryWithStore(browserHistory, store);

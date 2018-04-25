@@ -1,36 +1,40 @@
-import React, { Component } from 'react';
-import { Layout } from 'antd';
+import React, {Component} from 'react';
 import {connect} from "react-redux";
+import {browserHistory} from 'react-router'
 import ListProjectData from '../components/ListProjectData.js'
-import '../../node_modules/antd/lib/layout/style/index.css'
-import '../../node_modules/antd/lib/icon/style/'
-const { Content } = Layout;
+import getprojectslist from '../actions/GetProjectsList'
 
-class ListProjects extends Component{
+class ListProjects extends Component {
     componentWillMount = () => {
-        if(this.props.projectDataReceived == true)
-            this.setState({render:true})
-        else
-            this.setState({render:false})
+        if (this.props.projectDataReceived == true) {
+            this.setState({render: true})
+        }
+        else {
+            if (sessionStorage.getItem("username")) {
+                let userid = sessionStorage.getItem("userid")
+                this.props.dispatch(getprojectslist(userid))
+            } else {
+                browserHistory.replace("/survey_system/login")
+            }
+            this.setState({render: false})
+        }
     }
     componentWillReceiveProps = (nextProps) => {
-        if(nextProps.projectDataReceived == true)
-            this.setState({render:true})
+        if (nextProps.projectDataReceived == true)
+            this.setState({render: true})
     }
 
     render = () => {
         return (
-                <Content style={{ background: '#fff', padding: 24, margin: 0, minHeight: 280}}>
-                    {this.state.render ? (<ListProjectData projectData = {this.props.projectData} />) : ""}
-                </Content>
+            this.state.render ? (<ListProjectData projectData={this.props.projectData}/>) : ""
         )
     }
 }
 
 const mapStateToProps = (store) => {
     return {
-        projectData:store.projects.projectData,
-        projectDataReceived:store.projects.projectDataReceived
+        projectData: store.projects.projectData,
+        projectDataReceived: store.projects.projectDataReceived
     }
 }
-export default connect (mapStateToProps)(ListProjects);
+export default connect(mapStateToProps)(ListProjects);

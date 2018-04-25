@@ -1,27 +1,17 @@
 import React, {Component} from 'react';
-import {Button, Icon, Table} from 'antd';
+import {Icon, Checkbox} from 'antd';
+import Loader from './Loader'
 
 var _ = require('lodash/remove')
 var getTUQ = require('../actions/GetTUQ');
 var getMUQ = require('../actions/GetMUQ');
-
-const columns = [{
-    title: 'Questions',
-    dataIndex: 'question'
-}, {
-    title: 'Type',
-    dataIndex: 'type'
-}, {
-    title: 'Select',
-    dataIndex: 'select'
-}];
 
 class CreateProjectStep2 extends Component {
     componentWillMount = () => {
         this.setState({
             tableData: [],
             selectedRowKeys: [], // Check here to configure the default column
-            loading: false,
+            showLoader: true,
             checked: true
         })
     }
@@ -30,48 +20,68 @@ class CreateProjectStep2 extends Component {
         if (this.props.props.data["step1"].template == 1) {    //TUQ
             //api call to get tuq questions
             getTUQ.gettuq((tuqData) => {
-                for (let i = 0; i < tuqData.length; i++) {
-                    tuqData[i].questionId = tuqData[i].id
-                    this.state.selectedRowKeys.push(tuqData[i]);
-                    tuqData[i].key = tuqData[i].id
-                    tuqData[i].required = true
-                    let type = [];
-                    for (let j = 0; j < tuqData[i].limit; j++) {
-                        type[j] = (<div style={{marginRight: "10px"}}><label>{j + 1}</label><br/><input disabled
-                                                                                                        style={{cursor: "not-allowed"}}
-                                                                                                        type='radio'/>
-                        </div>)
-                    }
-                    tuqData[i].type = (<div style={{display: "inline-flex"}}>{type}</div>)
-                    tuqData[i].select = (<input type="checkbox" onChange={() => this.toggleCheckbox(tuqData[i])}
-                                                id={tuqData[i].id + "checkbox"} defaultChecked={true}/>)
-                }
-                this.setState({
-                    tableData: tuqData
-                })
+                this.formData(tuqData)
             })
         } else { //MUQ
             //api call to get muq questions
-            getMUQ.gettuq((muqData) => {
-                console.log(muqData);
-                for (let i = 0; i < muqData.length; i++) {
-                    muqData[i].questionId = muqData[i].id
-                    this.state.selectedRowKeys.push(muqData[i]);
-                    muqData[i].key = muqData[i].id
-                    muqData[i].required = true
-                    let type = []
-                    for (let j = 0; j < muqData[i].limit; j++) {
-                        type[j] = (<div><label>{j + 1}</label><br/><input disabled style={{cursor: "not-allowed"}}
-                                                                          type='radio'/></div>)
-                    }
-                    muqData[i].type = (<div style={{display: "inline-flex"}}>{type}</div>)
-                    muqData[i].select = (<input type="checkbox" onChange={() => this.toggleCheckbox(muqData[i])}
-                                                id={muqData[i].id + "checkbox"} defaultChecked={true}/>)
-                }
-                this.setState({
-                    tableData: muqData
-                })
+            getMUQ.gettuq(this.props.props.data["step1"].template, (muqData) => {
+                this.formData(muqData)
             })
+        }
+    }
+
+    formData = (data) => {
+        for (let i = 0; i < data.length; i++) {
+            data[i].questionId = data[i].id
+            data[i].key = data[i].id
+            let answer = [];
+            for (let j = 0; j < data[i].limit; j++) {
+                answer[j] = (
+                    <div style={{marginRight: "5px"}}><label className={"fontColor"}>{j + 1}</label><br/><input
+                        disabled
+                        style={{cursor: "not-allowed"}}
+                        type='radio'/>
+                    </div>)
+            }
+            data[i].answer = (
+                <div style={{display: "inline-flex"}}>
+                    <Icon className={"fontColor"}
+                          style={{marginRight: "10px", marginTop: "22px"}}
+                          type="like"/>
+                    {answer}
+                    <Icon className={"fontColor"}
+                          style={{
+                              marginRight: "10px",
+                              marginTop: "25px"
+                          }} type="dislike"/>
+                </div>)
+            data[i].checkbox = (
+                <Checkbox id={data[i].id + "checkbox"} defaultChecked={this.checkQuestion(data[i])}
+                          onChange={() => this.toggleCheckbox(data[i])}/>
+            )
+        }
+        this.setState({
+            tableData: data,
+            showLoader: false
+        })
+    }
+
+    //to check if the question was checked or unchecked by the user previously
+    checkQuestion = (data) => {
+        delete data.answer;
+        if (!this.props.props.data.step2) {
+            delete data.answer;
+            this.state.selectedRowKeys.push(data);
+            return true;
+        } else {
+            let questions = this.props.props.data.step2.questions
+            for (let i = 0; i < questions.length; i++) {
+                if (data.id == questions[i].questionId) {
+                    this.state.selectedRowKeys.push(data);
+                    return true;
+                }
+            }
+            return false;
         }
     }
 
@@ -91,10 +101,8 @@ class CreateProjectStep2 extends Component {
     }
 
     next = () => {
-        //this.props.props.dispatch({type: "DISPLAY_ERROR", message: "Select at least one question"})
-        if (this.state.selectedRowKeys.length == 0) {
-            alert('Please select at least one question')
-            //this.props.props.dispatch({type: "DISPLAY_ERROR", message: "Select at least one question"})
+        if (this.state.selectedRowKeys.length < 16) {
+            alert('Upto 5 questions can be removed')
         } else {
             let step = {
                 step2: {
@@ -103,6 +111,7 @@ class CreateProjectStep2 extends Component {
             }
             this.props.props.dispatch({type: "RESET_CREATE_PROJECT_STEPS"})
             this.props.props.dispatch({type: "NEXT", payload: step})
+            this.props.jumpToStep(2);
         }
     }
 
@@ -115,21 +124,58 @@ class CreateProjectStep2 extends Component {
         const {selectedRowKeys} = this.state;
         const hasSelected = selectedRowKeys.length > 0;
         return (
-            <div style={{marginTop: "10px"}}>
-                <label style={{color: "red"}}>*These questions will be mandatory to answer</label>
-                <div style={{marginBottom: 16}}>
-                    <span>
-                        {hasSelected ? `Selected ${selectedRowKeys.length} items` : ''}
-                    </span>
+            <div style={{
+                marginTop: "10px"
+            }}>
+                <div>
+                    {
+                        this.state.showLoader ? <Loader/> : ""
+                    }
                 </div>
-                <Table size="small" bordered={true} columns={columns} dataSource={this.state.tableData}
-                       pagination={{pageSize: 9}}/>
-                <Button id='next' type="primary" htmlType="submit" onClick={this.previous}>
-                    <Icon type="left"/>Previous
-                </Button>
-                <Button id='next' type="primary" htmlType="submit" onClick={this.next} style={{"marginLeft": "5px"}}>
-                    Next<Icon type="right"/>
-                </Button>
+                <div className={"tableDivBlock"}>
+                    <label className={"fontColor"}>Please choose the default
+                        questions provided by selecting the
+                        box.</label>
+                    <table style={{borderCollapse: "separate"}} cellPadding={10}>
+                        <thead>
+                        <tr>
+                            <th className={"fontColor"} style={{textAlign: "left"}}>Question</th>
+                            <th className={"fontColor"}>Answer</th>
+                            <th className={"fontColor"}><input type="submit"
+                                                               style={{backgroundColor: "#356fb7"}}
+                                                               value={hasSelected ? `Selected ${selectedRowKeys.length}` : ''}/>
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {
+                            this.state.tableData.map(item => {
+                                return (
+                                    <tr style={{border: "1px solid #17509d", padding: "10px"}}>
+                                        <td width="50%" className={"fontColor questionTD"}>{item.question}</td>
+                                        <td className={"answerTD"}>{item.answer}</td>
+                                        <td className={"checkBoxTD"}>{item.checkbox}</td>
+                                    </tr>
+                                )
+                            })
+                        }
+                        </tbody>
+                    </table>
+                </div>
+                <input type={"submit"}
+                       id='next'
+                       onClick={this.next}
+                       value={"Continue"}
+                       style={{
+                           "marginRight": "15%",
+                           "marginTop": "10px",
+                           width: "15%",
+                           float: "right",
+                           "marginBottom": "10px",
+                           paddingBottom: "5px",
+                           paddingTop: "5px"
+                       }}
+                />
             </div>
         );
     }

@@ -1,98 +1,95 @@
 import React, {Component} from 'react'
-import {SortableContainer, SortableElement, arrayMove} from 'react-sortable-hoc';
-import {Card, Icon, Input, Button} from 'antd';
+import {arrayMove} from 'react-sortable-hoc';
+import {Input, Checkbox} from 'antd';
+import Sortable from 'react-sortablejs';
+import Loader from './Loader'
+import store from '../store'
 
 var getDemographic = require('../actions/GetDemographic');
 var _ = require('lodash/includes');
-var unique = require('lodash/uniq');
-const SortableItem = SortableElement(({value}) =>
-    <div>{value}</div>
-);
-
-const SortableList = SortableContainer(({items}) => {
-    let data = [];
-    for (let i = 0; i < items.length; i++) {
-        data.push(
-            <SortableItem key={items[i].key} index={i} value={items[i]}/>
-        )
-    }
-    return (
-        <div>
-            {data}
-        </div>
-    );
-});
+var unique = require('lodash/uniqBy');
 
 class DemographicQuestions extends Component {
     state = {
         items: [],
         checkedQues: [],
         questions: [],
-        finalData: []
+        finalData: [],
+        selectedQuestions: 0,
+        showLoader: true
     };
 
     componentDidMount = () => {
         getDemographic.getdemographic((data) => {
-            let cards = []
-            for (let i = 0; i < data.length; i++) {
-                if (!this.state.questions[data[i].questionId])
-                    this.state.questions[data[i].questionId] = {}
-                this.state.questions[data[i].questionId]["question"] = data[i].question
-                this.state.questions[data[i].questionId]["questionId"] = data[i].questionId
-                this.state.questions[data[i].questionId]["type"] = data[i].type;
-                this.state.questions[data[i].questionId]["options"] = data[i].options;
-                this.state.questions[data[i].questionId]["required"] = true;
-
-                let options = [];
-                if (data[i].type == "radio" || data[i].type == "checkbox") {
-                    for (let j = 0; j < data[i].options.length; j++) {
-                        options.push(<p><input type={data[i].type} disabled></input><label>{data[i].options[j]}</label>
-                        </p>)
-                    }
-                    cards.push(<div key={data[i].questionId} id={data[i].questionId}>
-                        <input type="checkbox" checked={true} disabled
-                               id={data[i].questionId + "checkbox"}/>
-                        <Card title={data[i].question} style={{width: "100%", marginBottom: "10px"}}>
-                            {options}
-                        </Card>
-                    </div>)
-                } else if (data[i].type == "text") {
-                    cards.push(<div key={data[i].questionId} id={data[i].questionId}>
-                        <input type="checkbox" checked={true} disabled
-                               id={data[i].questionId + "checkbox"}/>
-                        <Card title={data[i].question} style={{width: "100%", marginBottom: "10px"}}>
-                            <Input type="text" disabled style={{width: "10px"}}/>
-                        </Card>
-                    </div>)
-                }
-            }
-            this.setState({items: cards})
+            this.formData(data)
         })
     }
 
+    //to create a new question
     componentWillReceiveProps = (nextProps) => {
-        let options = [];
         if (nextProps.render == false)
             return;
-        if (!this.state.questions[nextProps.data.questionId])
-            this.state.questions[nextProps.data.questionId] = {}
-        this.state.questions[nextProps.data.questionId]["question"] = nextProps.data.question
-        this.state.questions[nextProps.data.questionId]["questionId"] = nextProps.data.questionId
-        this.state.questions[nextProps.data.questionId]["type"] = nextProps.data.type;
-        this.state.questions[nextProps.data.questionId]["options"] = nextProps.data.options;
-        this.state.questions[nextProps.data.questionId]["required"] = nextProps.data.required;
-        for (let i = 0; i < nextProps.data.options.length; i++) {
-            options.push(<p><input type={nextProps.data.type}
-                                   disabled></input><label>{nextProps.data.options[i]}</label></p>)
+        this.formData(nextProps.data)
+    }
+
+    formData = (data) => {
+        let row = []
+        let storeData = store.getState().createProjectSteps.createProjectStepsData
+        if (storeData.step3) {
+            data.push(...storeData.step3.questions)
         }
-        let card = (<div key={nextProps.data.questionId} id={nextProps.data.questionId}>
-            <input type="checkbox" id={nextProps.data.questionId + "checkbox"} defaultChecked/>
-            <Card title={nextProps.data.question}
-                  style={{width: "100%", marginBottom: "10px"}}>
-                {options}
-            </Card>
-        </div>)
-        this.state.items.push(card)
+        data = unique(data, "questionId")
+        for (let i = 0; i < data.length; i++) {
+            if (!this.state.questions[data[i].questionId])
+                this.state.questions[data[i].questionId] = {}
+            this.state.questions[data[i].questionId]["question"] = data[i].question
+            this.state.questions[data[i].questionId]["questionId"] = data[i].questionId
+            this.state.questions[data[i].questionId]["type"] = data[i].type;
+            this.state.questions[data[i].questionId]["options"] = data[i].options;
+            let options = [];
+            if (data[i].type == "radio" || data[i].type == "checkbox") {
+                for (let j = 0; j < data[i].options.length; j++) {
+                    options.push(<p><input type={data[i].type}
+                                           disabled></input><label
+                        className={"fontColor"}>{data[i].options[j]}</label>
+                    </p>)
+                }
+                row.push(
+                    <tr style={{border: "1px solid #17509d", padding: "10px", cursor: "move"}}
+                        id={data[i].questionId}
+                        key={data[i].questionId}>
+                        <td width="50%" className={"fontColor questionTD"}>{data[i].question}</td>
+                        <td className={"answerTD"} style={{textAlign: "left"}}>{options}</td>
+                        <td className={"checkBoxTD"}><Checkbox
+                            onChange={() => this.updateSelectedCounter(data[i].questionId + "checkbox")}
+                            id={data[i].questionId + "checkbox"} defaultChecked/>
+                        </td>
+                    </tr>
+                )
+            } else if (data[i].type == "text") {
+                row.push(
+                    <tr style={{border: "1px solid #17509d", padding: "10px", cursor: "move"}}
+                        id={data[i].questionId}
+                        key={data[i].questionId}>
+                        <td width="50%" className={"fontColor questionTD"}>{data[i].question}</td>
+                        <td className={"answerTD fontColor"} style={{textAlign: "left"}}><Input type="text" disabled
+                                                                                                style={{width: "50px"}}/>
+                        </td>
+                        <td className={"checkBoxTD"}><Checkbox
+                            onChange={() => this.updateSelectedCounter(data[i].questionId + "checkbox")}
+                            id={data[i].questionId + "checkbox"} defaultChecked/>
+                        </td>
+                    </tr>
+                )
+            }
+        }
+        this.setState(prevState => {
+            return {
+                items: [...prevState.items, row],
+                selectedQuestions: prevState.selectedQuestions + 1,
+                showLoader: false
+            }
+        })
     }
 
     previous = () => {
@@ -101,26 +98,20 @@ class DemographicQuestions extends Component {
     }
 
     next = () => {
-        let items = this.state.items
-        let keys = Object.keys(this.state.questions);
-        for (let i = 0; i < items.length; i++) {
-            if (document.getElementById(items[i].props.id + "checkbox").checked) {
-                this.state.checkedQues.push(items[i].props.id);
+        let items = this.state.questions
+        for (let i in items) {
+            if (document.getElementById(i + "checkbox").checked) {
+                this.state.checkedQues.push(items[i]);
             }
         }
-        for (let j = 0; j < this.state.checkedQues.length; j++) {
-            if (_(keys, this.state.checkedQues[j])) {
-                this.state.finalData.push(this.state.questions[this.state.checkedQues[j]])
-            }
-        }
-        this.state.finalData = unique(this.state.finalData, "questionId")
         let step = {
             step3: {
-                questions: this.state.finalData
+                questions: this.state.checkedQues
             }
         }
         this.props.props.dispatch({type: "RESET_CREATE_PROJECT_STEPS"})
         this.props.props.dispatch({type: "NEXT", payload: step})
+        this.props.props.jumpToStep(3);
     }
 
     onSortEnd = ({oldIndex, newIndex}) => {
@@ -129,25 +120,64 @@ class DemographicQuestions extends Component {
         });
     };
 
-    render = () => {
-        return (<div>
-            <Button id='previous' type="primary" htmlType="submit" onClick={this.previous}
-                    style={{"marginLeft": "5px", "marginBottom": "10px"}}>
-                Previous
-            </Button>
-            <Button id='next' type="primary" htmlType="submit" onClick={this.next} style={{"marginLeft": "5px"}}>
-                Next
-            </Button>
-            <SortableList items={this.state.items} onSortEnd={this.onSortEnd}/>
-            <Button id='previous' type="primary" htmlType="submit" onClick={this.previous}
-                    style={{"marginLeft": "5px"}}>
-                <Icon type="left"/>Previous
-            </Button>
-            <Button id='next' type="primary" htmlType="submit" onClick={this.next} style={{"marginLeft": "5px"}}>
-                Next<Icon type="right"/>
-            </Button>
-        </div>);
+    updateSelectedCounter = (id) => {
+        if (document.getElementById(id).checked)
+            this.setState(prevState => {
+                    return {selectedQuestions: prevState.selectedQuestions + 1}
+                }
+            )
+        else
+            this.setState(prevState => {
+                    return {selectedQuestions: prevState.selectedQuestions - 1}
+                }
+            )
+    }
 
+    render = () => {
+        return (
+            <div style={{marginTop: "10px"}}>
+                <div>
+                    {this.state.showLoader ? <Loader/> : ""}
+                </div>
+                <div className={"tableDivBlock"} style={{marginTop: "10px"}}>
+                    <input type={"submit"} value={"Add new question"} style={{
+                        marginTop: "10px", paddingBottom: "5px",
+                        paddingTop: "5px"
+                    }}
+                           onClick={this.props.addQuestionPopup}/>
+                    <table style={{borderCollapse: "separate"}} cellPadding={10}>
+                        <thead>
+                        <tr>
+                            <th className={"fontColor"} style={{textAlign: "left"}}>Question</th>
+                            <th className={"fontColor"} style={{textAlign: "left"}}>Answer</th>
+                            <th className={"fontColor"}><input type="submit"
+                                                               style={{backgroundColor: "#356fb7"}}
+                                                               value={`Selected ${this.state.selectedQuestions}`}
+                            />
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <Sortable style={{width: "100%", display: "contents"}}
+                                  onSortEnd={this.onSortEnd}>{this.state.items}</Sortable>
+                        </tbody>
+                    </table>
+                </div>
+                <input type={"submit"}
+                       id='next'
+                       onClick={this.next}
+                       value={"Continue"}
+                       style={{
+                           "marginRight": "15%",
+                           "marginTop": "10px",
+                           width: "15%",
+                           float: "right",
+                           "marginBottom": "10px",
+                           paddingBottom: "5px",
+                           paddingTop: "5px"
+                       }}
+                />
+            </div>);
     }
 }
 

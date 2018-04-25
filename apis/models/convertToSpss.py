@@ -1,7 +1,7 @@
 import sys, json
 from savReaderWriter.savWriter import *;
 
-file1 = open("F:/Project/survey_system/apis/models/data.json")
+file1 = open(sys.argv[2])
 data = json.loads(file1.read())
 savFileName = "./exports/" + sys.argv[1];
 varNames = data["varNames"]["varNames"];

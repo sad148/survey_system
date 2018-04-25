@@ -1,7 +1,6 @@
 const projects = (state = { projectData:"" , projectDataReceived:""}, action) => {
     switch (action.type) {
         case "PROJECT_DATA":
-            console.log("-------------",action);
             state = {
                 ...state,
                 projectData:action.payload,

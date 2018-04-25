@@ -14,32 +14,25 @@ var getprojectquestions = require('./getprojectquestions');
 var exportcsv = require('./exportcsv');
 var exportspss = require('./exportspss');
 var submitAnswers = require('./submitAnswers')
-
+var validateEmail = require('./validateemail')
+var getUserDetails = require('./getUserDetails')
+var updatePassword = require('./updatePassword')
 const MongoClient = require('mongodb').MongoClient;
 const assert = require('assert');
 const url = 'mongodb://localhost:27017';
 const dbName = 'survey_system';
-//const connection = "";
 var client;
 var db;
 app.use(bodyParser.json());
 app.use(cors())
 app.listen(3009, () => {
     console.log("Listening on 3009");
-    // connection = mysql.createConnection({
-    //     host     : 'localhost',
-    //     user     : 'survey_system',
-    //     password : 'root',
-    //     database : 'survey_system'
-    // });
-    // connection.connect();
     MongoClient.connect(url, function (err, response) {
         client = response
         assert.equal(null, err);
         console.log("Connected successfully to server");
         db = client.db(dbName);
     });
-    // module.exports = {connection:connection};
 })
 
 
@@ -75,13 +68,26 @@ app.get('/tuq', (req, res) => {
     }
 })
 
-app.get('/muq', (req, res) => {
-    let template = swig.compileFile(__dirname + '/models/muq.json');
-    let muqData = []
+app.get('/muq/:type', (req, res) => {
+    let template;
+    let type = parseInt(req.params.type)
+    switch (type) {
+        case 2:
+            template = swig.compileFile(__dirname + '/models/mauq1.json');
+            break;
+        case 3:
+            template = swig.compileFile(__dirname + '/models/mauq2.json');
+            break;
+        case 4:
+            template = swig.compileFile(__dirname + '/models/mauq3.json');
+            break;
+        case 5:
+            template = swig.compileFile(__dirname + '/models/mauq4.json');
+            break;
+    }
     muqData = template({
         variable: 'mobile application'
     });
-
     muqData = muqData.split('\n');
     for (let i = 0; i < muqData.length; i++) {
         muqData[i] = muqData[i].toString();
@@ -139,10 +145,10 @@ app.post('/submitanswers', (req, res) => {
     })
 })
 
-app.get('/download/:projectId', (req, res) => {
-    let projectId = req.params.projectId
+app.get('/download/:fileName', (req, res) => {
+    let fileName = req.params.fileName
     let path = __dirname.substring(0, __dirname.lastIndexOf('\\'));
-    path += `\\exports\\${projectId}.sav`;
+    path += `\\exports\\${fileName}`
     fs.access(path, (err) => {
         if (err) {
             console.log(path);
@@ -151,7 +157,32 @@ app.get('/download/:projectId', (req, res) => {
                 message: "Error in downloading"
             })
         } else {
-            res.download(path, 'export.sav');
+            res.download(path, fileName);
         }
     })
+})
+
+app.post('/validateemail', (req, res) => {
+    validateEmail.validateemail(req, db, (response) => {
+        res.send(response)
+    })
+})
+
+app.post('/getuserdetails', (req, res) => {
+    getUserDetails.getUserDetails(req, db, (response) => {
+        res.send(response)
+    })
+})
+app.post('/updatepassword', (req, res) => {
+    updatePassword.updatePassword(req, db, (response) => {
+        res.send(response)
+    })
+})
+
+app.get("/metadata", (req, res) => {
+    let metadata = {}
+    metadata.countries = require('./models/countries').countries()
+    metadata.positions = require('./models/position').positions()
+    metadata.roles = require('./models/roles').role()
+    res.send(metadata)
 })

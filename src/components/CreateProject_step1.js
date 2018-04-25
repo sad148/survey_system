@@ -1,105 +1,138 @@
 import React, {Component} from 'react';
-import { Form, Input, Select, Button, Icon, Radio } from 'antd';
-var project_name, description, template;
+import {Select} from 'antd';
+import {Radio} from 'antd';
+
 const RadioGroup = Radio.Group;
-const RadioButton = Radio.Button;
-const FormItem = Form.Item;
 const Option = Select.Option;
-const TextArea = Input.TextArea
 
 class CreateProjectStep1 extends Component {
     componentWillMount = () => {
-        console.log("inside componentwillmount", this.props.form.getFieldsValue());
         this.setState({
-            confirmDirty: false,
-            autoCompleteResult: [],
-            current:0
+            template: 1,
+            options1: false,
+            options2: false
         });
     }
 
     componentDidMount = () => {
-        if (this.props.props.data[0] && this.props.props.data[0].template){
-            this.props.form.setFieldsValue({"project_name": this.props.props.data[0].project_name || ""})
-            this.props.form.setFieldsValue({"description": this.props.props.data[0].description || ""})
-            this.props.form.setFieldsValue({"template": this.props.props.data[0].template || 1})
+        if (this.props.props.data.step1) {
+            console.log("inside if");
+            document.getElementById("project_name").value = this.props.props.data.step1.project_name || ""
+            this.setState({template: 1})
+            document.getElementById("project_description").value = this.props.props.data.step1.description || ""
         }
     }
 
-    next = (e) => {
-        e.preventDefault();
-        this.props.form.validateFieldsAndScroll((err, values) => {
-            if (!err) {
-                let step = {
-                    step1: {
-                        template: this.props.form.getFieldValue("defaultQues"),
-                        project_name: this.props.form.getFieldValue("project_name"),
-                        description: this.props.form.getFieldValue("description")
-                    }
+    next = () => {
+        console.log(this.state.template)
+        let projectName = document.getElementById("project_name").value
+        let projectDescription = document.getElementById("project_description").value
+        if (projectName.trim().length <= 0) {
+            alert("Please enter project name");
+        } else if (this.state.template == 0 || this.state.template == 2 || this.state.template == 3) {
+            alert("Please select type of questionnaire")
+        } else {
+            let step = {
+                step1: {
+                    template: this.state.template,
+                    project_name: projectName,
+                    description: projectDescription
                 }
-                this.props.props.dispatch({type:"RESET_CREATE_PROJECT_STEPS"})
-                this.props.props.dispatch({type:"NEXT", payload:step})
-                } else {
-                console.log(err);
             }
-        });
+            this.props.props.dispatch({type: "RESET_CREATE_PROJECT_STEPS"})
+            this.props.props.dispatch({type: "NEXT", payload: step})
+            this.props.jumpToStep(1);
+        }
     }
+
 
     onChange = (e) => {
-        this.setState({
-            template: e.target.value
-        });
-    }
-
-    handleConfirmBlur = (e) => {
-        const value = e.target.value;
-        this.setState({confirmDirty: this.state.confirmDirty || !!value});
+        let value = e.target.value
+        //1 = TUQ
+        if (value === 1) {
+            this.setState({
+                template: value,
+                options1: false,
+                options2: false
+            });
+        } else if (value === 0) {   //0 = MUQ
+            this.setState({
+                template: value,
+                options1: true, //Provider or patient
+                options2: false //interactive or standalone
+            });
+        } else if (value === 2 || value === 3) {    //provider or patient values
+            if (this.state.template > value) {
+                this.setState({
+                    options1: true,
+                    options2: true
+                });
+            } else {
+                this.setState({
+                    template: value,
+                    options1: true,
+                    options2: true
+                });
+            }
+        } else {        //interactive or standalone
+            this.setState({
+                template: value
+            })
+        }
     }
 
     render = () => {
-        const {getFieldDecorator} = this.props.form;
         return (
-            <Form>
-                <FormItem
-                    label="Project Name"
-                >
-                    {getFieldDecorator('project_name', {
-                        rules: [{
-                            required: true, message: 'Please enter you project name',
-                        }],
-                    })(
-                        <Input type="text" onBlur={this.handleConfirmBlur}/>
-                    )}
-                </FormItem>
-                <FormItem
-                    label="Description"
-                >
-                    {getFieldDecorator('description')(
-                        <TextArea type="text" onBlur={this.handleConfirmBlur} autosize={{ minRows: 2, maxRows: 6 }}/>
-                    )}
-                </FormItem>
-                <FormItem
-                    label="Select default questionnaire"
-                >
-                    {getFieldDecorator('defaultQues', {
-                        rules:[{
-                            required:true, message:"Please select default questionnaire"
-                        }]
-                    })(
-                        <RadioGroup onChange={this.onChange} value={this.state.template}>
-                            <RadioButton value={1}>TUQ</RadioButton>
-                            <RadioButton value={2}>MUQ</RadioButton>
-                        </RadioGroup>
-                    )}
-                </FormItem>
-                <FormItem>
-                    <Button id = 'next' type="primary" htmlType="submit" onClick = {this.next}>
-                        Next<Icon type="right" />
-                    </Button>
-                </FormItem>
-            </Form>
+            <div style={{paddingLeft: "20%", paddingRight: "25%", marginTop: "10px"}}>
+                <div style={{padding: "10px"}}>
+                    <label style={{color: "red"}}>*</label>&nbsp;<label
+                    style={{color: "white", fontWeight: "bold"}}>Project Name</label><br/>
+                    <input id={"project_name"}
+                           style={{backgroundColor: "white", width: "100%", height: "30px", marginTop: "10px"}}
+                           type="text"
+                    />
+                </div>
+                <div style={{padding: "10px"}}>
+                    <label style={{color: "white", fontWeight: "bold", marginTop: "10px"}}>Description</label><br/>
+                    <textarea id={"project_description"} type="text"
+                              style={{borderRadius: "0px", width: "100%", backgroundColor: "white", marginTop: "10px"}}
+                              rows="6" columns="50"/>
+                </div>
+                <div style={{padding: "10px"}}>
+                    <label style={{color: "red", marginTop: "10px"}}>*</label>&nbsp;<label
+                    style={{color: "white", marginTop: "10px"}}>Please select the type of your system</label><br/>
+                    <RadioGroup onChange={this.onChange} value={this.state.template}>
+                        <Radio value={1} style={{color: "white"}}>Telehealth System(TUQ)</Radio>
+                        <Radio value={0} style={{color: "white"}}>Mobile Health App(MAUQ)</Radio>
+                    </RadioGroup>
+                    {
+                        (this.state.options1) ? <div style={{"marginTop": "10px"}}>
+                            <label style={{color: "red", marginTop: "10px"}}>*</label>&nbsp;<label
+                            style={{color: "white", marginTop: "10px"}}>Please select the primary user of the mobile
+                            health app</label><br/>
+                            <RadioGroup onChange={this.onChange}>
+                                <Radio value={2} style={{color: "white"}}>Patient</Radio>
+                                <Radio value={3} style={{color: "white"}}>Provider</Radio>
+                            </RadioGroup>
+                        </div> : ""
+                    }
+                    {
+                        (this.state.options2) ? <div style={{"marginTop": "10px"}}>
+                            <label style={{color: "red", marginTop: "10px"}}>*</label>&nbsp;<label
+                            style={{color: "white", marginTop: "10px"}}>Please select the type of the mobile health
+                            app</label><br/>
+                            <RadioGroup onChange={this.onChange}>
+                                <Radio value={4} style={{color: "white"}}>Standalone</Radio>
+                                <Radio value={5} style={{color: "white"}}>Interactive</Radio>
+                            </RadioGroup>
+                        </div> : ""
+                    }
+                </div>
+                <input type={"submit"} style={{width: "42%", marginTop: "10px", padding: "10px"}} value={"Continue"}
+                       onClick={this.next}/>
+            </div>
         );
     }
 }
 
-const WrappedRegistrationForm = Form.create()(CreateProjectStep1);
-export default WrappedRegistrationForm;
+export default CreateProjectStep1;

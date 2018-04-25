@@ -1,84 +1,78 @@
-import React, { Component } from 'react';
-import { Layout, Menu, Breadcrumb, Icon } from 'antd';
-import { browserHistory } from 'react-router';
-const { SubMenu } = Menu;
-const { Header, Content, Sider } = Layout;
+import React, {Component} from 'react';
+import {browserHistory, Link} from 'react-router';
+import {connect} from "react-redux";
 
-class Homepage extends Component{
-    componentWillMount = () => {
-
-    }
-
-    componentDidMount = () => {
-
-    }
-
+class Homepage extends Component {
     state = {
-        collapsed: false,
+        loginDone: false
     };
-    onCollapse = (collapsed) => {
-        console.log(collapsed);
-        this.setState({ collapsed });
-    }
 
     componentWillReceiveProps = (nextProps) => {
-        if(nextProps.projectDataReceived == true) {
-            this.setState({projectData:nextProps.projectData})
+        if (nextProps.loginSuccess) {
+            this.setState({username: sessionStorage.getItem("username"), loginDone: true})
+        }
+        if (nextProps.projectDataReceived == true) {
+            this.setState({projectData: nextProps.projectData})
         }
     }
 
-    listProjects = (data) => {
-        browserHistory.push('/survey_system/list_projects')
-    }
-
-    createProject = () => {
-        browserHistory.push('/survey_system/create_project')
+    logout = () => {
+        this.setState({loginDone: false})
+        sessionStorage.clear();
+        browserHistory.replace('/survey_system/about')
     }
 
     render = () => {
+        let style = (this.state.loginDone == false) ? {display: "flex"} : {
+            display: "flex",
+            justifyContent: "space-between"
+        }
+
+        let style1 = (this.state.loginDone == false) ? {
+            display: "flex",
+            width: "45%",
+            justifyContent: "space-around",
+            marginTop: "10px"
+        } : {display: "flex", width: "45%", justifyContent: "space-between", marginTop: "10px"}
         return (
-        <div style={{"height":"100%"}}>
-            <Layout style={{height:"100%"}}>
-                <Sider width={200} style={{ background: '#fff' }}
-                       collapsible
-                       collapsed={this.state.collapsed}
-                       onCollapse={this.onCollapse}
-                >
-                    <div className="logo">
+            <div id="homepage">
+                <div id="heading" style={style}>
+                    <div>
+                        <label style={{color: "#17509e", fontSize: "30px", width: "50%"}}>PITT Usability
+                            Questionnaires</label><br/>
+                        <label style={{color: "#17509e", width: "50%"}}>For Telehealth System (TQU) and Mobile Health
+                            Apps
+                            (MAUQ)</label>
                     </div>
-                    <Menu
-                        theme="dark"
-                        mode="vertical"
-                        defaultSelectedKeys={['1']}
-                        style={{ height: '100%', borderRight: 0 }}
-                    >
-                        <Menu.Item key="1"><Icon type="bars" /><span className="nav-text" onClick={this.listProjects}>List Project</span></Menu.Item>
-                        <Menu.Item key="2"><Icon type="plus-circle-o" /><span className="nav-text" onClick={this.createProject}>Create Project</span></Menu.Item>
-                    </Menu>
-                </Sider>
-                <Layout style={{width:"100%"}}>
-                    <Header className="header">
-                        <div className="logo" />
-                        <Menu
-                            theme="dark"
-                            mode="horizontal"
-                            defaultSelectedKeys={['1']}
-                            style={{ lineHeight: '64px' }}
-                        >
-                            <Menu.Item key="1">Home</Menu.Item>
-                            <Menu.Item key="2">Survey</Menu.Item>
-                            <Menu.Item key="3">Analytics</Menu.Item>
-                            <Menu.Item key="4">Reports</Menu.Item>
-                        </Menu>
-                    </Header>
-                    <Layout style={{ padding: '24px 24px 24px 24px' }}>
-                        {this.props.children}
-                    </Layout>
-                </Layout>
-            </Layout>
-        </div>
+                    <div style={style1}>
+                        <Link to="/survey_system/about" className={"fontColor"} style={{fontSize: "15px"}}>About</Link>
+                        <Link to="/survey_system/references" className={"fontColor"}
+                              style={{fontSize: "15px"}}>References</Link>
+                        {(this.state.loginDone == false) ?
+                            <Link to="/survey_system/login" className={"fontColor"}
+                                  style={{fontSize: "15px"}}>Login</Link> :
+                            <Link to="/survey_system/list_projects" className={"fontColor"}
+                                  style={{fontSize: "15px"}}>Projects</Link>}
+                    </div>
+                    {
+                        (this.state.loginDone) ? <div id={"welcomeDiv"} style={{marginTop: "10px"}}>
+                            <label className={"fontColor"}>Welcome {this.state.username}</label><br/>
+                            <a onClick={this.logout}>Logout</a>
+                        </div> : ""
+                    }
+                </div>
+                <div className={"content"}>
+                    {this.props.children}
+                </div>
+            </div>
         )
     }
 }
 
-export default Homepage;
+const mapStateToProps = (store) => {
+    return {
+        loginSuccess: store.login.loginSuccess
+    }
+}
+
+export default connect(mapStateToProps)(Homepage);

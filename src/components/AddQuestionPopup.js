@@ -1,40 +1,29 @@
 import React, {Component} from 'react'
-import SkyLight from 'react-skylight';
-import {Form, Input, Select, Button, InputNumber, Radio, Checkbox} from 'antd';
-import '../../node_modules/antd/lib/input-number/style/index.css'
-import '../../node_modules/antd/lib/checkbox/style/index.css'
+import {Form, Input, Select, InputNumber, Radio, Checkbox, Modal} from 'antd';
 
 const CheckboxGroup = Checkbox.Group;
-const {TextArea} = Input;
 const FormItem = Form.Item;
 const Option = Select.Option;
 const RadioGroup = Radio.Group;
 const uuidv1 = require('uuid/v1');
-const dialogCss = {
-    width: '70%',
-    height: '85%',
-    top: '10%',
-    marginTop: '0px',
-    marginLeft: '-35%',
-};
 
 class AddQuestionPopup extends Component {
     componentWillMount = () => {
-        this.setState({restrictions: "", options: ""})
+        this.setState({
+            restrictions: "", options: "", visible: true, questionId: uuidv1().split('-').join("")
+        })
     }
 
     componentDidMount = () => {
-        this.simpleDialog.show()
-        this.setState({questionAnsMap: []});
+        this.setState({questionAnsMap: {}});
     }
 
-    componentWillReceiveProps = (nextProps) => {
-        this.simpleDialog.show()
-    }
-
-    executeBeforeModalOpen = () => {
-        this.setState({restrictions: "", options: "", questionAnsMap: {}, questionId: uuidv1().split('-').join("")})
-        this.props.form.resetFields();
+    componentWillReceiveProps = (nextProps, nextState) => {
+        //open modal when add question button is clicked from parent component (DemographicQuestions.js)
+        //since visible flag was set to false on close, the state has false stored in it
+        if (!this.state.visible) {
+            this.setState({visible: true})
+        }
     }
 
     handleChange = (value) => {
@@ -53,28 +42,30 @@ class AddQuestionPopup extends Component {
         this.setState({restrictions: restrictions, options: ""})
     }
 
-    handleRequired = (value) => {
-        this.state.questionAnsMap.required = value === "yes" ? true : false;
-    }
-
     createOptions = (type) => {
         let noOfOptions = document.getElementById('optionNumber').value
         if (noOfOptions > 0 && noOfOptions < 8) {
             let options = []
             for (let i = 0; i < noOfOptions; i++) {
                 if (type == "radio")
-                    options.push(<div style={{marginBottom: "5px"}}><Radio value={i} disabled><Input id={i + 1}
-                                                                                                     placeholder={"Enter option " + i + 1}
-                                                                                                     onBlur={() => this.updateQuestionObject(i + 1, type)}
-                                                                                                     autoComplete="off"
-                                                                                                     style={{width: "50%"}}/></Radio>
+                    options.push(<div style={{marginBottom: "5px"}}>
+                        <Radio value={i} disabled>
+                            <Input id={i + 1}
+                                   placeholder={"Enter option " + i + 1}
+                                   onBlur={() => this.updateQuestionObject(i + 1, type)}
+                                   autoComplete="off"
+                                   style={{width: "50%"}}/>
+                        </Radio>
                     </div>)
                 else
-                    options.push(<div style={{marginBottom: "5px"}}><Checkbox value={i + 1} disabled><Input id={i + 1}
-                                                                                                            placeholder={"Enter option " + i + 1}
-                                                                                                            onBlur={() => this.updateQuestionObject(i + 1, type)}
-                                                                                                            autoComplete="off"
-                                                                                                            style={{width: "50%"}}/></Checkbox>
+                    options.push(<div style={{marginBottom: "5px"}}>
+                        <Checkbox value={i + 1} disabled>
+                            <Input id={i + 1}
+                                   placeholder={"Enter option " + i + 1}
+                                   onBlur={() => this.updateQuestionObject(i + 1, type)}
+                                   autoComplete="off"
+                                   style={{width: "50%"}}/>
+                        </Checkbox>
                     </div>)
             }
             type == "radio" ? this.setState({options: (<RadioGroup>{options}</RadioGroup>)}) : this.setState({
@@ -99,18 +90,40 @@ class AddQuestionPopup extends Component {
         e.preventDefault();
         this.props.form.validateFields((err, values) => {
             if (!err) {
-                this.simpleDialog.hide();
-                this.props.props.dispatch({type: "ADD_NEW_DEMOGRAPHIC_QUESTION", payload: this.state.questionAnsMap})
+                this.props.props.dispatch({type: "ADD_NEW_DEMOGRAPHIC_QUESTION", payload: [this.state.questionAnsMap]})
+                this.props.form.resetFields();
+                this.setState({
+                    restrictions: "",
+                    options: "",
+                    questionAnsMap: {},
+                    visible: false,
+                    questionId: uuidv1().split('-').join("")
+                })
             }
         });
+    }
+
+    handleCancel = (e) => {
+        if (this.state.visible) {
+            this.setState({
+                visible: false
+            });
+        } else {
+            this.setState({
+                visible: true
+            });
+        }
     }
 
     render = () => {
         const {getFieldDecorator} = this.props.form;
         return (
             <div>
-                <SkyLight hideOnOverlayClicked ref={ref => this.simpleDialog = ref} title="New Question"
-                          dialogStyles={dialogCss} beforeOpen={this.executeBeforeModalOpen}
+                <Modal
+                    title={"Add new questions"}
+                    visible={this.state.visible}
+                    onCancel={this.handleCancel}
+                    footer={null}
                 >
                     <Form onSubmit={this.handleSubmit} className="login-form">
                         <FormItem
@@ -135,30 +148,16 @@ class AddQuestionPopup extends Component {
                                 </Select>
                             )}
                         </FormItem>
-                        <FormItem
-                            label="Required"
-                        >
-                            {getFieldDecorator('required', {
-                                rules: [{
-                                    required: true,
-                                    message: 'Please select if the question is mandatory to answer'
-                                }],
-                            })(
-                                <Select style={{width: 200}} onChange={this.handleRequired}>
-                                    <Option value="yes">Yes</Option>
-                                    <Option value="no">No</Option>
-                                </Select>
-                            )}
-                        </FormItem>
                         {this.state.restrictions}
                         <br/>
                         {this.state.options}
                         <br/>
-                        <Button type="primary" htmlType="submit">
-                            Add
-                        </Button>
+                        <input type={"submit"} value={"Add"} style={{
+                            paddingBottom: "5px",
+                            paddingTop: "5px"
+                        }}/>
                     </Form>
-                </SkyLight>
+                </Modal>
             </div>
         )
     }

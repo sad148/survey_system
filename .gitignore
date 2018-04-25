@@ -32,3 +32,7 @@ yarn-error.log*
 *.iml
 *lock
 /apis/models/data.json
+.dockerignore
+Dockerfile
+package-lock.json
+README.md
