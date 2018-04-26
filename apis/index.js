@@ -19,7 +19,7 @@ var getUserDetails = require('./getUserDetails')
 var updatePassword = require('./updatePassword')
 const MongoClient = require('mongodb').MongoClient;
 const assert = require('assert');
-const url = 'mongodb://localhost:27017';
+const url = 'mongodb://mongo:27017';
 const dbName = 'survey_system';
 var client;
 var db;

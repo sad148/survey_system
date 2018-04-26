@@ -132,13 +132,13 @@ function exportspss(req, db, cb) {
                             "varLabel": rows[0],
                             "measureLevels": measureLevels
                         }
-                        let jsonFileName = `${__dirname}\\models\\${projectId}.json`
+                        let jsonFileName = `${__dirname}/models/${projectId}.json`
                         fs.writeFile(jsonFileName, JSON.stringify(data, 5), function (e, r) {
                             if (!e) {
                                 db.collection("projects").findOne({projectId: projectId})
                                     .then((projectDetails) => {
                                         let exportFileName = `${projectDetails.projectName.split(" ").join("_")}_${moment().format('DD-MMM-YYYY')}_${projectDetails.response}.sav`
-                                        let pythonPath = __dirname + "\\models\\convertToSpss.py " + exportFileName
+                                        let pythonPath = __dirname + "/models/convertToSpss.py " + exportFileName
                                         shell.exec("py " + pythonPath + " " + jsonFileName, function (err, res) {
                                             if (!err) {
                                                 cb({

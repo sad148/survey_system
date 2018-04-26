@@ -20,7 +20,7 @@ class CreateProjectStep5 extends Component {
                     showLoader: false
                 })
                 alert('Project created successfully')
-                browserHistory.replace('/survey_system/home');
+                browserHistory.replace('/survey_system/list_projects');
                 this.props.props.dispatch(getprojectslist(finalData["userid"]));
             } else {
                 this.setState({

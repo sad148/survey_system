@@ -17,7 +17,7 @@ export default function login(data) {
                         sessionStorage.setItem("userid", res.body.data.user_id);
                         sessionStorage.setItem("username", res.body.data.first_name);
                         sessionStorage.setItem("email", res.body.data.email);
-                        sessionStorage.setItem("apiUrl", 'http://localhost:3009/');
+                        sessionStorage.setItem("apiUrl", 'http://192.168.99.100:3009/');
                         dispatch({type: "LOGIN_SUCCESS", data: res.body.data})
                     }
                     else

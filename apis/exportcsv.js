@@ -86,7 +86,6 @@ function exportcsv(req, db, cb) {
                 ]
             )
                 .toArray(function (err, res) {
-                        console.log(res)
                         if (res.length == 0) {
                             cb({
                                 code: 204,

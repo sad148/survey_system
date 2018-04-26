@@ -54,7 +54,7 @@ class ListProjectData extends Component {
         exportspss.exportspss(projectId, (response) => {
             if (response.code == 200) {
                 this.setState({showLoader: false})
-                window.location.href = `http://localhost:3009/download/${response.fileName}`;
+                window.location.href = `http://192.168.99.100:3009/download/${response.fileName}`;
             } else {
                 this.setState({showLoader: false})
                 alert(response.message)
