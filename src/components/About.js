@@ -36,6 +36,37 @@ const About = () => {
                             href="/survey_system/references">References</a> section on this site.</label>
                 </div>
                 <div style={{marginBottom: "20px"}}>
+                    <label style={{fontSize: "20px", fontWeight: "bold"}}>Downloads</label><br/>
+                    <label style={{fontSize: "15px"}}>
+                        If you will contact paper-based usability study with human subjects, you may download the PDF
+                        version of the questionnaires by following the links below. There is only one version for TUQ
+                        but four different versions for MAUQ depending on the category of primary users and the mode of
+                        interaction. There are two categories of primary users for mHealth apps, patients and health
+                        care providers. Some mHealth apps do not have interactions between patients and health care
+                        providers and they are considered as Standalone apps. Some mHealth apps include interactions
+                        between patients and providers and they are defined as Interactive apps.
+                    </label><br/><br/>
+                    <label style={{fontSize: "15px"}}>
+                        The questionnaire for telehealth system usability study:
+                    </label><br/><br/>
+
+                    <a href="http://localhost:3009/download/MAUQ_SPA.pdf"
+                       style={{color: "midnightblue", textDecoration: "underline"}}>Standalone
+                        Mobile Health App for Patients </a><br/>
+
+                    <a href="http://localhost:3009/download/MAUQ_IPA.pdf"
+                       style={{color: "midnightblue", textDecoration: "underline"}}>Interactive
+                        Mobile Health App for Patient</a><br/>
+
+                    <a href="http://localhost:3009/download/MAUQ_SPR.pdf"
+                       style={{color: "midnightblue", textDecoration: "underline"}}>Standalone
+                        Mobile Health App for Health Care Providers</a><br/>
+
+                    <a href="http://localhost:3009/download/MAUQ_IPR.pdf"
+                       style={{color: "midnightblue", textDecoration: "underline"}}>Interactive
+                        Mobile Health App for Health Care Providers</a>
+                </div>
+                <div style={{marginBottom: "20px"}}>
                     <label style={{fontSize: "20px", fontWeight: "bold"}}>Contact Information</label><br/>
                     <label style={{fontSize: "15px"}}>Bambang Parmanto, PhD<br/>
                         412-383-6649<br/>
