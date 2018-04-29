@@ -17,7 +17,7 @@ const References = () => {
                             Telerehabil, 8(1):3-10</a>. doi: 10.5195/ijt.2016.6196.</label>
                 </div>
                 <div style={{marginBottom: "20px"}}>
-                    <label style={{fontSize: "20px", fontWeight: "bold"}}>MAUQ publication:</label><br/>
+                    <label style={{fontSize: "20px", fontWeight: "bold"}}>Submitted for publication:</label><br/>
                     <label style={{fontSize: "15px"}}>Lorem ipsum dolor sit amet, Sed eu nibh quis dolor fermentum
                         dapibus sit amet
                         vel risus.</label>
@@ -28,7 +28,7 @@ const References = () => {
                         Assess the Effectiveness of Usability Questionnaires in mHealth App Studies”, <a
                             style={{color: "midnightblue", textDecoration: "underline"}}
                             href="http://www.researchprotocols.org/2017/8/e151/">JMIR Res Protoc, 6(8):e151</a>. doi:
-                        10.2196/resprot.7826.</label>
+                        10.2196/resprot.7826.</label><br/><br/>
                     <label style={{fontSize: "15px"}}>Serwe KM, Hersch GI, Pancheri K. (2017), “Feasibility of Using
                         Telehealth to Deliver the "Powerful Tools for Caregivers" Program”,<a
                             style={{color: "midnightblue", textDecoration: "underline"}}

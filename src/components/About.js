@@ -10,7 +10,9 @@ const About = () => {
                 <div style={{marginBottom: "20px"}}>
                     <label style={{fontSize: "20px", fontWeight: "bold"}}>Purpose</label><br/>
                     <label style={{fontSize: "15px"}}>The purpose of this site is to provide brief information about
-                        these two usability questionnaires and one usability study site (link to the site) you may use
+                        these two usability questionnaires and one usability study site (<a
+                            href={"/survey_system/login"} style={{color: "midnightblue", textDecoration: "underline"}}>PITT
+                            Usability Questionnaires</a>)you may use
                         in your study, in which you can create your usability study questionnaire and administer your
                         usability study. The responses from study participants will be available for download and
                         further analysis.</label>
@@ -49,7 +51,12 @@ const About = () => {
                     <label style={{fontSize: "15px"}}>
                         The questionnaire for telehealth system usability study:
                     </label><br/><br/>
-
+                    <a href="http://localhost:3009/download/TUQ.pdf"
+                       style={{color: "midnightblue", textDecoration: "underline"}}>Telehealth Usability Quesetionnaire
+                        (TUQ)</a><br/><br/>
+                    <label style={{fontSize: "15px"}}>
+                        The questionnaires for mobile health app usability study (MAUQ):
+                    </label><br/><br/>
                     <a href="http://localhost:3009/download/MAUQ_SPA.pdf"
                        style={{color: "midnightblue", textDecoration: "underline"}}>Standalone
                         Mobile Health App for Patients </a><br/>
