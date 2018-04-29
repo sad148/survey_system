@@ -40,7 +40,7 @@ class Homepage extends Component {
                     <div>
                         <label style={{color: "#17509e", fontSize: "30px", width: "50%"}}>PITT Usability
                             Questionnaires</label><br/>
-                        <label style={{color: "#17509e", width: "50%"}}>For Telehealth System (TQU) and Mobile Health
+                        <label style={{color: "#17509e", width: "50%"}}>For Telehealth System (TUQ) and Mobile Health
                             Apps
                             (MAUQ)</label>
                     </div>
