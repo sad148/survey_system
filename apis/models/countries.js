@@ -20,6 +20,9 @@ function countries() {
             "id": "canada",
             "value": "Canada"
         }, {
+            "id": "china",
+            "value": "China"
+        }, {
             "id": "czechrepublic",
             "value": "Czech Republic"
         }, {

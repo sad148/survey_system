@@ -11,7 +11,7 @@ const FormItem = Form.Item;
 
 class Login extends Component {
     componentWillMount = () => {
-        sessionStorage.setItem("apiurl", "http://192.168.99.100:3009/")
+        sessionStorage.setItem("apiurl", "http://localhost:3009/")
         this.setState({
             showRegister: false,
             visible: false,

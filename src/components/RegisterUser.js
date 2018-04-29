@@ -225,7 +225,7 @@ class RegisterUser extends Component {
                     </FormItem>
                     <FormItem
                         {...formItemLayout}
-                        label="Country"
+                        label="Country and Region"
                     >
                         {getFieldDecorator('country', {
                             rules: [{
@@ -242,9 +242,8 @@ class RegisterUser extends Component {
                         label="Role"
                     >
                         {getFieldDecorator('role')(
-                            <Select placeholder="Please select your role">
-                                {this.state.role}
-                            </Select>
+                            <Input autoComplete={"off"} type="text"
+                                   placeholder="Please enter your role"/>
                         )}
                     </FormItem>
                     <FormItem
@@ -265,9 +264,8 @@ class RegisterUser extends Component {
                         label="Position"
                     >
                         {getFieldDecorator('position')(
-                            <Select placeholder="Please select your position">
-                                {this.state.position}
-                            </Select>
+                            <Input autoComplete={"off"} type="text"
+                                   placeholder="Please enter your position"/>
                         )}
                     </FormItem>
                     <FormItem

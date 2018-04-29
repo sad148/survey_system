@@ -31,7 +31,9 @@ const About = () => {
                         questionnaires. You also do not need to request a permission from us before you use these
                         questionnaires. If you use either of these two questionnaires in your study, you are encouraged
                         but not required to cite the corresponding paper. If you notify us after your paper is
-                        published, we will be happy to post your paper in the References section</label>
+                        published, we will be happy to post your paper in the <a
+                            style={{color: "midnightblue", textDecoration: "underline"}}
+                            href="/survey_system/references">References</a> section on this site.</label>
                 </div>
                 <div style={{marginBottom: "20px"}}>
                     <label style={{fontSize: "20px", fontWeight: "bold"}}>Contact Information</label><br/>

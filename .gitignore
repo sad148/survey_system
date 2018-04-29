@@ -33,6 +33,5 @@ yarn-error.log*
 *lock
 /apis/models/data.json
 .dockerignore
-Dockerfile
 package-lock.json
 README.md
