@@ -17,10 +17,8 @@ const References = () => {
                             Telerehabil, 8(1):3-10</a>. doi: 10.5195/ijt.2016.6196.</label>
                 </div>
                 <div style={{marginBottom: "20px"}}>
-                    <label style={{fontSize: "20px", fontWeight: "bold"}}>Submitted for publication:</label><br/>
-                    <label style={{fontSize: "15px"}}>Lorem ipsum dolor sit amet, Sed eu nibh quis dolor fermentum
-                        dapibus sit amet
-                        vel risus.</label>
+                    <label style={{fontSize: "20px", fontWeight: "bold"}}>MUQ publication:</label><br/>
+                    <label style={{fontSize: "15px"}}>Submitted for publication</label>
                 </div>
                 <div style={{marginBottom: "20px"}}>
                     <label style={{fontSize: "20px", fontWeight: "bold"}}>Papers cited TUQ:</label><br/>
