@@ -42,7 +42,6 @@ class Fillanswershome extends Component {
     }
 
     generateID = () => {
-        console.log("inside geenrateid");
         this.setState({
             userId: uuid().split("-").join("")
         })
@@ -110,7 +109,7 @@ class Fillanswershome extends Component {
                                 />
                             </div>
                         </div> :
-                        <Fillanswers data={this.state.questions}/>}
+                        <Fillanswers data={this.state.questions} userId={this.state.userId}/>}
                 </div>
             </div>
         )
