@@ -20,7 +20,6 @@ export default class AnswerOpenEndedQuestions extends Component {
     }
     formData = (data) => {
         let step4 = [];
-        console.log(data)
         if (data != undefined) {
             data.map((item) => {
                 let answersId = uuid().split("-").join("");
@@ -48,7 +47,7 @@ export default class AnswerOpenEndedQuestions extends Component {
     }
 
     handleSubmit = () => {
-        let userId = document.getElementById("participantId").value
+        let userId = this.props.props.userId
         let surveyId = window.location.pathname.split('/')
         surveyId = surveyId[surveyId.length - 1]
         let allAnswers = store.getState().fillAnswersSteps.fillAnswersStepsData
