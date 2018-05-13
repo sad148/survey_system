@@ -57,7 +57,6 @@ class ForgotPassword extends Component {
             if (response.validate) {
                 getUserDetails.getuserdetails(email, (data) => {
                     data = data.data
-                    console.log(data, data.securityQuestion1);
                     this.setState({
                         securityQuestion1: data.securityQuestion1,
                         securityQuestion2: data.securityQuestion2,
