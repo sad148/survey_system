@@ -1,4 +1,5 @@
 const createProjectSteps = (state = {next: "", createProjectStepsData: {}}, action) => {
+    console.log("inside reducer");
     switch (action.type) {
         case "NEXT":
             let key = Object.keys(action.payload);
@@ -28,6 +29,12 @@ const createProjectSteps = (state = {next: "", createProjectStepsData: {}}, acti
             state = {
                 ...state,
                 next: ""
+            }
+            break;
+        case 'PROJECT_CREATED':
+            state = {
+                ...state,
+                createProjectStepsData: {}
             }
             break;
     }

@@ -12,10 +12,6 @@ class CreateProjectStep5 extends Component {
         showLoader: false
     }
 
-    componentWillReceiveProps = (nextProps) => {
-        console.log("inside willreceiveprops", nextProps)
-    }
-
     handleSubmit = () => {
         let finalData = this.props.props.data
         finalData["userid"] = sessionStorage.getItem("userid");

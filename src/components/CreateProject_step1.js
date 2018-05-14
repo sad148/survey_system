@@ -138,25 +138,6 @@ class CreateProjectStep1 extends Component {
                                 {providerOptions}
                             </div> : ""
                     }
-                    {/*{*/}
-                    {/*(this.state.optionsq) ? <div style={{"marginTop": "10px"}}>*/}
-                    {/*<label style={{color: "red", marginTop: "10px"}}>*</label>&nbsp;<label*/}
-                    {/*style={{color: "white", marginTop: "10px"}}>Please select the primary user of the mobile*/}
-                    {/*health app</label><br/>*/}
-                    {/*<RadioGroup onChange={this.onChange}>*/}
-                    {/*<Radio value={2} style={{color: "white"}}>Patient</Radio>*/}
-                    {/*<Radio value={3} style={{color: "white"}}>Provider</Radio>*/}
-                    {/*</RadioGroup>*/}
-                    {/*</div> : ""*/}
-                    {/*}*/}
-                    {/*{*/}
-                    {/*(this.state.options2) ? <div style={{"marginTop": "10px"}}>*/}
-                    {/*<label style={{color: "red", marginTop: "10px"}}>*</label>&nbsp;<label*/}
-                    {/*style={{color: "white", marginTop: "10px"}}>Please select the type of the mobile health*/}
-                    {/*app</label><br/>*/}
-
-                    {/*</div> : ""*/}
-                    {/*}*/}
                 </div>
                 <input type={"submit"} style={{width: "42%", marginTop: "10px", padding: "10px"}} value={"Continue"}
                        onClick={this.next}/>
