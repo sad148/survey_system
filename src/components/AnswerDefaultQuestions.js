@@ -86,8 +86,7 @@ class AnswerDefaultQuestions extends Component {
         return (
             <div>
                 <FillAnswersTable props={this.state.tableData}
-                                  instructions={"Instructions: Please rate these questions on the provided scale. One\n" +
-                                  "                being the lowest and seven the highest."}/>
+                                  instructions={"Instructions: Please rate these statements on the provided scale. 1 means Strongly Disagree and 7 means Strongly Agree"}/>
                 <input type={"submit"}
                        id='next'
                        onClick={this.next}
