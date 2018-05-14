@@ -13,12 +13,12 @@ class OpenEndedQuestions extends Component {
         questions: [],
         finalData: [],
         showLoader: false,
-        selected: 0
+        selected: 0,
+        question: ""
     };
 
     componentDidMount = () => {
         let display = []
-        console.log("inside idi mount");
         if (this.props.props.data.step4) {
             let data = this.props.props.data.step4.questions
             for (let i = 0; i < data.length; i++) {
@@ -75,7 +75,7 @@ class OpenEndedQuestions extends Component {
             </tr>
         )
         this.setState(prevState => {
-            return {items: [...prevState.items, display]}
+            return {items: [...prevState.items, display], question: ""}
         })
     }
 
@@ -108,6 +108,13 @@ class OpenEndedQuestions extends Component {
         this.props.jumpToStep(4);
     }
 
+    handleChange = () => {
+        let question = document.getElementById("question").value;
+        this.setState({
+            question: question
+        })
+    }
+
     render = () => {
         return (
             <div style={{marginTop: "10px"}}>
@@ -116,7 +123,8 @@ class OpenEndedQuestions extends Component {
                         added.</label>
                     <br/>
                     <div>
-                        <input id={"question"} type={"text"} placeholder={"Enter New Question"}
+                        <input id={"question"} value={this.state.question} onChange={this.handleChange} type={"text"}
+                               placeholder={"Enter New Question"}
                                style={{
                                    color: "white",
                                    backgroundColor: "#356fb7",
@@ -127,21 +135,24 @@ class OpenEndedQuestions extends Component {
                                    paddingTop: "5px",
                                    paddingBottom: "5px"
                                }}></input>
-                        <input type={"submit"} onClick={this.addNewQuestion}
-                               style={{
-                                   "marginLeft": "5px", "marginBottom": "10px", "marginTop": "10px", paddingTop: "5px",
-                                   paddingBottom: "5px"
-                               }} value={"Add"}>
+                        <input
+                            type={"submit"}
+                            onClick={this.addNewQuestion}
+                            style={{
+                                "marginLeft": "5px", "marginBottom": "10px", "marginTop": "10px", paddingTop: "5px",
+                                paddingBottom: "5px"
+                            }} value={"Add"}>
                         </input>
                     </div>
                     <table style={{borderCollapse: "separate"}} cellPadding={10}>
                         <thead>
                         <tr>
                             <th className={"fontColor"} style={{textAlign: "left"}}>Question</th>
-                            <th className={"fontColor"} style={{textAlign: "right"}}><input type="submit"
-                                                                                            style={{backgroundColor: "#356fb7"}}
-                                                                                            value={`Selected ${this.state.selected}`}
-                            />
+                            <th className={"fontColor"} style={{textAlign: "right"}}>
+                                <input type="submit"
+                                       style={{backgroundColor: "#356fb7"}}
+                                       value={`Selected ${this.state.selected}`}
+                                />
                             </th>
                         </tr>
                         </thead>
