@@ -11,6 +11,11 @@ class CreateProjectStep5 extends Component {
     state = {
         showLoader: false
     }
+
+    componentWillReceiveProps = (nextProps) => {
+        console.log("inside willreceiveprops", nextProps)
+    }
+
     handleSubmit = () => {
         let finalData = this.props.props.data
         finalData["userid"] = sessionStorage.getItem("userid");
@@ -21,6 +26,7 @@ class CreateProjectStep5 extends Component {
                 })
                 alert('Project created successfully')
                 browserHistory.replace('/survey_system/list_projects');
+                this.props.props.dispatch({type: "PROJECT_CREATED"})
                 this.props.props.dispatch(getprojectslist(finalData["userid"]));
             } else {
                 this.setState({
