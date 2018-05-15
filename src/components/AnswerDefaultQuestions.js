@@ -39,14 +39,15 @@ class AnswerDefaultQuestions extends Component {
                 let answer = (
                     <div style={{display: "inline-flex"}}>
                         <Icon className={"fontColor"}
-                              style={{marginRight: "10px", marginTop: "22px"}}
-                              type="dislike"/>
-                        {radioOptions}
-                        <Icon className={"fontColor"}
                               style={{
                                   marginRight: "10px",
                                   marginTop: "25px"
                               }} type="like"/>
+
+                        {radioOptions}
+                        <Icon className={"fontColor"}
+                              style={{marginRight: "10px", marginTop: "22px"}}
+                              type="dislike"/>
                     </div>)
 
                 step1.push({
@@ -76,7 +77,6 @@ class AnswerDefaultQuestions extends Component {
                 answers: this.state.answers
             }
         }
-        console.log(this.props)
         this.props.props.dispatch({type: "RESET_FILL_ANSWERS_STEPS"})
         this.props.props.dispatch({type: "NEXT", payload: step})
         this.props.next();
@@ -86,7 +86,7 @@ class AnswerDefaultQuestions extends Component {
         return (
             <div>
                 <FillAnswersTable props={this.state.tableData}
-                                  instructions={"Instructions: Please rate these statements on the provided scale. 1 means Strongly Disagree and 7 means Strongly Agree"}/>
+                                  instructions={"Instructions: Please rate these statements on the provided scale. 1 means Strongly Agree and 7 means Strongly Disagree"}/>
                 <input type={"submit"}
                        id='next'
                        onClick={this.next}
