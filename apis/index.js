@@ -6,6 +6,8 @@ var cors = require('cors');
 var login = require('./login.js');
 var swig = require('swig');
 var fs = require('fs');
+var path = require('path')
+var rfs = require('rotating-file-stream')
 var registerUser = require('./registerUser.js');
 var data = require('./models/demographic.js')
 var createproject = require('./createproject')
@@ -17,14 +19,29 @@ var submitAnswers = require('./submitAnswers')
 var validateEmail = require('./validateemail')
 var getUserDetails = require('./getUserDetails')
 var updatePassword = require('./updatePassword')
+var morgan = require('morgan')
 const MongoClient = require('mongodb').MongoClient;
 const assert = require('assert');
 const url = 'mongodb://localhost:27017';
 const dbName = 'survey_system';
 var client;
 var db;
+var logDirectory = path.join(__dirname, 'log')
+
+// ensure log directory exists
+fs.existsSync(logDirectory) || fs.mkdirSync(logDirectory)
+
+// create a rotating write stream
+var accessLogStream = rfs('access.log', {
+    interval: '1d', // rotate daily
+    path: logDirectory
+})
+
+// setup the logger
+app.use(morgan('combined', {stream: accessLogStream}))
 app.use(bodyParser.json());
 app.use(cors())
+
 app.listen(3009, () => {
     console.log("Listening on 3009");
     MongoClient.connect(url, function (err, response) {
