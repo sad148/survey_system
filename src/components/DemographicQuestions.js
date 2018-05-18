@@ -21,7 +21,14 @@ class DemographicQuestions extends Component {
 
     componentDidMount = () => {
         getDemographic.getdemographic((data) => {
-            this.formData(data)
+            if (this.state.questions.length === 0) {
+                let storeData = store.getState().createProjectSteps.createProjectStepsData
+                if (storeData.step3) {
+                    data.push(...storeData.step3.questions)
+                }
+                data = unique(data, "questionId")
+                this.formData(data)
+            }
         })
     }
 
@@ -34,14 +41,11 @@ class DemographicQuestions extends Component {
 
     formData = (data) => {
         let row = []
-        let storeData = store.getState().createProjectSteps.createProjectStepsData
-        if (storeData.step3) {
-            data.push(...storeData.step3.questions)
-        }
-        data = unique(data, "questionId")
+        let count = this.state.selectedQuestions
         for (let i = 0; i < data.length; i++) {
             if (!this.state.questions[data[i].questionId])
                 this.state.questions[data[i].questionId] = {}
+            count += 1
             this.state.questions[data[i].questionId]["question"] = data[i].question
             this.state.questions[data[i].questionId]["questionId"] = data[i].questionId
             this.state.questions[data[i].questionId]["type"] = data[i].type;
@@ -86,10 +90,12 @@ class DemographicQuestions extends Component {
         this.setState(prevState => {
             return {
                 items: [...prevState.items, row],
-                selectedQuestions: prevState.selectedQuestions + 1,
+                selectedQuestions: count,
                 showLoader: false
             }
         })
+        if (this.props.toggleRender)
+            this.props.toggleRender()
     }
 
     previous = () => {

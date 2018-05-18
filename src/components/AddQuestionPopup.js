@@ -99,6 +99,7 @@ class AddQuestionPopup extends Component {
                     visible: false,
                     questionId: uuidv1().split('-').join("")
                 })
+                this.props.togglePopup()
             }
         });
     }
