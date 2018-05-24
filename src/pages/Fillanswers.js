@@ -1,5 +1,4 @@
 import React, {Component} from 'react'
-import StepZilla from 'react-stepzilla';
 import {Steps} from 'antd';
 import AnswerDefaultQuestions from '../components/AnswerDefaultQuestions'
 import AnswerDemographicQuestions from '../components/AnswerDemographicQuestions'
