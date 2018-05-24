@@ -16,6 +16,11 @@ class Homepage extends Component {
         }
     }
 
+    componentDidMount = () => {
+        if (sessionStorage.getItem("username"))
+            this.setState({username: sessionStorage.getItem("username"), loginDone: true})
+    }
+
     logout = () => {
         this.setState({loginDone: false})
         sessionStorage.clear();
