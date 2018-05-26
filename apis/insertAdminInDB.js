@@ -13,7 +13,7 @@ MongoClient.connect(url, function (err, db) {
         "email": "admin",
         "user_id": "b8451d86431311e8842f0ed5f89f718b"
     }
-    dbo.collection("users").updateOne({user_id: "b8451d86431311e8842f0ed5f89f718b"}, {'$set': myobj}, function (err, res) {
+    dbo.collection("users").update({user_id: "b8451d86431311e8842f0ed5f89f718b"}, {'$set': myobj}, {upsert: true}, function (err, res) {
         if (err) throw err;
         console.log("1 document inserted");
         process.exit();
