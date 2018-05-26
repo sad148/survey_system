@@ -26,7 +26,7 @@ class Header(Generic):
     called directly. Use `SavHeaderReader` to retrieve metadata.
     """
 
-    def __init__(self, savFileName, mode, refSavFileName, ioUtf8=False, ioLocale=None):
+    def __init__(self, savFileName, mode, refSavFileName, ioUtf8=True, ioLocale=None):
         """Constructor"""
         super(Header, self).__init__(savFileName, ioUtf8, ioLocale)
         self.fh = super(Header, self).openSavFile(savFileName, mode,

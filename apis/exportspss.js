@@ -21,9 +21,13 @@ function exportspss(req, db, cb) {
             let varNames = [];
             let measureLevels = {};
             let counter = 0;
+            let valueLabel = {};
             rows[0] = {};
             varNames[0] = "User_Id"
             varNames[1] = "Submitted_Time"
+            valueLabel["User_Id"] = {"None": "none"}
+            valueLabel["Submitted_Time"] = {"None": "none"}
+
             //vartypes is set to define column length in the output
             varTypes["User_Id"] = 40
             varTypes["Submitted_Time"] = 15
@@ -40,6 +44,23 @@ function exportspss(req, db, cb) {
                         type: item.type
                     })
                     varNames.push(`Q${counter}`)
+                    //1 =  “Strongly Agree”, 2 = “Agree”, 3 = “Somewhat Agree”, …, 7 = “Strongly Disagree”.
+                    if (item.stepNum === "step2") {
+                        valueLabel[`Q${counter}`] = {
+                            "1": "Strongly Agree",
+                            "2": "Agree",
+                            "3": "Somewhat Agree",
+                            "4": "Neither Agree nor Disagree",
+                            "5": "Somewhat Disagree",
+                            "6": "Disagree",
+                            "7": "Strongly Disagree"
+                        }
+                    } else {
+                        valueLabel[`Q${counter}`] = {
+                            "None": "none"
+                        }
+                    }
+
                     varTypes[`Q${counter}`] = 3;
                     measureLevels[`Q${counter}`] = "nominal"
                     rows[0][`Q${counter}`] = item.question
@@ -47,6 +68,9 @@ function exportspss(req, db, cb) {
                 } else {    //for questions which are of checkbox type
                     for (let i = 0; i < item.options.length; i++) {
                         if (item.options[i] !== null) {
+                            valueLabel[`Q${counter}_${i}`] = {
+                                "None": "none"
+                            }
                             columns.push(`Q${counter}_${i}`);
                             if (!questionIdColumnMapping[item.questionId])
                                 questionIdColumnMapping[item.questionId] = []
@@ -125,10 +149,12 @@ function exportspss(req, db, cb) {
                         }
                         varNames = {"varNames": varNames};
                         records = {"records": records}
+                        valueLabel = {"valueLabel": valueLabel}
                         let data = {
                             "varTypes": varTypes,
                             "varNames": varNames,
                             "records": records,
+                            "valueLabel": valueLabel,
                             "varLabel": rows[0],
                             "measureLevels": measureLevels
                         }
