@@ -49,7 +49,6 @@ class Fillanswershome extends Component {
 
     render = () => {
         let participantId = (<div style={{"marginTop": "20px", width: "100%", textAlign: "center"}}>
-                <label className={"fontColor"}>Please enter or generate participant id:</label>&nbsp;&nbsp;
                 <input id='participantId' style={{width: "300px"}}
                        placeholder={"Please enter your participant id"}
                        disabled={this.state.participantInput}
@@ -90,8 +89,7 @@ class Fillanswershome extends Component {
                         }}>
                             <div style={{paddingTop: "20%", textAlign: "center"}}>
                                 <label className={"fontColor"}>Welcome!</label><br/>
-                                <label className={"fontColor"}>When ready to start questionnaire please click
-                                    continue.</label>
+                                <label className={"fontColor"}>Please enter your assigned study ID below or click the icon to generate a random ID</label>
                             </div>
                             {participantId}
                             <div style={{textAlign: "center"}}>
