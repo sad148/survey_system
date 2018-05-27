@@ -12,7 +12,7 @@ const About = () => {
                     <label style={{fontSize: "15px"}}>The purpose of this site is to provide brief information about
                         these two usability questionnaires and one usability study site (<a
                             href={"/survey_system/login"} style={{color: "midnightblue", textDecoration: "underline"}}>PITT
-                            Usability Questionnaires</a>)you may use
+                            Usability Questionnaires</a>) you may use
                         in your study, in which you can create your usability study questionnaire and administer your
                         usability study. The responses from study participants will be available for download and
                         further analysis.</label>
