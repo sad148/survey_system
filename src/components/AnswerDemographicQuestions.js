@@ -24,7 +24,7 @@ export default class AnswerDemographicQuestions extends Component {
                     for (let j = 0; j < item.options.length; j++) {
                         if (item.options[j] != null) {
                             radioOptions.push(
-                                <div style={{marginRight: "5px"}}>
+                                <div style={{marginRight: "5px", marginTop: "5px"}}>
                                     <input
                                         name={item.questionId}
                                         value={item.options[j]}
@@ -39,7 +39,7 @@ export default class AnswerDemographicQuestions extends Component {
                     }
                     step2.push({
                         question: item.question,
-                        answer: <div style={{display: "flex"}}>{radioOptions}</div>
+                        answer: <div>{radioOptions}</div>
                     })
                 } else if (item.type == "checkbox") {
                     let radioOptions = [];
@@ -47,7 +47,7 @@ export default class AnswerDemographicQuestions extends Component {
                         let answersId = uuid().split("-").join("");
                         if (item.options[j] != null) {
                             radioOptions.push(
-                                <div style={{marginRight: "5px"}}>
+                                <div style={{marginRight: "5px", marginTop: "5px"}}>
                                     <input
                                         name={item.questionId}
                                         value={item.options[j]}
@@ -64,7 +64,7 @@ export default class AnswerDemographicQuestions extends Component {
                     }
                     step2.push({
                         question: item.question,
-                        answer: <div style={{display: "flex"}}>{radioOptions}</div>
+                        answer: <div>{radioOptions}</div>
                     })
                 } else {
                     let answersId = uuid().split("-").join("");
@@ -135,7 +135,7 @@ export default class AnswerDemographicQuestions extends Component {
     render = () => {
         return (
             <div>
-                <FillAnswersTable props={this.state.tableData} align={"left"} width={"30%"}
+                <FillAnswersTable props={this.state.tableData} align={"left"} width={"50%"}
                                   instructions={"Instructions: Please enter your answer by selecting or entering the correct response."}/>
                 <input type={"submit"}
                        id='next'
