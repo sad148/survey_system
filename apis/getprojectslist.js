@@ -4,7 +4,21 @@ function getprojectslist(req, db, cb) {
     let username = data.username
     const projectsData = db.collection('projects');
     if (username === "admin") {
-        projectsData.find({}, {sort: {'createdAt': -1}}).toArray(function (err, projectsResp) {
+        //projectsData.find({}, {sort: {'createdAt': -1}}).toArray(function (err, projectsResp) {
+        projectsData.aggregate([
+            {
+                $lookup: {
+                    from: 'users',
+                    localField: 'userid',
+                    foreignField: 'user_id',
+                    as: 'userdetails'
+                }
+            }, {
+                $sort: {
+                    createdAt: -1
+                }
+            }
+        ]).toArray(function (err, projectsResp) {
             if (err) {
                 console.log(err);
                 cb({
@@ -12,7 +26,6 @@ function getprojectslist(req, db, cb) {
                     message: "Error in getting list of projects"
                 })
             } else {
-
                 if (projectsResp.length == 0) {
                     cb({
                         code: 200,
@@ -23,6 +36,11 @@ function getprojectslist(req, db, cb) {
                         }
                     })
                 } else {
+                    projectsResp.map((projects) => {
+                        projects.userdetails.map((userDetails) => {
+                            projects.userdetails = userDetails
+                        })
+                    })
                     let response = {
                         code: 200,
                         data: {
@@ -33,7 +51,7 @@ function getprojectslist(req, db, cb) {
                     cb(response);
                 }
             }
-        });
+        })
     }
     else {
         projectsData.find({userid: userid}, {sort: {'createdAt': -1}}).toArray(function (err, projectsResp) {  //-1 in sort query signifies descending order

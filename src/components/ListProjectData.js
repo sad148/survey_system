@@ -5,6 +5,7 @@ import exportspss from '../actions/ExportSPSS'
 import moment from 'moment'
 import {browserHistory} from 'react-router'
 import Loader from './Loader'
+import UserDetailsModal from './UserDetailsModal'
 
 var download = require('../utils/download')
 
@@ -12,7 +13,8 @@ class ListProjectData extends Component {
     state = {
         visible: false,
         input: "",
-        showLoader: true
+        showLoader: true,
+        userModal: false
     }
     componentWillMount = () => {
         this.formData(this.props.projectData)
@@ -25,6 +27,12 @@ class ListProjectData extends Component {
     handleCancel = (e) => {
         this.setState({
             visible: false,
+        });
+    }
+
+    handleUserModalCancel = (e) => {
+        this.setState({
+            userModal: false
         });
     }
 
@@ -62,14 +70,20 @@ class ListProjectData extends Component {
         })
     }
 
-    selectOption = (projectId, projectName, response) => {
+    selectOption = (projectId, projectName, response, userdetails) => {
         let value = document.getElementById(projectId + "action").value
         if (value === "share")
             this.sharelink(projectId)
         else if (value === "csv")
             this.exportcsv(projectId, projectName, response)
-        else
+        else if (value === "spss")
             this.exportspss(projectId, projectName, response)
+        else {
+            this.setState({
+                userdetails: userdetails,
+                userModal: true
+            })
+        }
     }
 
     formData = (data) => {
@@ -80,6 +94,9 @@ class ListProjectData extends Component {
                     <option value={"share"}>Share</option>
                     <option value={"csv"}>Export CSV</option>
                     <option value={"spss"}>Export SPSS</option>
+                    {
+                        (this.props.projectData.admin) ? <option value={"user"}>User Details</option> : ""
+                    }
                 </select>
             )
             arr.push(
@@ -91,7 +108,7 @@ class ListProjectData extends Component {
                     <td className={"listProjectsTD"}>{action}&nbsp;<input
                         style={{borderRadius: "0px", paddingTop: "2px", paddingBottom: "2px"}}
                         type={"submit"}
-                        onClick={() => this.selectOption(item.projectId, item.projectName, item.response)}
+                        onClick={() => this.selectOption(item.projectId, item.projectName, item.response, item.userdetails)}
                         value={"Go"}/></td>
                 </tr>
             )
@@ -142,6 +159,8 @@ class ListProjectData extends Component {
                     >
                         {this.state.link}
                     </Modal>
+                    {(this.state.userModal) ? <UserDetailsModal props={this.state.userdetails}
+                                                                         onCancel={this.handleUserModalCancel}/> : ""}
                 </div>
             </div>
         )
