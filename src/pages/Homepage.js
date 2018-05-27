@@ -69,6 +69,9 @@ class Homepage extends Component {
                 <div className={"content"}>
                     {this.props.children}
                 </div>
+                <footer style={{textAlign:"center"}}>
+                    <label className={"fontColor"}>{`Copyright @ ${new Date().getFullYear()} University of Pittsburgh. All rights reserved.`}</label>
+                </footer>
             </div>
         )
     }
