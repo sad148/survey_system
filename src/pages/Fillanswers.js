@@ -39,7 +39,6 @@ class Fillanswers extends Component {
     }
 
     render = () => {
-        console.log("inside steps render", this.state.questions);
         let steps = [
             {
                 stepNum: "step2",
