@@ -116,7 +116,7 @@ class ForgotPassword extends Component {
             <div>
                 <Form style={{paddingRight: "30px"}}>
                     <div id="registerTitleDiv" style={{textAlign: "center", marginBottom: "10px"}}>
-                        <label style={{fontSize: "30px"}} className={"fontColor"}>Create New Password</label>
+                        <label style={{fontSize: "23px"}} className={"fontColor"}>Answer Your Security Questions</label>
                     </div>
                     <FormItem
                         {...formItemLayout}
