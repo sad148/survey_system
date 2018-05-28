@@ -12,7 +12,8 @@ class CreateProjectStep2 extends Component {
             tableData: [],
             selectedRowKeys: [], // Check here to configure the default column
             showLoader: true,
-            checked: true
+            checked: true,
+            totalQuestions: 0
         })
     }
 
@@ -63,7 +64,8 @@ class CreateProjectStep2 extends Component {
         }
         this.setState({
             tableData: data,
-            showLoader: false
+            showLoader: false,
+            totalQuestions: data.length
         })
     }
 
@@ -102,7 +104,7 @@ class CreateProjectStep2 extends Component {
     }
 
     next = () => {
-        if (this.state.selectedRowKeys.length < 16) {
+        if (this.state.selectedRowKeys.length < this.state.totalQuestions - 5) {
             alert('Upto 5 questions can be removed')
         } else {
             let step = {
