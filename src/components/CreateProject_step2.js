@@ -43,7 +43,8 @@ class CreateProjectStep2 extends Component {
                         type='radio'/>
                     </div>)
             }
-            data[i].answer = (
+            //console.log(data[i], answer.length)
+            data[i].answers = (
                 <div style={{display: "inline-flex"}}>
                     <Icon className={"fontColor"}
                           style={{marginRight: "10px", marginTop: "22px"}}
@@ -55,7 +56,7 @@ class CreateProjectStep2 extends Component {
                               marginTop: "25px"
                           }} type="dislike"/>
                 </div>)
-            data[i].checkbox = (
+            data[i].checkboxes = (
                 <Checkbox id={data[i].id + "checkbox"} defaultChecked={this.checkQuestion(data[i])}
                           onChange={() => this.toggleCheckbox(data[i])}/>
             )
@@ -153,8 +154,8 @@ class CreateProjectStep2 extends Component {
                                 return (
                                     <tr style={{border: "1px solid #17509d", padding: "10px"}}>
                                         <td width="50%" className={"fontColor questionTD"}>{item.question}</td>
-                                        <td className={"answerTD"}>{item.answer}</td>
-                                        <td className={"checkBoxTD"}>{item.checkbox}</td>
+                                        <td className={"answerTD"}>{item.answers}</td>
+                                        <td className={"checkBoxTD"}>{item.checkboxes}</td>
                                     </tr>
                                 )
                             })
