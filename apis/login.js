@@ -2,7 +2,7 @@ const md5 = require('md5');
 
 function login(req, db, cb) {
     let data = req.body.data
-    let username = data.username;
+    let username = data.username.toLowerCase();
     let password = md5(data.password);
     db.collection('users').findOne({email: username, password: password})
         .then((res) => {
