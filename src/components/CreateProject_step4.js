@@ -80,15 +80,14 @@ class OpenEndedQuestions extends Component {
     }
 
     toggleCheckbox = (id) => {
-        console.log(id);
         if (document.getElementById(id).checked)
-            this.setState(prevState => {
-                selected: prevState.selected++
-            })
+            this.setState((prevState) => ({
+                selected: ++prevState.selected
+            }));
         else
-            this.setState(prevState => {
-                selected: prevState.selected--
-            })
+            this.setState((prevState) => ({
+                selected: --prevState.selected
+            }));
     }
 
     handleSubmit = () => {
