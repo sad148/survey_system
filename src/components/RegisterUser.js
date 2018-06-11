@@ -225,7 +225,7 @@ class RegisterUser extends Component {
                     </FormItem>
                     <FormItem
                         {...formItemLayout}
-                        label="Country and Region"
+                        label="Country & Region"
                     >
                         {getFieldDecorator('country', {
                             rules: [{
