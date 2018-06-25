@@ -105,7 +105,7 @@ class CreateProjectStep2 extends Component {
 
     next = () => {
         if (this.state.selectedRowKeys.length < this.state.totalQuestions - 5) {
-            alert('Upto 5 questions can be removed')
+            alert('Up to 5 questions can be removed')
         } else {
             let step = {
                 step2: {
