@@ -22,8 +22,12 @@ var updatePassword = require('./updatePassword')
 var morgan = require('morgan')
 const MongoClient = require('mongodb').MongoClient;
 const assert = require('assert');
-const url = 'mongodb://localhost:27017';
-const dbName = 'survey_system';
+let hostname = process.env.hostname || "localhost";
+let port = process.env.port || 27017;
+let dbName = process.env.dbname || "survey_system";
+console.log(hostname, port, dbName)
+const url = `mongodb://${hostname}:${port}`;
+
 var client;
 var db;
 var logDirectory = path.join(__dirname, 'log')
@@ -46,6 +50,7 @@ app.listen(3009, () => {
     console.log("Listening on 3009");
     MongoClient.connect(url, function (err, response) {
         client = response
+        console.log("mongo error", err);
         assert.equal(null, err);
         console.log("Connected successfully to server");
         db = client.db(dbName);
@@ -164,8 +169,8 @@ app.post('/submitanswers', (req, res) => {
 
 app.get('/download/:fileName', (req, res) => {
     let fileName = req.params.fileName
-    let path = __dirname.substring(0, __dirname.lastIndexOf('\\'));
-    path += `\\exports\\${fileName}`
+    let path = __dirname.substring(0, __dirname.lastIndexOf('/'));
+    path += `/exports/${fileName}`
     fs.access(path, (err) => {
         if (err) {
             console.log(path);
