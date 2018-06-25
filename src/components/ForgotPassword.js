@@ -27,11 +27,11 @@ class ForgotPassword extends Component {
         e.preventDefault();
         this.props.form.validateFieldsAndScroll((err, values) => {
             if (!err) {
-                if (this.state.securityAnswer1 != md5(values.securityAnswer1))
+                if (this.state.securityAnswer1 != md5(values.securityAnswer1.toLowerCase()))
                     alert("Answer of 1st question is wrong")
-                else if (this.state.securityAnswer2 != md5(values.securityAnswer2))
+                else if (this.state.securityAnswer2 != md5(values.securityAnswer2.toLowerCase()))
                     alert("Answer of 2nd question is wrong")
-                else if (this.state.securityAnswer3 != md5(values.securityAnswer3))
+                else if (this.state.securityAnswer3 != md5(values.securityAnswer3.toLowerCase()))
                     alert("Answer of 3rd question is wrong")
                 else
                     this.setState({
