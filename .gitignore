@@ -1,13 +1,13 @@
 # See https://help.github.com/ignore-files/ for more about ignoring files.
 
 # dependencies
-/node_modules
+*/node_modules
 
 # testing
 /coverage
 
 # production
-/build
+*/build
 
 # misc
 .DS_Store
@@ -22,16 +22,16 @@ yarn-error.log*
 
 .idea
 
-/data
+*/data
 /tests
 .vs
 *.txt
-/exports
+*/exports
 *.csv
 *.log
 *.iml
 *lock
-/apis/models/data.json
+*/apis/models/data.json
 .dockerignore
 package-lock.json
 README.md
