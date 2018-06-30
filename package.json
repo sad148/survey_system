@@ -38,7 +38,7 @@
     "uuid": "^3.1.0"
   },
   "scripts": {
-    "start": "react-app-rewired start",
+    "start": "serve -s build",
     "build": "react-app-rewired build"
   },
   "devDependencies": {
