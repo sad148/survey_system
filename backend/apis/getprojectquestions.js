@@ -16,7 +16,8 @@ function getprojectquestions(req, db, cb) {
                     }).catch((error) => {
                     cb({
                         code: 400,
-                        message: "Error in loading questions"
+                        message: "Error in loading questions",
+                        err: error
                     })
                 })
             } else {
@@ -28,7 +29,8 @@ function getprojectquestions(req, db, cb) {
         } else {
             cb({
                 code: 400,
-                message: "Error in loading questions"
+                message: "Error in loading questions", 
+                err: err
             })
         }
     })

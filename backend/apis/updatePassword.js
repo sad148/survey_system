@@ -8,7 +8,8 @@ function updatePassword(req, db, cb) {
         if (err) {
             cb({
                 code: 400,
-                message: "Error in updating password"
+                message: "Error in updating password",
+                err: err
             })
         } else {
             cb({

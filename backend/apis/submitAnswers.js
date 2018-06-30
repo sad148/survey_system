@@ -5,7 +5,6 @@ function submitAnswers(req, db, cb) {
     let surveyId = req.body.data.surveyId;
     let submittedTime = moment().format();
     let submittedEpoch = new Date().getTime();
-    console.log(answers.length)
     if (answers.length === 0) {
         answers[0] = {
             submittedTime: submittedTime,
@@ -18,7 +17,6 @@ function submitAnswers(req, db, cb) {
             answers[i].submittedEpoch = submittedEpoch
         }
     }
-    console.log(answers);
     const data = db.collection('projects');
     db.createCollection(surveyId + "::answers", {autoIndexId: false})
         .then((res) => {
@@ -44,33 +42,34 @@ function submitAnswers(req, db, cb) {
                                     })
                                 })
                                 .catch((err) => {
-                                    console.log("1", err)
                                     cb({
                                         code: 400,
-                                        message: "Error in submitting answers"
+                                        message: "Error in submitting answers",
+                                        err: err
                                     })
                                 })
                         })
                         .catch((err) => {
-                            console.log("2", err)
                             cb({
                                 code: 400,
-                                message: "Error in submitting answers"
+                                message: "Error in submitting answers",
+                                err: err
                             })
                         })
                 })
                 .catch((err) => {
-                    console.log("3", err)
                     cb({
                         code: 400,
-                        message: "Error in submitting answers"
+                        message: "Error in submitting answers",
+                        err: err
                     })
                 })
         })
         .catch((err) => {
             cb({
                 code: 400,
-                message: "Error in submitting answers"
+                message: "Error in submitting answers",
+                err: err
             })
         })
 }

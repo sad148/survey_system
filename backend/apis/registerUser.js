@@ -18,13 +18,15 @@ function registerUser(req, db, cb) {
         .then((res) => {
             delete res.ops[0]._id
             cb({
-                code: 200
+                code: 200,
+                message: "User registered successfully"
             })
         })
         .catch((err) => {
             cb({
                 code: 400,
-                message: "Error in registering user"
+                message: "Error in registering user",
+                err: err
             })
         })
 }

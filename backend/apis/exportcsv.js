@@ -13,7 +13,8 @@ function exportcsv(req, db, cb) {
         if (res.length == 0) {
             cb({
                 code: 204,
-                message: "Error in exporting csv"
+                message: "Error in exporting csv",
+                err: "No data available"
             })
         } else {
             let columns = [];
@@ -89,7 +90,7 @@ function exportcsv(req, db, cb) {
                         if (res.length == 0) {
                             cb({
                                 code: 204,
-                                message: "No answers submitted yet"
+                                message: "No answers submitted yet"                                
                             })
                         } else {
                             //answers are grouped on userId and submittedEpoch(time stamp) basis to maintain uniqueness

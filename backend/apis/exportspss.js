@@ -175,7 +175,8 @@ function exportspss(req, db, cb) {
                                             } else {
                                                 cb({
                                                     code: 400,
-                                                    message: "Error in exporting spss"
+                                                    message: "Error in exporting spss",
+                                                    err: err
                                                 })
                                             }
                                         })
@@ -183,13 +184,15 @@ function exportspss(req, db, cb) {
                                     .catch((err) => {
                                         cb({
                                             code: 400,
-                                            message: "Error in exporting spss"
+                                            message: "Error in exporting spss",
+                                            err: err
                                         })
                                     })
                             } else {
                                 cb({
                                     code: 400,
-                                    message: "Error in exporting spss"
+                                    message: "Error in exporting spss",
+                                    err: e
                                 })
                             }
                         })

@@ -71,9 +71,7 @@ class CreateProjectStep2 extends Component {
 
     //to check if the question was checked or unchecked by the user previously
     checkQuestion = (data) => {
-        delete data.answer;
         if (!this.props.props.data.step2) {
-            delete data.answer;
             this.state.selectedRowKeys.push(data);
             return true;
         } else {
@@ -107,9 +105,19 @@ class CreateProjectStep2 extends Component {
         if (this.state.selectedRowKeys.length < this.state.totalQuestions - 5) {
             alert('Up to 5 questions can be removed')
         } else {
+            let questions = this.state.selectedRowKeys.map((question) => {
+                return {
+                    id: question.id,
+                    key: question.key,
+                    limit: question.limit,
+                    question: question.question,
+                    questionId: question.questionId,
+                    type: question.type
+                }
+            });
             let step = {
                 step2: {
-                    questions: this.state.selectedRowKeys
+                    questions: questions
                 }
             }
             this.props.props.dispatch({type: "RESET_CREATE_PROJECT_STEPS"})

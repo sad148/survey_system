@@ -34,9 +34,9 @@ function getUserDetails(req, db, cb) {
         .catch((err) => {
             cb({
                 code: 400,
-                message: "Error in getting user details"
+                message: "Error in getting user details",
+                err: err
             })
-            console.log(err);
         })
 }
 
