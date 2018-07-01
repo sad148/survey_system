@@ -162,10 +162,6 @@ div#mainLayout {
     padding: 20px;
 }
 
-.ant-checkbox-wrapper {
-    width: 100%;
-}
-
 input.ant-input {
     border: solid 1px #5473b7;
     border-radius: 0px;
@@ -448,8 +444,8 @@ span .ant-checkbox-checked .ant-checkbox-inner:after {
 }
 
 ol.progtrckr li.progtrckr-todo {
-    color: #fafafa;
-    border-bottom: 3px solid #fafafa;
+    color: white;
+    border-bottom: 3px solid white;
 }
 
 @media only screen and (max-width: 1024px) and (min-width: 1023px) {
