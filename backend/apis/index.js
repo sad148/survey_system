@@ -28,7 +28,6 @@ const url = `mongodb://${hostname}:${port}`;
 var client;
 var db;
 
-// setup the logger
 app.use(bodyParser.json());
 app.use(cors())
 
@@ -45,23 +44,30 @@ app.listen(3009, () => {
 
 
 app.post('/login', (req, res) => {
-    writeLogs("Request", {timestamp: moment().format(), headers: req.headers, payload: req.body})
+    let route = req.route.path
+    let method = req.method
+    writeLogs("Request", {route: route, method: method,timestamp: moment().format(), headers: req.headers, payload: req.body})
     login.login(req, db, (response) => {
-        writeLogs("Response", {timestamp: moment().format(), headers: req.headers, payload: req.body, response: response});
+        console.log("method", req.method)
+        writeLogs("Response", {route: route, method: method,timestamp: moment().format(), headers: req.headers, payload: req.body, response: response});
         res.send(response)
     })
 })
 
 app.post('/registerUser', (req, res) => {
-    writeLogs("Request", {timestamp: moment().format(), headers: req.headers, payload: req.body})
+    let route = req.route.path
+    let method = req.method
+    writeLogs("Request", {route: route, method: method,timestamp: moment().format(), headers: req.headers, payload: req.body})
     registerUser.registerUser(req, db, (response) => {
-        writeLogs("Response", {timestamp: moment().format(), headers: req.headers, payload: req.body, response: response});
+        writeLogs("Response", {route: route, method: method,timestamp: moment().format(), headers: req.headers, payload: req.body, response: response});
         res.send(response);
     })
 })
 
 app.get('/tuq', (req, res) => {
-    writeLogs("Request", {timestamp: moment().format(), headers: req.headers})
+    let route = req.route.path
+    let method = req.method
+    writeLogs("Request", {route: route, method: method,timestamp: moment().format(), headers: req.headers})
     let template = swig.compileFile(__dirname + '/models/tuq.json');
     let tuqData = []
     tuqData = template({
@@ -75,16 +81,18 @@ app.get('/tuq', (req, res) => {
     }
 
     if (tuqData.length > 0) {
-        writeLogs("Response", {timestamp: moment().format(), headers: req.headers, response: {code: 200, data: tuqData}});
+        writeLogs("Response", {route: route, method: method,timestamp: moment().format(), headers: req.headers, response: {code: 200, data: tuqData}});
         res.send({code: 200, data: tuqData})
     } else {
-        writeLogs("Response", {timestamp: moment().format(), headers: req.headers, response: {code: 204, data: []}});
+        writeLogs("Response", {route: route, method: method,timestamp: moment().format(), headers: req.headers, response: {code: 204, data: []}});
         res.send({code: 204, data: []})
     }
 })
 
 app.get('/muq/:type', (req, res) => {
-    writeLogs("Request", {timestamp: moment().format(), headers: req.headers, params: req.params})
+    let route = req.route.path
+    let method = req.method  
+    writeLogs("Request", {route: route, method: method,timestamp: moment().format(), headers: req.headers, params: req.params})
     let template;
     let type = parseInt(req.params.type)
     switch (type) {
@@ -111,17 +119,19 @@ app.get('/muq/:type', (req, res) => {
     }
 
     if (muqData.length > 0) {
-        writeLogs("Response", {timestamp: moment().format(), headers: req.headers, params: req.params, response: {code: 200, data: muqData}});
+        writeLogs("Response", {route: route, method: method,timestamp: moment().format(), headers: req.headers, params: req.params, response: {code: 200, data: muqData}});
         res.send({code: 200, data: muqData})
     } else {
-        writeLogs("Response", {timestamp: moment().format(), headers: req.headers, params: req.params, response: {code: 204, data: []}});
+        writeLogs("Response", {route: route, method: method,timestamp: moment().format(), headers: req.headers, params: req.params, response: {code: 204, data: []}});
         res.send({code: 204, data: []})
     }
 })
 
 app.get('/demographic', (req, res) => {
-    writeLogs("Request", {timestamp: moment().format(), headers: req.headers})
-    writeLogs("Response", {timestamp: moment().format(), headers: req.headers, data:{
+    let route = req.route.path
+    let method = req.method
+    writeLogs("Request", {route: route, method: method,timestamp: moment().format(), headers: req.headers})
+    writeLogs("Response", {route: route, method: method,timestamp: moment().format(), headers: req.headers, data:{
         code: 200,
         data: data.demoQuestions
     }})
@@ -134,67 +144,81 @@ app.get('/demographic', (req, res) => {
 
 
 app.post('/createproject', (req, res) => {
-    writeLogs("Request", {timestamp: moment().format(), headers: req.headers, payload: req.body})
+    let route = req.route.path
+    let method = req.method
+    writeLogs("Request", {route: route, method: method,timestamp: moment().format(), headers: req.headers, payload: req.body})
     createproject.createproject(req, db, (response) => {
-        writeLogs("Response", {timestamp: moment().format(), headers: req.headers, payload: req.body, response: response});
+        writeLogs("Response", {route: route, method: method,timestamp: moment().format(), headers: req.headers, payload: req.body, response: response});
         res.send(response)
     })
 })
 
 app.post('/getprojectslist', (req, res) => {
-    writeLogs("Request", {timestamp: moment().format(), headers: req.headers, payload: req.body})
+    let route = req.route.path
+    let method = req.method
+    writeLogs("Request", {route: route, method: method,timestamp: moment().format(), headers: req.headers, payload: req.body})
     getprojectslist.getprojectslist(req, db, (response) => {
-        writeLogs("Response", {timestamp: moment().format(), headers: req.headers, payload: req.body, response: response});
+        writeLogs("Response", {route: route, method: method,timestamp: moment().format(), headers: req.headers, payload: req.body, response: response});
         res.send(response);
     })
 })
 
 app.post('/getprojectquestions', (req, res) => {
-    writeLogs("Request", {timestamp: moment().format(), headers: req.headers, payload: req.body})
+    let route = req.route.path
+    let method = req.method
+    writeLogs("Request", {route: route, method: method,timestamp: moment().format(), headers: req.headers, payload: req.body})
     getprojectquestions.getprojectquestions(req, db, (response) => {
-        writeLogs("Response", {timestamp: moment().format(), headers: req.headers, payload: req.body, response: response});
+        writeLogs("Response", {route: route, method: method,timestamp: moment().format(), headers: req.headers, payload: req.body, response: response});
         res.send(response)
     })
 })
 
 app.post('/exportcsv', (req, res) => {
-    writeLogs("Request", {timestamp: moment().format(), headers: req.headers, payload: req.body})
+    let route = req.route.path
+    let method = req.method
+    writeLogs("Request", {route: route, method: method,timestamp: moment().format(), headers: req.headers, payload: req.body})
     exportcsv.exportcsv(req, db, (response) => {
         if(response.code !== 200)
-            writeLogs("Response", {timestamp: moment().format(), headers: req.headers, payload: req.body, response: response});
+            writeLogs("Response", {route: route, method: method,timestamp: moment().format(), headers: req.headers, payload: req.body, response: response});
         else
-            writeLogs("Response", {timestamp: moment().format(), headers: req.headers, payload: req.body, response: "Exported successfully"});
+            writeLogs("Response", {route: route, method: method,timestamp: moment().format(), headers: req.headers, payload: req.body, response: "Exported successfully"});
         res.send(response)
     })
 })
 
 app.post('/exportspss', (req, res) => {
-    writeLogs("Request", {timestamp: moment().format(), headers: req.headers, payload: req.body,  response:"Response is not logged purposely"})
+    let route = req.route.path
+    let method = req.method
+    writeLogs("Request", {route: route, method: method,timestamp: moment().format(), headers: req.headers, payload: req.body,  response:"Response is not logged purposely"})
     exportspss.exportspss(req, db, (response) => {
         if(response.code !== 200)
-            writeLogs("Response", {timestamp: moment().format(), headers: req.headers, payload: req.body, response: response});
+            writeLogs("Response", {route: route, method: method,timestamp: moment().format(), headers: req.headers, payload: req.body, response: response});
         else
-            writeLogs("Response", {timestamp: moment().format(), headers: req.headers, payload: req.body, response: "Exported successfully"});
+            writeLogs("Response", {route: route, method: method,timestamp: moment().format(), headers: req.headers, payload: req.body, response: "Exported successfully"});
         res.send(response)
     })
 })
 
 app.post('/submitanswers', (req, res) => {
-    writeLogs("Request", {timestamp: moment().format(), headers: req.headers, payload: req.body})
+    let route = req.route.path
+    let method = req.method
+    writeLogs("Request", {route: route, method: method,timestamp: moment().format(), headers: req.headers, payload: req.body})
     submitAnswers.submitAnswers(req, db, (response) => {
-        writeLogs("Response", {timestamp: moment().format(), headers: req.headers, payload: req.body, response: response});
+        writeLogs("Response", {route: route, method: method,timestamp: moment().format(), headers: req.headers, payload: req.body, response: response});
         res.send(response)
     })
 })
 
 app.get('/download/:fileName', (req, res) => {
-    writeLogs("Request", {timestamp: moment().format(), headers: req.headers, params: req.params})
+    let route = req.route.path
+    let method = req.method
+    writeLogs("Request", {route: route, method: method,timestamp: moment().format(), headers: req.headers, params: req.params})
     let fileName = req.params.fileName
     let path = __dirname.substring(0, __dirname.lastIndexOf('\\'));
     path += `\\exports\\${fileName}`
     fs.access(path, (err) => {
         if (err) {
-            writeLogs("Response", {timestamp: moment().format(), headers: req.headers, payload: req.body, response:{
+            writeLogs("Response", {route: route, method: method,timestamp: moment().format(), headers: req.headers, payload: req.body, response:{
                 code: 400,
                 message: "Error in downloading"
             } });
@@ -203,35 +227,41 @@ app.get('/download/:fileName', (req, res) => {
                 message: "Error in downloading"
             })
         } else {
-            writeLogs("Response", {timestamp: moment().format(), headers: req.headers, payload: req.body, response: {path: path, fileName: fileName}});
+            writeLogs("Response", {route: route, method: method,timestamp: moment().format(), headers: req.headers, payload: req.body, response: {path: path, fileName: fileName}});
             res.download(path, fileName);
         }
     })
 })
 
-app.post('/validateemail', (req, res) => {
+app.post('/validateemail', (req, res) => {    
     validateEmail.validateemail(req, db, (response) => {
         res.send(response)
     })
 })
 
 app.post('/getuserdetails', (req, res) => {
-    writeLogs("Request", {timestamp: moment().format(), headers: req.headers, payload: req.body})
+    let route = req.route.path
+    let method = req.method
+    writeLogs("Request", {route: route, method: method,timestamp: moment().format(), headers: req.headers, payload: req.body})
     getUserDetails.getUserDetails(req, db, (response) => {
-        writeLogs("Response", {timestamp: moment().format(), headers: req.headers, payload: req.body, response: response});
+        writeLogs("Response", {route: route, method: method,timestamp: moment().format(), headers: req.headers, payload: req.body, response: response});
         res.send(response)
     })
 })
 app.post('/updatepassword', (req, res) => {
-    writeLogs("Request", {timestamp: moment().format(), headers: req.headers, payload: req.body})
+    let route = req.route.path
+    let method = req.method
+    writeLogs("Request", {route: route, method: method,timestamp: moment().format(), headers: req.headers, payload: req.body})
     updatePassword.updatePassword(req, db, (response) => {
-        writeLogs("Response", {timestamp: moment().format(), headers: req.headers, payload: req.body, response: response});
+        writeLogs("Response", {route: route, method: method,timestamp: moment().format(), headers: req.headers, payload: req.body, response: response});
         res.send(response)
     })
 })
 
 app.get("/metadata", (req, res) => {
-    writeLogs("Request", {timestamp: moment().format(), headers: req.headers, response:"Response is not logged purposely"})
+    let route = req.route.path
+    let method = req.method
+    writeLogs("Request", {route: route, method: method,timestamp: moment().format(), headers: req.headers, response:"Response is not logged purposely"})
     let metadata = {}
     metadata.countries = require('./models/countries').countries()
     metadata.positions = require('./models/position').positions()
