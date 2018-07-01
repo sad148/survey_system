@@ -18,7 +18,10 @@ function getprojectslist(req, db, cb) {
                     createdAt: -1
                 }
             }
-        ]).toArray(function (err, projectsResp) {
+        ],
+        {
+            allowDiskUse: true
+        }).toArray(function (err, projectsResp) {
             if (err) {
                 cb({
                     code: 400,

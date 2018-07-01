@@ -83,8 +83,10 @@ function exportcsv(req, db, cb) {
                             },
                         }
                     },
-
-                ]
+                ],
+                {
+                    allowDiskUse: true
+                }
             )
                 .toArray(function (err, res) {
                         if (res.length == 0) {

@@ -117,11 +117,19 @@ function exportspss(req, db, cb) {
                             },
                         }
                     },
-
-                ]
+                ],
+                {
+                    allowDiskUse: true
+                }
             )
                 .toArray(function (err, res) {
-                    if (res.length == 0) {
+                    if(err) {
+                        cb({
+                            code: 400,
+                            message: err
+                        })
+                    }
+                    else if (res.length == 0) {
                         cb({
                             code: 204,
                             message: "No answers submitted yet"
@@ -165,7 +173,7 @@ function exportspss(req, db, cb) {
                                     .then((projectDetails) => {
                                         let exportFileName = `${projectDetails.projectName.split(" ").join("_")}_${moment().format('DD-MMM-YYYY')}_${projectDetails.response}.sav`
                                         let pythonPath = __dirname + "/models/convertToSpss.py " + exportFileName
-                                        shell.exec("python " + pythonPath + " " + jsonFileName, function (err, res) {
+                                        shell.exec("py " + pythonPath + " " + jsonFileName, function (err, res) {
                                             if (!err) {
                                                 cb({
                                                     code: 200,
