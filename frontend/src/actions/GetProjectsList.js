@@ -4,10 +4,11 @@ export default function getprojectslist(userid) {
     return function (dispatch) {
         let username = sessionStorage.getItem("email");
         let apiUrl = sessionStorage.getItem("apiurl");
+        let userid = sessionStorage.getItem("userid");
         request
             .post(apiUrl + 'getprojectslist')
             .set('Content-Type', 'application/json')
-            .send({userid: userid, username: username})
+            .send({userid: userid, username: username, userid: userid})
             .end((err, res) => {
                 if (err) {
                     console.log("Error", err);

@@ -2,6 +2,8 @@ var request = require('superagent');
 
 function getDemographic(cb) {
     let apiUrl = sessionStorage.getItem("apiurl");
+    let userid = sessionStorage.getItem("userid");
+    let username = sessionStorage.getItem("username");
     request
         .get(apiUrl + 'demographic')
         .set('Content-Type', 'application/json')

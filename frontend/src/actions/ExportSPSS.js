@@ -2,9 +2,10 @@ var request = require('superagent');
 
 function exportspss(projectId, cb) {
     let apiUrl = sessionStorage.getItem("apiurl");
+    let userid = sessionStorage.getItem("userid");
     request
         .post(apiUrl + 'exportspss')
-        .send({projectId: projectId})
+        .send({projectId: projectId, userid: userid})
         .set('Content-Type', 'application/json')
         .end((err, res) => {
             if (err) {
