@@ -24,6 +24,7 @@ let dbName = process.env.dbname || "survey_system";
 const writeLogs = require('./models/writeLogs').writeLogs;
 const moment = require('moment')
 const url = `mongodb://${hostname}:${port}`;
+var md5 = require('md5')
 
 var client;
 var db;
@@ -51,6 +52,32 @@ app.post('/login', (req, res) => {
         console.log("method", req.method)
         writeLogs("Response", {route: route, method: method,timestamp: moment().format(), headers: req.headers, payload: req.body, response: response});
         res.send(response)
+    })
+})
+
+app.post('/adminpassword', (req, res) => {
+    let password = req.body.password
+    var myobj = {
+        "username": "admin",
+        "password": md5(password),
+        "first_name": "Admin",
+        "last_name": "",
+        "email": "admin",
+        "user_id": "b8451d86431311e8842f0ed5f89f718b"
+    }
+    db.collection("users").update({user_id: "b8451d86431311e8842f0ed5f89f718b"}, {'$set': myobj}, {upsert: true}, function (err, resp) {
+        if (err) {
+            res.send({
+                code: 400,
+                message: "Error in setting password",
+                err: err
+            })
+        } else {
+            res.send({
+                code:200,
+                message:"Password changed successfully"
+            })
+        }
     })
 })
 
